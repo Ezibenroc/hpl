@@ -52,9 +52,9 @@
 SHELL        = /bin/sh
 #
 CD           = cd
-CP           = cp
-LN_S         = ln -s
-MKDIR        = mkdir
+CP           = cp -f
+LN_S         = ln -f -s
+MKDIR        = mkdir -p
 RM           = /bin/rm -f
 TOUCH        = touch
 #
@@ -68,7 +68,7 @@ ARCH         = $(arch)
 # - HPL Directory Structure / HPL library ------------------------------
 # ----------------------------------------------------------------------
 #
-TOPdir       = $(HOME)/src/hpl-2.2
+TOPdir       = /home/tom/Documents/Fac/2017_Stage_LIG/hpl-2.2
 INCdir       = $(TOPdir)/include
 BINdir       = $(TOPdir)/bin/$(ARCH)
 LIBdir       = $(TOPdir)/lib/$(ARCH)
