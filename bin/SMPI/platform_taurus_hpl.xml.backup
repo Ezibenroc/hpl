@@ -1,0 +1,1185 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid/simgrid.dtd">
+<platform version="4">
+
+<config id="General">
+ <prop id="contexts/stack-size" value="1280000"/>
+ <prop id="contexts/factory" value="raw"/>
+ <prop id="surf/precision" value="1e-9"/>
+ <prop id="tracing/precision" value="9"/>
+ <prop id="smpi/os" value="0:3.79946267082783e-06:1.09809596167633e-10;1420:4.06752467953734e-06:8.98782555257323e-11;33500:6.01204627458251e-06:7.10122202865045e-11;65536:7.28270630967833e-05:1.9683266729216e-10;320000:0:0"/>
+ <prop id="smpi/ois" value="0:3.65848336553355e-06:1.33280621516301e-10;1420:3.83673729379869e-06:7.84867337035856e-11;33500:5.57232433176236e-06:6.5668893954931e-11;65536:4.17803219267394e-06:2.37460347640595e-12;320000:4.70677307448713e-06:3.38065421824938e-13"/>
+ <prop id="smpi/or" value="0:3.51809764924934e-06:3.01847204118237e-10;1420:8.16124874852713e-06:2.66840481979518e-10;33500:1.49347740713389e-05:1.97645004617501e-10;65536:5.88893263987424e-05:1.29160163208845e-09;320000:0:0"/>
+ <prop id="smpi/bw-factor" value="0:0.0489825651012801;1420:0.824385608826111;33500:0.600278012183156;65536:1;320000:0.536759617074721"/>
+ <prop id="smpi/lat-factor" value="0:1;1420:2.16408517748122;33500:1.76905573216394;65536:2.9114462429055;320000:2.5981998109037"/>
+ <prop id="smpi/async-small-thresh" value="65536"/>
+ <prop id="smpi/send-is-detached-thresh" value="320000"/>
+ <prop id="smpi/wtime" value="4.195637e-08"/>
+ <prop id="smpi/iprobe" value="3.49479752916953e-07"/>
+ <prop id="smpi/test" value="2.46327639751553e-07"/>
+ <prop id="smpi/display-timing" value="yes"/>
+ <prop id="smpi/running-power" value="20000"/>
+ <prop id="smpi/init" value="0.1"/>
+ <!-- This value doesn't work as of today (2016-06-09) because the privatization is executed too late!! -->
+ <prop id="smpi/privatize-global-variables" value="yes"/>
+</config>
+
+<AS id="AS_taurus_full" routing="Full" >
+
+<host id="taurus-1.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="94.75:120.75:214.75,94.62:119.38:207,94.38:118.12:198.94,94.5:116.88:190.62,94.44:115.62:183.62,94.5:114.62:177,94.62:113.5:170.12,94.62:112.25:163.44,94.62:111.5:157.75,94.62:110.5:152.12,94.62:109.62:146.815,94.62:108.75:142.12" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-1.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-1.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-1.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-2.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="94.75:120.75:214.75,94.62:119.38:207,94.38:118.12:198.94,94.5:116.88:190.62,94.44:115.62:183.62,94.5:114.62:177,94.62:113.5:170.12,94.62:112.25:163.44,94.62:111.5:157.75,94.62:110.5:152.12,94.62:109.62:146.815,94.62:108.75:142.12" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-2.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-2.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-2.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-3.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="92.25:118.75:211,92.25:117.25:202.62,92.38:116.25:195,92.38:114.75:187,92.5:113.62:180.5,92.5:112.5:173.815,92.38:111.5:166.88,92.38:110.5:160.5,92.38:109.5:155.12,92.38:108.75:149.88,92.5:107.75:144.5,92.62:106.88:139.62" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-3.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-3.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-3.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-4.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="93:118.88:213,93:117.88:205.12,93:116.38:196.815,92.88:115.5:189.75,93:114:182.315,93.12:113.25:175.12,93.12:112:168.06,93.12:111.12:162.315,93.12:110.12:155.815,93.12:109.38:150.62,93.12:108.62:145.5,93.12:107.62:140.5" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-4.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-4.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-4.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-5.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="91.12:117.62:210.62,91.25:116.12:202.88,91:114.88:194.88,90.88:113.5:187.315,90.75:112.38:180,90.75:111.25:172.88,90.75:110.38:166.5,90.88:109.25:160.25,90.88:108.38:154.62,90.88:107.38:149,90.88:106.62:143.75,91:105.88:138.88" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-5.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-5.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-5.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-6.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="91.62:117.5:209.94,91.75:116:202.75,91.75:114.75:195.5,91.62:113.62:187.06,91.62:112.38:179.88,91.62:111.38:172.685,91.62:110.5:165.75,91.75:109.25:160.315,91.75:108.5:154.44,91.75:107.62:149,91.88:106.88:144.12,91.88:106.12:139" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-6.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-6.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-6.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-7.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="93.88:121.62:216.88,93.88:120:208.75,93.88:118.94:200.38,94:117.38:192.25,94:116.12:185.5,94:115.12:177.62,94:114:171.5,94:112.75:165,94:112:159.12,94:111:153.25,94:110:148,94.25:109.25:143.25" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-7.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-7.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-7.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-8.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="92.75:118.75:210.38,92.75:117.62:202.88,92.88:116.25:195.185,92.88:115.25:187.75,92.88:113.88:180.88,92.88:112.88:173.88,92.88:112:167.5,93:110.88:161.56,93.12:110.12:155.38,93:109.25:150.5,93:108.38:145.25,93.25:107.62:140.62" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-8.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-8.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-8.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-9.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="94.75:120.75:214.75,94.62:119.38:207,94.38:118.12:198.94,94.5:116.88:190.62,94.44:115.62:183.62,94.5:114.62:177,94.62:113.5:170.12,94.62:112.25:163.44,94.62:111.5:157.75,94.62:110.5:152.12,94.62:109.62:146.815,94.62:108.75:142.12" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-9.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-9.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-9.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-10.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="105.38:133:226.185,105.38:131.88:217.44,105.38:130.62:210.38,105.38:129.5:202.38,105.38:128.315:195.38,105.5:127.25:188.75,105.5:126.38:182.94,105.38:125.12:176.62,105.5:124.25:171,105.38:123.38:165.25,105.38:122.5:160.12,105.5:121.75:155.88" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-10.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-10.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-10.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-11.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="93.75:120.75:216,93.75:119.25:208.5,93.75:117.75:200.56,93.75:116.56:192.38,93.75:115.25:184.75,93.75:114.25:177.5,93.75:113.25:170.5,93.75:112.12:164.12,93.88:111.12:158.44,93.88:110.25:152.62,93.88:109.5:147.25,94:108.75:142.25" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-11.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-11.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-11.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-12.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="105.38:134.75:230.12,105.25:133.12:222,105.25:131.5:212.815,105.12:130.5:205.25,105.12:129.25:197.62,105:128.5:190.75,105:127.25:184.5,105:126.12:178.25,105.12:125.38:172.25,105.12:124.5:166.88,105.25:123.5:161.5,105.25:122.75:156.75" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-12.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-12.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-12.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-13.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="95.12:121.12:216.12,95:120:209.315,95.12:118.88:201.75,95.12:117.88:194.62,95.12:116.75:187,95.12:115.62:179.75,95.25:114.75:173.5,95.12:113.75:167.25,95.12:112.62:161.25,95.25:111.88:156,95.25:111.12:150.685,95.25:110.38:145.75" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-13.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-13.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-13.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-14.lyon.grid5000.fr" speed="20000" core="12">
+  <!-- This host was unavailable for HPL and hence receives the same data as taurus-13 -->
+  <prop id="watt_per_state" value="95.12:121.12:216.12,95:120:209.315,95.12:118.88:201.75,95.12:117.88:194.62,95.12:116.75:187,95.12:115.62:179.75,95.25:114.75:173.5,95.12:113.75:167.25,95.12:112.62:161.25,95.25:111.88:156,95.25:111.12:150.685,95.25:110.38:145.75" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-14.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-14.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-14.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-15.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="94.75:120.75:214.75,94.62:119.38:207,94.38:118.12:198.94,94.5:116.88:190.62,94.44:115.62:183.62,94.5:114.62:177,94.62:113.5:170.12,94.62:112.25:163.44,94.62:111.5:157.75,94.62:110.5:152.12,94.62:109.62:146.815,94.62:108.75:142.12" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-15.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-15.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-15.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<host id="taurus-16.lyon.grid5000.fr" speed="20000" core="12">
+  <prop id="watt_per_state" value="94.38:121.5:219.06,94.38:120.25:211.88,94.38:118.5:203.25,94.38:117.38:195.75,94.5:116:188,94.5:115:180.62,94.5:113.88:173.62,94.5:112.685:167.25,94.5:111.88:160.88,94.5:110.75:155.38,94.62:109.88:149.75,94.62:109.12:144.75" />
+  <prop id="watt_off" value="10" />
+</host>
+<link id="taurus-16.lyon.grid5000.fr_loopback" bandwidth="5120MiBps" latency="1.5E-9s" />
+<link id="taurus-16.lyon.grid5000.fr_UP" bandwidth="10Gbps" latency="2.4E-5s" />
+<link id="taurus-16.lyon.grid5000.fr_DOWN" bandwidth="10Gbps" latency="2.4E-5s" />
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-1.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-1.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-2.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-2.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-3.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-3.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-4.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-4.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-5.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-5.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-6.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-6.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-7.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-7.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-8.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-8.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-9.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-9.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-10.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-10.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-11.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-11.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-12.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-12.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-13.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-13.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-14.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-14.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_loopback" />
+</route>
+
+<route src="taurus-15.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-15.lyon.grid5000.fr_UP" /><link_ctn id="taurus-16.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-1.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-1.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-2.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-2.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-3.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-3.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-4.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-4.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-5.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-5.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-6.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-6.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-7.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-7.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-8.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-8.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-9.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-9.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-10.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-10.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-11.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-11.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-12.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-12.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-13.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-13.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-14.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-14.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-15.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_UP" /><link_ctn id="taurus-15.lyon.grid5000.fr_DOWN" />
+</route>
+
+<route src="taurus-16.lyon.grid5000.fr" dst="taurus-16.lyon.grid5000.fr" symmetrical="NO">
+  <link_ctn id="taurus-16.lyon.grid5000.fr_loopback" />
+</route>
+ 
+ </AS>
+</platform>
+
+    
