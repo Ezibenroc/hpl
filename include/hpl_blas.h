@@ -169,7 +169,22 @@ STDC_ARGS(
 #define    HPL_dtrsv           cblas_dtrsv
 #define    HPL_dger            cblas_dger
 
-#define    HPL_dgemm           cblas_dgemm
+//#define    HPL_dgemm(...)      ({MPI_Wtime(); cblas_dgemm(__VA_ARGS__); MPI_Wtime();})
+//#define    HPL_dgemm(...)      ({MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE); cblas_dgemm(__VA_ARGS__); MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE);})
+
+#define    HPL_dgemm(...)      ({\
+    int my_rank, buff=0;\
+    MPI_Request request;\
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
+    MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
+    MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
+    MPI_Wait(&request, MPI_STATUS_IGNORE);\
+    cblas_dgemm(__VA_ARGS__);\
+    MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
+    MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
+    MPI_Wait(&request, MPI_STATUS_IGNORE);\
+})
+
 #define    HPL_dtrsm           cblas_dtrsm
 
 #endif
