@@ -382,10 +382,14 @@ void HPL_pdupdateTT
             (void) vsip_mdestroy_d( Uv1 );
 #else
             double expected_time = (1.062e-09)*(double)mp*(double)nn*(double)jb - 2.476e-03;
+            if(expected_time > 0)
+                smpi_usleep((useconds_t)(expected_time*1e6));
+            /*
             printf("line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d expected_time=%f\n", __LINE__+3, rank, mp, nn, jb, ldl2, LDU, lda, expected_time);
             HPL_dgemm( HplColumnMajor, HplNoTrans, HplTrans, mp, nn,
                        jb, -HPL_rone, L2ptr, ldl2, Uptr, LDU, HPL_rone,
                        Mptr( Aptr, jb, 0, lda ), lda );
+           */
 #endif
             HPL_dlatcpy( jb, nn, Uptr, LDU, Aptr, lda );
          }
@@ -407,10 +411,14 @@ void HPL_pdupdateTT
             (void) vsip_mdestroy_d( Uv1 );
 #else
             double expected_time = (1.062e-09)*(double)mp*(double)nn*(double)jb - 2.476e-03;
+            if(expected_time > 0)
+                smpi_usleep((useconds_t)(expected_time*1e6));
+            /*
             printf("line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d expected_time=%f\n", __LINE__+3, rank, mp, nn, jb, ldl2, LDU, lda, expected_time);
             HPL_dgemm( HplColumnMajor, HplNoTrans, HplTrans, mp, nn,
                        jb, -HPL_rone, L2ptr, ldl2, Uptr, LDU, HPL_rone,
                        Aptr, lda );
+           */
 #endif
          }
       }
