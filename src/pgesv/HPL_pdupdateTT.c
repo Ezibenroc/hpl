@@ -113,6 +113,8 @@ void HPL_pdupdateTT
 /* ..
  * .. Executable Statements ..
  */
+   int rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 #ifdef HPL_DETAILED_TIMING
    HPL_ptimer( HPL_TIMING_UPDATE );
 #endif
@@ -379,6 +381,8 @@ void HPL_pdupdateTT
             (void) vsip_mdestroy_d( Av1 );
             (void) vsip_mdestroy_d( Uv1 );
 #else
+            double expected_time = (1.062e-09)*(double)mp*(double)nn*(double)jb - 2.476e-03;
+            printf("line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d expected_time=%f\n", __LINE__+3, rank, mp, nn, jb, ldl2, LDU, lda, expected_time);
             HPL_dgemm( HplColumnMajor, HplNoTrans, HplTrans, mp, nn,
                        jb, -HPL_rone, L2ptr, ldl2, Uptr, LDU, HPL_rone,
                        Mptr( Aptr, jb, 0, lda ), lda );
@@ -402,6 +406,8 @@ void HPL_pdupdateTT
             (void) vsip_mdestroy_d( Av1 );
             (void) vsip_mdestroy_d( Uv1 );
 #else
+            double expected_time = (1.062e-09)*(double)mp*(double)nn*(double)jb - 2.476e-03;
+            printf("line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d expected_time=%f\n", __LINE__+3, rank, mp, nn, jb, ldl2, LDU, lda, expected_time);
             HPL_dgemm( HplColumnMajor, HplNoTrans, HplTrans, mp, nn,
                        jb, -HPL_rone, L2ptr, ldl2, Uptr, LDU, HPL_rone,
                        Aptr, lda );
