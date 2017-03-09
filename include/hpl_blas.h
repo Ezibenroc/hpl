@@ -180,14 +180,8 @@ STDC_ARGS(
     struct timeval before = {};\
     struct timeval after = {};\
     gettimeofday(&before, NULL);\
-    MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
-    MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
-    MPI_Wait(&request, MPI_STATUS_IGNORE);\
     cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
     gettimeofday(&after, NULL);\
-    MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
-    MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
-    MPI_Wait(&request, MPI_STATUS_IGNORE);\
     double time_before = (double)(before.tv_sec) + (double)(before.tv_usec)*1e-6;\
     double time_after = (double)(after.tv_sec) + (double)(after.tv_usec)*1e-6;\
     double real_time = time_after-time_before;\
