@@ -173,10 +173,13 @@ STDC_ARGS(
 //#define    HPL_dgemm(...)      ({MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE); cblas_dgemm(__VA_ARGS__); MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE);})
 
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
+    double expected_time = (1.064e-09)*(double)M*(double)N*(double)K;\
+    if(expected_time > 0)\
+        smpi_usleep((useconds_t)(expected_time*1e6));\
+    /*
     int my_rank, buff=0;\
     MPI_Request request;\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    double expected_time = (1.062e-09)*(double)M*(double)N*(double)K - 2.476e-03;\
     struct timeval before = {};\
     struct timeval after = {};\
     gettimeofday(&before, NULL);\
@@ -186,6 +189,7 @@ STDC_ARGS(
     double time_after = (double)(after.tv_sec) + (double)(after.tv_usec)*1e-6;\
     double real_time = time_after-time_before;\
     printf("file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%f expected_time=%f\n", __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time);\
+    */\
 })
 
 #define    HPL_dtrsm           cblas_dtrsm
