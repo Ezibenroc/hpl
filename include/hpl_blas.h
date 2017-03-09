@@ -172,14 +172,16 @@ STDC_ARGS(
 //#define    HPL_dgemm(...)      ({MPI_Wtime(); cblas_dgemm(__VA_ARGS__); MPI_Wtime();})
 //#define    HPL_dgemm(...)      ({MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE); cblas_dgemm(__VA_ARGS__); MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE);})
 
-#define    HPL_dgemm(...)      ({\
+#define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     int my_rank, buff=0;\
     MPI_Request request;\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
+    double expected_time = (1.062e-09)*(double)M*(double)N*(double)K - 2.476e-03;\
+    printf("file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d expected_time=%f\n", __FILE__, __LINE__+3, my_rank, M, N, K, lda, ldb, ldc, expected_time);\
     MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
     MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
     MPI_Wait(&request, MPI_STATUS_IGNORE);\
-    cblas_dgemm(__VA_ARGS__);\
+    cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
     MPI_Isend(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, &request);\
     MPI_Recv(&buff, 1, MPI_INT, my_rank, 0, MPI_COMM_WORLD, NULL);\
     MPI_Wait(&request, MPI_STATUS_IGNORE);\
