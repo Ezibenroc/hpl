@@ -178,7 +178,6 @@ STDC_ARGS(
         smpi_usleep((useconds_t)(expected_time*1e6));\
     /*
     int my_rank, buff=0;\
-    MPI_Request request;\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
     struct timeval before = {};\
     struct timeval after = {};\
@@ -192,7 +191,24 @@ STDC_ARGS(
     */\
 })
 
-#define    HPL_dtrsm           cblas_dtrsm
+#define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
+    double expected_time = (9.246e-08)*(double)M*(double)N - 1.024e-05;\
+    if(expected_time > 0)\
+        smpi_usleep((useconds_t)(expected_time*1e6));\
+    /*
+    int my_rank, buff=0;\
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
+    struct timeval before = {};\
+    struct timeval after = {};\
+    gettimeofday(&before, NULL);\
+    cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
+    gettimeofday(&after, NULL);\
+    double time_before = (double)(before.tv_sec) + (double)(before.tv_usec)*1e-6;\
+    double time_after = (double)(after.tv_sec) + (double)(after.tv_usec)*1e-6;\
+    double real_time = time_after-time_before;\
+    printf("file=%s line=%d rank=%d m=%d n=%d lead_A=%d lead_B=%d real_time=%f\n", __FILE__, __LINE__, my_rank, M, N, lda, ldb, real_time);\
+    */\
+})
 
 #endif
 
