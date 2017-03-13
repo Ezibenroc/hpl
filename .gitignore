@@ -2,4 +2,5 @@
 *.a
 *.o
 *.grd
+Make.inc
 xhpl
