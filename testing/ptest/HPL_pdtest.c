@@ -161,7 +161,7 @@ void HPL_pdtest
 /*
  * Allocate dynamic memory
  */
-   vptr = (void*)malloc( ( (size_t)(ALGO->align) + 
+   vptr = (void*)SMPI_SHARED_MALLOC( ( (size_t)(ALGO->align) + 
                            (size_t)(mat.ld+1) * (size_t)(mat.nq) ) *
                          sizeof(double) );
    info[0] = (vptr == NULL); info[1] = myrow; info[2] = mycol;
@@ -319,7 +319,7 @@ void HPL_pdtest
  * Quick return, if I am not interested in checking the computations
  */
    if( TEST->thrsh <= HPL_rzero )
-   { (TEST->kpass)++; if( vptr ) free( vptr ); return; }
+   { (TEST->kpass)++; if( vptr ) SMPI_SHARED_FREE( vptr ); return; }
 /*
  * Check info returned by solve
  */
@@ -329,7 +329,7 @@ void HPL_pdtest
          HPL_pwarn( TEST->outfp, __LINE__, "HPL_pdtest", "%s %d, %s", 
                     "Error code returned by solve is", mat.info, "skip" );
       (TEST->kskip)++;
-      if( vptr ) free( vptr ); return;
+      if( vptr ) SMPI_SHARED_FREE( vptr ); return;
    }
 /*
  * Check computation, re-generate [ A | b ], compute norm 1 and inf of A and x,
@@ -429,7 +429,7 @@ void HPL_pdtest
          "||b||_oo . . . . . . . . . . . . . . . . . . . = ", BnormI );
       }
    }
-   if( vptr ) free( vptr );
+   if( vptr ) SMPI_SHARED_FREE( vptr );
 /*
  * End of HPL_pdtest
  */
