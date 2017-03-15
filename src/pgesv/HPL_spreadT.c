@@ -49,6 +49,19 @@
  */
 #include "hpl.h"
 
+int local_rank_to_global(int local_rank, MPI_Comm local_communicator) {
+    int result;
+    MPI_Group local_group, world_group;
+    MPI_Comm_group(local_communicator, &local_group);
+    MPI_Comm_group(MPI_COMM_WORLD, &world_group);
+    MPI_Group_translate_ranks(local_group, 1, &local_rank, world_group, &result);
+    return result;
+}
+
+void print_info(int src_rank, int dst_rank, char *function, char *type, int line, char *file) {
+    printf("src=%d dst=%d function=%s type=%s line=%d file=%s\n", src_rank, dst_rank, function, type, line, file);
+}
+
 #ifdef STDC_HEADERS
 void HPL_spreadT
 (
@@ -165,6 +178,8 @@ void HPL_spreadT
 /* ..
  * .. Executable Statements ..
  */
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
    myrow = PANEL->grid->myrow;    nprow = PANEL->grid->nprow;
    comm  = PANEL->grid->col_comm;
 /*
@@ -315,10 +330,15 @@ void HPL_spreadT
 /*
  * In our case, LDU is N - do not use the MPI Datatypes
  */
-                  if( ierr == MPI_SUCCESS )
+                  if( ierr == MPI_SUCCESS ) {
+                     int local_rank = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
+                     print_info(my_rank, local_rank, "mpi_recv", "start", __LINE__, __FILE__);
                      ierr =   MPI_Recv( Mptr( U, 0, ibuf, LDU ), lbuf*N,
                                         MPI_DOUBLE, IPMAP[SRCDIST+partner],
                                         Cmsgid, comm, &status );
+                     print_info(my_rank, local_rank, "mpi_recv", "stop", __LINE__, __FILE__);
+
+                  }
 #endif
                }
                else if( partner < nprow )
@@ -345,10 +365,15 @@ void HPL_spreadT
 /*
  * In our case, LDU is N - do not use the MPI Datatypes
  */
-                  if( ierr == MPI_SUCCESS )
+                  if( ierr == MPI_SUCCESS ) {
+                      printf("my_rank=%d, size=%d\n", my_rank, lbuf*N);
+                     int local_rank = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
+                     print_info(my_rank, local_rank, "mpi_send", "start", __LINE__, __FILE__);
                      ierr =   MPI_Send( Mptr( U, 0, ibuf, LDU ), lbuf*N,
                                         MPI_DOUBLE, IPMAP[SRCDIST+partner],
                                         Cmsgid, comm );
+                     print_info(my_rank, local_rank, "mpi_send", "stop", __LINE__, __FILE__);
+                  }
 #endif
                }
             }

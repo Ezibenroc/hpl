@@ -150,6 +150,8 @@ void HPL_rollT
 /* ..
  * .. Executable Statements ..
  */
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
    if( N <= 0 ) return;
 
    npm1 = ( nprow = PANEL->grid->nprow ) - 1; myrow = PANEL->grid->myrow;
@@ -230,16 +232,24 @@ void HPL_rollT
 /*
  * In our case, LDU is N - Do not use the MPI datatype.
  */
-         if( ierr == MPI_SUCCESS )
+         if( ierr == MPI_SUCCESS ) {
+            int local_rank = local_rank_to_global(partner, comm);
+            print_info(my_rank, local_rank, "mpi_send", "start", __LINE__, __FILE__);
             ierr =   MPI_Send( Mptr( U, 0, ibufS, LDU ), lengthS*LDU,
                                MPI_DOUBLE, partner, Cmsgid, comm );
+            print_info(my_rank, local_rank, "mpi_send", "stop", __LINE__, __FILE__);
+         }
 #endif
       }
 
       if( lengthR > 0 )
       {
-         if( ierr == MPI_SUCCESS )
+         if( ierr == MPI_SUCCESS ) {
+            int local_rank = local_rank_to_global(partner, comm);
+            print_info(my_rank, local_rank, "mpi_wait", "start",  __LINE__, __FILE__);
             ierr =   MPI_Wait( &request, &status );
+            print_info(my_rank, local_rank, "mpi_wait", "stop",  __LINE__, __FILE__);
+         }
 #if 0
          if( ierr == MPI_SUCCESS )
             ierr =   MPI_Type_free( &type[I_RECV] );
