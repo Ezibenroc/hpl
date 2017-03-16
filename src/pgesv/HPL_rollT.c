@@ -150,12 +150,13 @@ void HPL_rollT
 /* ..
  * .. Executable Statements ..
  */
-   int my_rank;
-   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
    if( N <= 0 ) return;
 
    npm1 = ( nprow = PANEL->grid->nprow ) - 1; myrow = PANEL->grid->myrow;
    comm = PANEL->grid->col_comm;
+   int my_rank, my_local_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   MPI_Comm_rank(comm, &my_local_rank);
 /*
  * Rolling phase
  */
@@ -233,11 +234,11 @@ void HPL_rollT
  * In our case, LDU is N - Do not use the MPI datatype.
  */
          if( ierr == MPI_SUCCESS ) {
-            int local_rank = local_rank_to_global(partner, comm);
-            print_info(my_rank, local_rank, "mpi_send", "start", __LINE__, __FILE__);
+            int dst = local_rank_to_global(partner, comm);
+            print_info(my_rank, dst, my_local_rank, partner, "mpi_send", "start", __LINE__, __FILE__);
             ierr =   MPI_Send( Mptr( U, 0, ibufS, LDU ), lengthS*LDU,
                                MPI_DOUBLE, partner, Cmsgid, comm );
-            print_info(my_rank, local_rank, "mpi_send", "stop", __LINE__, __FILE__);
+            print_info(my_rank, dst, my_local_rank, partner, "mpi_send", "stop", __LINE__, __FILE__);
          }
 #endif
       }
@@ -245,10 +246,10 @@ void HPL_rollT
       if( lengthR > 0 )
       {
          if( ierr == MPI_SUCCESS ) {
-            int local_rank = local_rank_to_global(partner, comm);
-            print_info(my_rank, local_rank, "mpi_wait", "start",  __LINE__, __FILE__);
+            int dst = local_rank_to_global(partner, comm);
+            print_info(my_rank, dst, my_local_rank, partner, "mpi_wait", "start",  __LINE__, __FILE__);
             ierr =   MPI_Wait( &request, &status );
-            print_info(my_rank, local_rank, "mpi_wait", "stop",  __LINE__, __FILE__);
+            print_info(my_rank, dst, my_local_rank, partner, "mpi_wait", "stop",  __LINE__, __FILE__);
          }
 #if 0
          if( ierr == MPI_SUCCESS )

@@ -58,8 +58,10 @@ int local_rank_to_global(int local_rank, MPI_Comm local_communicator) {
     return result;
 }
 
-void print_info(int src_rank, int dst_rank, char *function, char *type, int line, char *file) {
-    printf("src=%d dst=%d function=%s type=%s line=%d file=%s\n", src_rank, dst_rank, function, type, line, file);
+static int id_func = -1;
+
+void print_info(int src_rank, int dst_rank, int src_local_rank, int dst_local_rank, char *function, char *type, int line, char *file) {
+    printf("src=%d dst=%d src_local=%d dst_local=%d function=%s type=%s line=%d file=%s\n", src_rank, dst_rank, src_local_rank, dst_local_rank, function, type, line, file);
 }
 
 #ifdef STDC_HEADERS
@@ -178,10 +180,13 @@ void HPL_spreadT
 /* ..
  * .. Executable Statements ..
  */
-   int my_rank;
-   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   id_func ++;
    myrow = PANEL->grid->myrow;    nprow = PANEL->grid->nprow;
    comm  = PANEL->grid->col_comm;
+   int my_rank, my_local_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   MPI_Comm_rank(comm, &my_local_rank);
+
 /*
  * Spread U
  */
@@ -293,88 +298,52 @@ void HPL_spreadT
 /*
  * Spread U
  */
+      printf("IPMAP: my_rank=%d, %d %d %d %d \n", my_rank, local_rank_to_global(IPMAP[0], comm), local_rank_to_global(IPMAP[1], comm), local_rank_to_global(IPMAP[2], comm), local_rank_to_global(IPMAP[3], comm));
       do
       {
          mask ^= ip2;
-
+        printf("### my_rank=%d (%d) id_func=%d mask=%d ip2=%d mydist=%d", my_rank, my_local_rank, id_func, mask, ip2, mydist);
+         if(mydist & mask) printf("\n");
          if( ( mydist & mask ) == 0 )
          {
             k    = il      ; ibuf = ( k >= nprow ? lgth : IPLEN[SRCDIST+k] );
             k    = il + ip2; lbuf = ( k >= nprow ? lgth : IPLEN[SRCDIST+k] ) - ibuf;
 
+            if(lbuf <= 0) printf("\n");
             if( lbuf > 0 )
             {
                partner = mydist ^ ip2;
-
+               printf(" partner=%d", partner);
                if( mydist & ip2 )
                {
-#if 0
-                  if( ierr == MPI_SUCCESS )
-                  {
-                     if( LDU == N )
-                        ierr = MPI_Type_contiguous( lbuf*LDU, MPI_DOUBLE,
-                                                    &type );
-                     else
-                        ierr = MPI_Type_vector( lbuf, N, LDU, MPI_DOUBLE,
-                                                &type );
-                  }
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Type_commit( &type );
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Recv( Mptr( U, 0, ibuf, LDU ), 1, type,
-                                        IPMAP[SRCDIST+partner], Cmsgid,
-                                        comm, &status );
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Type_free( &type );
-#else
+                   printf(" mpi_recv(%d)\n", IPMAP[SRCDIST+partner]);
 /*
  * In our case, LDU is N - do not use the MPI Datatypes
  */
                   if( ierr == MPI_SUCCESS ) {
-                     int local_rank = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
-                     print_info(my_rank, local_rank, "mpi_recv", "start", __LINE__, __FILE__);
+                     int dst = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
+                     print_info(my_rank, dst, my_local_rank, IPMAP[SRCDIST+partner], "mpi_recv", "start", __LINE__, __FILE__);
                      ierr =   MPI_Recv( Mptr( U, 0, ibuf, LDU ), lbuf*N,
                                         MPI_DOUBLE, IPMAP[SRCDIST+partner],
                                         Cmsgid, comm, &status );
-                     print_info(my_rank, local_rank, "mpi_recv", "stop", __LINE__, __FILE__);
+                     print_info(my_rank, dst, my_local_rank, IPMAP[SRCDIST+partner], "mpi_recv", "stop", __LINE__, __FILE__);
 
                   }
-#endif
                }
                else if( partner < nprow )
                {
-#if 0
-                  if( ierr == MPI_SUCCESS )
-                  {
-                     if( LDU == N )
-                        ierr = MPI_Type_contiguous( lbuf*LDU, MPI_DOUBLE,
-                                                    &type );
-                     else
-                        ierr = MPI_Type_vector( lbuf, N, LDU, MPI_DOUBLE,
-                                                &type );
-                  }
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Type_commit( &type );
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Send( Mptr( U, 0, ibuf, LDU ), 1, type,
-                                        IPMAP[SRCDIST+partner], Cmsgid,
-                                        comm );
-                  if( ierr == MPI_SUCCESS )
-                     ierr =   MPI_Type_free( &type );
-#else
+                   printf(" mpi_send(%d)\n", IPMAP[SRCDIST+partner]);
 /*
  * In our case, LDU is N - do not use the MPI Datatypes
  */
                   if( ierr == MPI_SUCCESS ) {
-                      printf("my_rank=%d, size=%d\n", my_rank, lbuf*N);
-                     int local_rank = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
-                     print_info(my_rank, local_rank, "mpi_send", "start", __LINE__, __FILE__);
+                     int dst = local_rank_to_global(IPMAP[SRCDIST+partner], comm);
+                     print_info(my_rank, dst, my_local_rank, IPMAP[SRCDIST+partner], "mpi_send", "start", __LINE__, __FILE__);
                      ierr =   MPI_Send( Mptr( U, 0, ibuf, LDU ), lbuf*N,
                                         MPI_DOUBLE, IPMAP[SRCDIST+partner],
                                         Cmsgid, comm );
-                     print_info(my_rank, local_rank, "mpi_send", "stop", __LINE__, __FILE__);
+                     print_info(my_rank, dst, my_local_rank, IPMAP[SRCDIST+partner], "mpi_send", "stop", __LINE__, __FILE__);
                   }
-#endif
                }
             }
          }
@@ -391,6 +360,10 @@ void HPL_spreadT
 
    if( ierr != MPI_SUCCESS )
    { HPL_pabort( __LINE__, "HPL_spreadT", "MPI call failed" ); }
+   if(id_func == 1) {
+        MPI_Finalize();
+        exit(1);
+   }
 /*
  * End of HPL_spreadT
  */
