@@ -360,10 +360,10 @@ void HPL_spreadT
 
    if( ierr != MPI_SUCCESS )
    { HPL_pabort( __LINE__, "HPL_spreadT", "MPI call failed" ); }
-   if(id_func == 1) {
-        MPI_Finalize();
-        exit(1);
-   }
+//   if(id_func == 1) {
+//        MPI_Finalize();
+//        exit(1);
+//   }
 /*
  * End of HPL_spreadT
  */

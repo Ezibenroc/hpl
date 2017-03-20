@@ -133,6 +133,14 @@ void HPL_plindx10
  * Compute  redundantly  the local number of rows  that each process has
  * and that belong to U in IPLEN[1 .. nprow+1]
  */
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   printf(">> my_rank=%d, K=%d, IPID = [", my_rank, K);
+   for(i = 0; i < K; i++) {
+        printf("%d, ", IPID[i]);
+   }
+   printf("]\n");
+
    for( i = 0; i <= nprow; i++ ) IPLEN[i] = 0;
  
    for( i = 0; i < K; i += 2 )
@@ -144,6 +152,11 @@ void HPL_plindx10
          if( ( dstrow != srcrow ) || ( dst - ia < jb ) ) IPLEN[dstrow+1]++;
       }
    }
+   printf(">> my_rank=%d, icurrow=%d, IPLEN =", my_rank, icurrow);
+   for(i = 0; i <= nprow; i++) {
+        printf(" %d", IPLEN[i]);
+   }
+   printf("\n");
 /*
  * Logarithmic sort of the processes - compute IPMAP, IPLEN and IPMAPM1
  * (the inverse of IPMAP)

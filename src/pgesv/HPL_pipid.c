@@ -143,6 +143,14 @@ void HPL_pipid
    dst  = (int)(dpiv[0]); IPID[0] = dst; IPID[1] = src; *K = 2;
    if( src != dst ) { IPID[2] = src; IPID[3] = dst; *K += 2; }
 
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   printf("°° my_rank=%d DPIV = ", my_rank);
+   for(int i = 1; i < jb ; i++) {
+      printf("%d ", (int)dpiv[i]);
+   }
+   printf("\n");
+
    for( i = 1; i < jb; i++ )
    {
       fnds = 0; j = 1;

@@ -181,6 +181,9 @@ void HPL_pdtest
  */
    mat.A  = (double *)HPL_PTR( vptr,
                                ((size_t)(ALGO->align) * sizeof(double) ) );
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   printf("&& my_rank=%d mat.A: %p - %p\n", my_rank, mat.A, mat.A+(mat.ld+1)*mat.nq);
    mat.X  = Mptr( mat.A, 0, mat.nq, mat.ld );
    HPL_pdmatgen( GRID, N, N+1, NB, mat.A, mat.ld, HPL_ISEED );
 #ifdef HPL_CALL_VSIPL

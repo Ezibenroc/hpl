@@ -182,6 +182,9 @@ void HPL_pdlaswp01T
 /*
  * Spread U - optionally probe for column panel
  */
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   printf("||||||||||||||| my_rank=%d %s %d\n", my_rank, __FILE__, __LINE__);
    HPL_spreadT( PBCST, IFLAG, PANEL, HplRight, n, U, LDU, 0, iplen,
                 ipmap, ipmapm1 );
 /*

@@ -131,6 +131,10 @@ void HPL_pdmxswp
 /* ..
  * .. Executable Statements ..
  */
+   WORK[0] = 3.14;
+   int my_rank;
+   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+   printf("[[before]] my_rank=%d WORLD = %f %f %f %f\n", my_rank, WORK[0], WORK[1], WORK[2], WORK[3]);
 #ifdef HPL_DETAILED_TIMING
    HPL_ptimer( HPL_TIMING_MXSWP );
 #endif
@@ -301,6 +305,7 @@ void HPL_pdmxswp
 /*
  * Save the global pivot index in pivot array
  */
+   printf("[[after]]  my_rank=%d WORLD = %f %f %f %f\n", my_rank, WORK[0], WORK[1], WORK[2], WORK[3]);
    (PANEL->DPIV)[JJ] = WORK[2];
 #ifdef HPL_DETAILED_TIMING
    HPL_ptimer( HPL_TIMING_MXSWP );
