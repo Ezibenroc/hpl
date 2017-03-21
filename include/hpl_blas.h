@@ -165,7 +165,7 @@ STDC_ARGS(
 #define    HPL_dscal           cblas_dscal
 #define    HPL_idamax          cblas_idamax
 
-#define    HPL_dgemv           cblas_dgemv
+#define    HPL_dgemv(...) {}//           cblas_dgemv
 #define    HPL_dtrsv           cblas_dtrsv
 #define    HPL_dger            cblas_dger
 
