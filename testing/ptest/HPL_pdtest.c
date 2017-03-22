@@ -49,6 +49,16 @@
  */
 #include "hpl.h"
 
+#ifdef SMPI_OPTIMIZATION
+#pragma message "[SMPI] Using shared malloc/free."
+#define smpi_malloc SMPI_SHARED_MALLOC
+#define smpi_free SMPI_SHARED_FREE
+#else
+#pragma message "[SMPI] Using standard malloc/free."
+#define smpi_malloc malloc
+#define smpi_free free
+#endif
+
 #ifdef STDC_HEADERS
 void HPL_pdtest
 (
@@ -161,7 +171,7 @@ void HPL_pdtest
 /*
  * Allocate dynamic memory
  */
-   vptr = (void*)SMPI_SHARED_MALLOC( ( (size_t)(ALGO->align) + 
+   vptr = (void*)smpi_malloc( ( (size_t)(ALGO->align) + 
                            (size_t)(mat.ld+1) * (size_t)(mat.nq) ) *
                          sizeof(double) );
    info[0] = (vptr == NULL); info[1] = myrow; info[2] = mycol;
@@ -319,7 +329,7 @@ void HPL_pdtest
  * Quick return, if I am not interested in checking the computations
  */
    if( TEST->thrsh <= HPL_rzero )
-   { (TEST->kpass)++; if( vptr ) SMPI_SHARED_FREE( vptr ); return; }
+   { (TEST->kpass)++; if( vptr ) smpi_free( vptr ); return; }
 /*
  * Check info returned by solve
  */
@@ -329,7 +339,7 @@ void HPL_pdtest
          HPL_pwarn( TEST->outfp, __LINE__, "HPL_pdtest", "%s %d, %s", 
                     "Error code returned by solve is", mat.info, "skip" );
       (TEST->kskip)++;
-      if( vptr ) SMPI_SHARED_FREE( vptr ); return;
+      if( vptr ) smpi_free( vptr ); return;
    }
 /*
  * Check computation, re-generate [ A | b ], compute norm 1 and inf of A and x,
@@ -429,7 +439,7 @@ void HPL_pdtest
          "||b||_oo . . . . . . . . . . . . . . . . . . . = ", BnormI );
       }
    }
-   if( vptr ) SMPI_SHARED_FREE( vptr );
+   if( vptr ) smpi_free( vptr );
 /*
  * End of HPL_pdtest
  */

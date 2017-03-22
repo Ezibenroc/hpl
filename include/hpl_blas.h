@@ -165,50 +165,72 @@ STDC_ARGS(
 #define    HPL_dscal           cblas_dscal
 #define    HPL_idamax          cblas_idamax
 
-#define    HPL_dgemv(...) {}//           cblas_dgemv
+// DGEMV
+#ifdef SMPI_OPTIMIZATION
+#define    HPL_dgemv(...)      {}
+#pragma message "[SMPI] Using no-op for HPL_dgemv."
+#else
+#define    HPL_dgemv           cblas_dgemv
+#pragma message "[SMPI] Using cblas_dgemv for HPL_dgemv."
+#endif
+
 #define    HPL_dtrsv           cblas_dtrsv
 #define    HPL_dger            cblas_dger
 
-//#define    HPL_dgemm(...)      ({MPI_Wtime(); cblas_dgemm(__VA_ARGS__); MPI_Wtime();})
-//#define    HPL_dgemm(...)      ({MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE); cblas_dgemm(__VA_ARGS__); MPI_Test(MPI_REQUEST_NULL, NULL, MPI_STATUS_IGNORE);})
+#ifdef SMPI_MEASURE
+#pragma message "[SMPI] Tracing the calls to BLAS functions."
+#define START_MEASURE(before) ({\
+    gettimeofday(&before, NULL);\
+})
+#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc)  ({\
+    struct timeval after = {};\
+    gettimeofday(&after, NULL);\
+    double real_time = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
+    int my_rank, buff=0;\
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
+    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%f\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time);\
+})
+#else
+#pragma message "[SMPI] Not tracing the calls to BLAS functions."
+#define START_MEASURE(...)   {}
+#define STOP_MEASURE(...)    {}
+#endif
 
+// DGEMM
+#ifdef SMPI_OPTIMIZATION
+#pragma message "[SMPI] Using smpi_usleep for HPL_dgemm."
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     double expected_time = (1.064e-09)*(double)M*(double)N*(double)K;\
     if(expected_time > 0)\
         smpi_usleep((useconds_t)(expected_time*1e6));\
-    /*
-    int my_rank, buff=0;\
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    struct timeval before = {};\
-    struct timeval after = {};\
-    gettimeofday(&before, NULL);\
-    cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
-    gettimeofday(&after, NULL);\
-    double time_before = (double)(before.tv_sec) + (double)(before.tv_usec)*1e-6;\
-    double time_after = (double)(after.tv_sec) + (double)(after.tv_usec)*1e-6;\
-    double real_time = time_after-time_before;\
-    printf("file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%f expected_time=%f\n", __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time);\
-    */\
 })
+#else
+#pragma message "[SMPI] Using cblas_dgemm for HPL_dgemm."
+#define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
+    struct timeval before = {};\
+    START_MEASURE(before);\
+    cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
+    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
+})
+#endif
 
+// DTRSM
+#ifdef SMPI_OPTIMIZATION
+#pragma message "[SMPI] Using smpi_usleep for HPL_dtrsm."
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
     double expected_time = (9.246e-08)*(double)M*(double)N - 1.024e-05;\
     if(expected_time > 0)\
         smpi_usleep((useconds_t)(expected_time*1e6));\
-    /*
-    int my_rank, buff=0;\
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    struct timeval before = {};\
-    struct timeval after = {};\
-    gettimeofday(&before, NULL);\
-    cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
-    gettimeofday(&after, NULL);\
-    double time_before = (double)(before.tv_sec) + (double)(before.tv_usec)*1e-6;\
-    double time_after = (double)(after.tv_sec) + (double)(after.tv_usec)*1e-6;\
-    double real_time = time_after-time_before;\
-    printf("file=%s line=%d rank=%d m=%d n=%d lead_A=%d lead_B=%d real_time=%f\n", __FILE__, __LINE__, my_rank, M, N, lda, ldb, real_time);\
-    */\
 })
+#else
+#pragma message "[SMPI] Using cblas_dtrsm for HPL_dtrsm."
+#define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
+    struct timeval before = {};\
+    START_MEASURE(before);\
+    cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
+    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
+})
+#endif
 
 #endif
 
