@@ -192,7 +192,9 @@ void HPL_pdtest
    mat.A  = (double *)HPL_PTR( vptr,
                                ((size_t)(ALGO->align) * sizeof(double) ) );
    mat.X  = Mptr( mat.A, 0, mat.nq, mat.ld );
+#ifndef SMPI_OPTIMIZATION
    HPL_pdmatgen( GRID, N, N+1, NB, mat.A, mat.ld, HPL_ISEED );
+#endif
 #ifdef HPL_CALL_VSIPL
    mat.block = vsip_blockbind_d( (vsip_scalar_d *)(mat.A),
                                  (vsip_length)(mat.ld * mat.nq),
@@ -324,6 +326,12 @@ void HPL_pdtest
                       "========================================",
                       "========================================" );
    }
+#endif
+
+#ifdef SMPI_OPTIMIZATION
+    if(vptr)
+        smpi_free(vptr);
+    return;
 #endif
 /*
  * Quick return, if I am not interested in checking the computations
