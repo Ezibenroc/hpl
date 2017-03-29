@@ -47,6 +47,62 @@
 /*
  * Include files
  */
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
+#include <assert.h>
+#define PAGE_SIZE 0x1000
+
+// Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
+#define ALIGN_UP(n)   (n + PAGE_SIZE-1) & -PAGE_SIZE
+#define ALIGN_DOWN(n) n & -PAGE_SIZE
+
+#define FILENAME "/tmp"
+
+int check(int n, char *name) {
+    if(n < 0) {
+        perror(name);
+        exit(1);
+    }
+    return n;
+}
+
+/*
+ * Allocate a contiguous block of virtual addresses of given size that all fit in a small block of physical memory,
+ * except for a contiguous block between start_private (included) and stop_private (excluded).
+ * Calling allocate_shared(size, size, size) is equivalent to calling shared_malloc.
+ * Calling allocate_shared(size, 0, size) is equivalent to calling malloc.
+ */
+void *allocate_shared(int size, int start_private, int stop_private) {
+    assert(size > 0);
+    assert(start_private >= 0 && start_private <= stop_private);
+    assert(stop_private >= 0 && stop_private <= size);
+    start_private = ALIGN_DOWN(start_private);
+    stop_private = ALIGN_UP(stop_private);
+    void *buff = mmap(NULL, ALIGN_UP(size), PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+    /* Private zones */
+    int fd = check(open(FILENAME, O_RDWR|O_TMPFILE, S_IRUSR), "open");
+    char* dumb = (char*)calloc(1, PAGE_SIZE);
+    ssize_t err = write(fd, dumb, PAGE_SIZE);
+    assert(err > 0);
+    free(dumb);
+    for(int i = 0; i < start_private/PAGE_SIZE; i++) {
+        void *pos = (void*)((unsigned long)buff + i*PAGE_SIZE);
+        void *res = mmap(pos, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
+        assert(pos==res);
+    }
+    for(int i = stop_private/PAGE_SIZE; i < size/PAGE_SIZE; i++) {
+        void *pos = (void*)((unsigned long)buff + i*PAGE_SIZE);
+        void *res = mmap(pos, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
+        assert(pos==res);
+    }
+    return buff;
+}
 #include "hpl.h"
 
 #ifdef HPL_NO_MPI_DATATYPE  /* The user insists to not use MPI types */
@@ -209,8 +265,10 @@ void HPL_pdpanel_init
       if( nprow > 1 )                                 /* space for U */
       { nu = nq - JB; lwork += JB * Mmax( 0, nu ); }
 
-      if( !( PANEL->WORK = (void *)malloc( (size_t)(lwork) * 
-                                           sizeof( double ) ) ) )
+      size_t work_size = (size_t)(lwork)*sizeof(double);
+      int start_private = JB*JB;
+      PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
+      if(!PANEL->WORK)
       {
          HPL_pabort( __LINE__, "HPL_pdpanel_init",
                      "Memory allocation failed" );
@@ -241,8 +299,16 @@ void HPL_pdpanel_init
          lwork += JB * Mmax( 0, nu );
       }
 
-      if( !( PANEL->WORK = (void *)malloc( (size_t)(lwork) *
-                                           sizeof( double ) ) ) )
+      size_t work_size = (size_t)(lwork)*sizeof(double);
+      int start_private = JB*JB;
+#ifdef HPL_COPY_L
+      start_private += ml2*JB;
+#else
+      if(mycol != icurcol)
+          start_private += ml2*JB;
+#endif
+      PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
+      if(!PANEL->WORK)
       {
          HPL_pabort( __LINE__, "HPL_pdpanel_init",
                      "Memory allocation failed" );
