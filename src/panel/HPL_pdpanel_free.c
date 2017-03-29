@@ -94,7 +94,12 @@ int HPL_pdpanel_free
       vsip_blockdestroy_d( PANEL->Ublock );
 #endif
 
-   if( PANEL->WORK  ) munmap( PANEL->WORK, 0  );
+   if( PANEL->WORK  ) {
+       if(PANEL->lwork <= 0x10000)
+           free(PANEL->WORK);
+       else
+           munmap( PANEL->WORK, PANEL->lwork  );
+   }
    if( PANEL->IWORK ) free( PANEL->IWORK );
 
    return( MPI_SUCCESS );

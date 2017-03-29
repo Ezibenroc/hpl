@@ -55,7 +55,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <assert.h>
-#define PAGE_SIZE 0x1000
+#define PAGE_SIZE 0x10000
 
 // Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
 #define ALIGN_UP(n)   (n + PAGE_SIZE-1) & -PAGE_SIZE
@@ -81,6 +81,8 @@ void *allocate_shared(int size, int start_private, int stop_private) {
     assert(size > 0);
     assert(start_private >= 0 && start_private <= stop_private);
     assert(stop_private >= 0 && stop_private <= size);
+    if(size <= PAGE_SIZE)
+        return malloc(size);
     start_private = ALIGN_DOWN(start_private);
     stop_private = ALIGN_UP(stop_private);
     void *buff = mmap(NULL, ALIGN_UP(size), PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -267,6 +269,7 @@ void HPL_pdpanel_init
 
       size_t work_size = (size_t)(lwork)*sizeof(double);
       int start_private = JB*JB;
+      PANEL->lwork = lwork*sizeof(double);
       PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
       if(!PANEL->WORK)
       {
@@ -307,6 +310,7 @@ void HPL_pdpanel_init
       if(mycol != icurcol)
           start_private += ml2*JB;
 #endif
+      PANEL->lwork = lwork*sizeof(double);
       PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
       if(!PANEL->WORK)
       {
