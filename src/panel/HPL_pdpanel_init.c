@@ -60,8 +60,8 @@
 #define BLOCK_SIZE 0x10000
 
 // Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
-#define ALIGN_UP(n)   (n + BLOCK_SIZE-1) & -BLOCK_SIZE
-#define ALIGN_DOWN(n) n & -BLOCK_SIZE
+#define ALIGN_UP(n)   (((n) + BLOCK_SIZE-1) & -BLOCK_SIZE)
+#define ALIGN_DOWN(n) ((n) & -BLOCK_SIZE)
 
 #define FILENAME "/tmp"
 
