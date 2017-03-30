@@ -95,10 +95,7 @@ int HPL_pdpanel_free
 #endif
 
    if( PANEL->WORK  ) {
-       if(PANEL->lwork <= 0x10000)
-           free(PANEL->WORK);
-       else
-           munmap( PANEL->WORK, PANEL->lwork  );
+       munmap(PANEL->WORK);
    }
    if( PANEL->IWORK ) free( PANEL->IWORK );
 

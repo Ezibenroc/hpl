@@ -55,11 +55,13 @@
 #include <unistd.h>
 #include <time.h>
 #include <assert.h>
-#define PAGE_SIZE 0x10000
+
+
+#define BLOCK_SIZE 0x10000
 
 // Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
-#define ALIGN_UP(n)   (n + PAGE_SIZE-1) & -PAGE_SIZE
-#define ALIGN_DOWN(n) n & -PAGE_SIZE
+#define ALIGN_UP(n)   (n + BLOCK_SIZE-1) & -BLOCK_SIZE
+#define ALIGN_DOWN(n) n & -BLOCK_SIZE
 
 #define FILENAME "/tmp"
 
@@ -81,26 +83,24 @@ void *allocate_shared(int size, int start_private, int stop_private) {
     assert(size > 0);
     assert(start_private >= 0 && start_private <= stop_private);
     assert(stop_private >= 0 && stop_private <= size);
-    if(size <= PAGE_SIZE)
-        return malloc(size);
     start_private = ALIGN_DOWN(start_private);
     stop_private = ALIGN_UP(stop_private);
     void *buff = mmap(NULL, ALIGN_UP(size), PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
     /* Private zones */
     int fd = check(open(FILENAME, O_RDWR|O_TMPFILE, S_IRUSR), "open");
-    char* dumb = (char*)calloc(1, PAGE_SIZE);
-    ssize_t err = write(fd, dumb, PAGE_SIZE);
+    char* dumb = (char*)calloc(1, BLOCK_SIZE);
+    ssize_t err = write(fd, dumb, BLOCK_SIZE);
     assert(err > 0);
     free(dumb);
-    for(int i = 0; i < start_private/PAGE_SIZE; i++) {
-        void *pos = (void*)((unsigned long)buff + i*PAGE_SIZE);
-        void *res = mmap(pos, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
+    for(int i = 0; i < start_private/BLOCK_SIZE; i++) {
+        void *pos = (void*)((unsigned long)buff + i*BLOCK_SIZE);
+        void *res = mmap(pos, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
         assert(pos==res);
     }
-    for(int i = stop_private/PAGE_SIZE; i < size/PAGE_SIZE; i++) {
-        void *pos = (void*)((unsigned long)buff + i*PAGE_SIZE);
-        void *res = mmap(pos, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
+    for(int i = stop_private/BLOCK_SIZE; i < size/BLOCK_SIZE; i++) {
+        void *pos = (void*)((unsigned long)buff + i*BLOCK_SIZE);
+        void *res = mmap(pos, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
         assert(pos==res);
     }
     return buff;
