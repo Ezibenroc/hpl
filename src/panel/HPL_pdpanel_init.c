@@ -55,8 +55,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <assert.h>
-
-
 #define BLOCK_SIZE 0x10000
 
 // Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
@@ -83,6 +81,8 @@ void *allocate_shared(int size, int start_private, int stop_private) {
     assert(size > 0);
     assert(start_private >= 0 && start_private <= stop_private);
     assert(stop_private >= 0 && stop_private <= size);
+    if(size <= BLOCK_SIZE)
+        return malloc(size);
     start_private = ALIGN_DOWN(start_private);
     stop_private = ALIGN_UP(stop_private);
     void *buff = mmap(NULL, ALIGN_UP(size), PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
