@@ -157,7 +157,7 @@ HPL_LIBS     = $(HPLlib) $(LAlib) $(MPlib) -lm -lsimgrid
 #    *) call the Fortran 77 BLAS interface
 #    *) not display detailed timing information.
 #
-HPL_OPTS     = -DHPL_CALL_CBLAS $(SMPI_OPTS)
+HPL_OPTS     = -DHPL_CALL_CBLAS -DHPL_NO_MPI_DATATYPE $(SMPI_OPTS)
 #
 # ----------------------------------------------------------------------
 #
