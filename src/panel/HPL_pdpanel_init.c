@@ -55,6 +55,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <assert.h>
+#include "hpl.h"
 
 #define BLOCK_SIZE 0x10000
 
@@ -78,6 +79,12 @@ int check(int n, char *name) {
  * Calling allocate_shared(size, 0, size) is equivalent to calling malloc.
  */
 void *allocate_shared(int size, int start_private, int stop_private) {
+    int my_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+//    fprintf(stderr, "my_rank=%d size=%d start_private=%d stop_private=%d\n", my_rank, size, start_private, stop_private);
+    int shared_block_offsets[] = {0, start_private, stop_private, size};
+    return SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
+#if 0
     assert(size > 0);
     assert(start_private >= 0 && start_private <= stop_private);
     assert(stop_private >= 0 && stop_private <= size);
@@ -102,8 +109,8 @@ void *allocate_shared(int size, int start_private, int stop_private) {
         assert(pos==res);
     }
     return buff;
+#endif
 }
-#include "hpl.h"
 
 #ifdef HPL_NO_MPI_DATATYPE  /* The user insists to not use MPI types */
 #ifndef HPL_COPY_L       /* and also want to avoid the copy of L ... */
