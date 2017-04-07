@@ -72,8 +72,8 @@ int check(int n, char *name) {
     return n;
 }
 
-void *allocate_shared(int size, int start_private, int stop_private) {
-    int shared_block_offsets[] = {0, start_private, stop_private, size};
+void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
+    size_t shared_block_offsets[] = {0, start_private, stop_private, size};
     return SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
 }
 
