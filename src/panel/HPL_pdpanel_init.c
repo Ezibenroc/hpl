@@ -72,45 +72,19 @@ int check(int n, char *name) {
     return n;
 }
 
-/*
- * Allocate a contiguous block of virtual addresses of given size that all fit in a small block of physical memory,
- * except for a contiguous block between start_private (included) and stop_private (excluded).
- * Calling allocate_shared(size, size, size) is equivalent to calling shared_malloc.
- * Calling allocate_shared(size, 0, size) is equivalent to calling malloc.
- */
 void *allocate_shared(int size, int start_private, int stop_private) {
-    int my_rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-//    fprintf(stderr, "my_rank=%d size=%d start_private=%d stop_private=%d\n", my_rank, size, start_private, stop_private);
     int shared_block_offsets[] = {0, start_private, stop_private, size};
     return SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
-#if 0
-    assert(size > 0);
-    assert(start_private >= 0 && start_private <= stop_private);
-    assert(stop_private >= 0 && stop_private <= size);
-    start_private = ALIGN_DOWN(start_private);
-    stop_private = ALIGN_UP(stop_private);
-    void *buff = mmap(NULL, ALIGN_UP(size), PROT_READ|PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-    /* Private zones */
-    int fd = check(open(FILENAME, O_RDWR|O_TMPFILE, S_IRUSR), "open");
-    char* dumb = (char*)calloc(1, BLOCK_SIZE);
-    ssize_t err = write(fd, dumb, BLOCK_SIZE);
-    assert(err > 0);
-    free(dumb);
-    for(int i = 0; i < start_private/BLOCK_SIZE; i++) {
-        void *pos = (void*)((unsigned long)buff + i*BLOCK_SIZE);
-        void *res = mmap(pos, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
-        assert(pos==res);
-    }
-    for(int i = stop_private/BLOCK_SIZE; i < size/BLOCK_SIZE; i++) {
-        void *pos = (void*)((unsigned long)buff + i*BLOCK_SIZE);
-        void *res = mmap(pos, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_SHARED|MAP_POPULATE, fd, 0);
-        assert(pos==res);
-    }
-    return buff;
-#endif
 }
+
+#ifdef SMPI_OPTIMIZATION
+#pragma message "[SMPI] Using partial shared malloc/free."
+#define smpi_partial_malloc(size, start_private, stop_private) allocate_shared(size, start_private, stop_private)
+#else
+#pragma message "[SMPI] Using standard malloc/free."
+#define smpi_partial_malloc(size, start_private, stop_private) malloc(size)
+#endif
+
 
 #ifdef HPL_NO_MPI_DATATYPE  /* The user insists to not use MPI types */
 #ifndef HPL_COPY_L       /* and also want to avoid the copy of L ... */
@@ -275,7 +249,7 @@ void HPL_pdpanel_init
       size_t work_size = (size_t)(lwork)*sizeof(double);
       int start_private = JB*JB;
       PANEL->lwork = lwork*sizeof(double);
-      PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
+      PANEL->WORK = (void *)smpi_partial_malloc(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
       if(!PANEL->WORK)
       {
          HPL_pabort( __LINE__, "HPL_pdpanel_init",
@@ -316,7 +290,7 @@ void HPL_pdpanel_init
           start_private += ml2*JB;
 #endif
       PANEL->lwork = lwork*sizeof(double);
-      PANEL->WORK = (void *)allocate_shared(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
+      PANEL->WORK = (void *)smpi_partial_malloc(work_size, start_private*sizeof(double), (start_private+JB+1)*sizeof(double)); 
       if(!PANEL->WORK)
       {
          HPL_pabort( __LINE__, "HPL_pdpanel_init",
