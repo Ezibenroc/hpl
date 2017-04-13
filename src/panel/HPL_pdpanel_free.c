@@ -51,7 +51,7 @@
 #define smpi_free(ptr, size) munmap(ptr, size)
 #else
 #pragma message "[SMPI] Using standard malloc/free."
-#define smpi_free free(ptr)
+#define smpi_free(ptr, size) free(ptr)
 #endif
 
 #ifdef STDC_HEADERS
