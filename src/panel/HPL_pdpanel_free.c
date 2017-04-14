@@ -48,10 +48,10 @@
 
 #ifdef SMPI_OPTIMIZATION
 #pragma message "[SMPI] Using shared malloc/free."
-#define smpi_free(ptr, size) munmap(ptr, size)
+#define smpi_free SMPI_SHARED_FREE
 #else
 #pragma message "[SMPI] Using standard malloc/free."
-#define smpi_free(ptr, size) free(ptr)
+#define smpi_free free
 #endif
 
 #ifdef STDC_HEADERS
@@ -103,7 +103,7 @@ int HPL_pdpanel_free
 #endif
 
    if( PANEL->WORK  ) {
-        smpi_free( PANEL->WORK, PANEL->lwork );
+        smpi_free( PANEL->WORK);
    }
    if( PANEL->IWORK ) free( PANEL->IWORK );
 
