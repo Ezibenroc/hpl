@@ -55,11 +55,37 @@
 #include <unistd.h>
 #include <time.h>
 #include <assert.h>
+#include <stdint.h>
 #include "hpl.h"
 
+static size_t shared_size = 0;
+static size_t shared_start_private=0, shared_stop_private=0;
+static void *shared_ptr = NULL;
+
+// Allocate a partially shared block, based on SMPI_SHARED_MALLOC
+// It also reuses the block from one iteration to another, if the new allocation can fit in the old one.
+// There is a memory leak, since the last true allocation to be done is never freed. Not sure if we care.
 void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
-    size_t shared_block_offsets[] = {0, start_private, stop_private, size};
-    return SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
+    if(shared_size < size || (shared_stop_private - shared_start_private) < (stop_private-start_private)) { // have to reallocate
+        if(shared_ptr)
+            SMPI_SHARED_FREE(shared_ptr);
+        size_t shared_block_offsets[] = {0, start_private, stop_private, size};
+        void *ptr = SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
+        shared_size = size;
+        shared_start_private = start_private;
+        shared_stop_private = stop_private;
+        shared_ptr = ptr;
+        return ptr;
+    }
+    else {
+        uint8_t *old_ptr = (uint8_t*)shared_ptr; // cannot do pointer arithmetic on void*
+        uint8_t *ptr = (old_ptr + shared_start_private - start_private);
+        assert(ptr >= old_ptr);
+        assert(ptr+size <= shared_ptr+shared_size);
+        assert(ptr+start_private >= old_ptr+shared_start_private);
+        assert(ptr+stop_private <= old_ptr+shared_stop_private);
+        return (void*)ptr;
+    }
 }
 
 #ifdef SMPI_OPTIMIZATION

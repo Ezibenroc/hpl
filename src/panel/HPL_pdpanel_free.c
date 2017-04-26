@@ -48,7 +48,7 @@
 
 #ifdef SMPI_OPTIMIZATION
 #pragma message "[SMPI] Using shared malloc/free."
-#define smpi_free SMPI_SHARED_FREE
+#define smpi_free(...) {}// SMPI_SHARED_FREE
 #else
 #pragma message "[SMPI] Using standard malloc/free."
 #define smpi_free free
