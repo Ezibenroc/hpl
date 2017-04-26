@@ -57,21 +57,6 @@
 #include <assert.h>
 #include "hpl.h"
 
-#define BLOCK_SIZE 0x10000
-
-// Align functions, from http://stackoverflow.com/questions/4840410/how-to-align-a-pointer-in-c
-#define ALIGN_UP(n)   (((n) + BLOCK_SIZE-1) & -BLOCK_SIZE)
-#define ALIGN_DOWN(n) ((n) & -BLOCK_SIZE)
-#define FILENAME "/tmp"
-
-int check(int n, char *name) {
-    if(n < 0) {
-        perror(name);
-        exit(1);
-    }
-    return n;
-}
-
 void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
     size_t shared_block_offsets[] = {0, start_private, stop_private, size};
     return SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
