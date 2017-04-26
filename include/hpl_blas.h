@@ -159,19 +159,22 @@ STDC_ARGS(
  * HPL C BLAS macro definition
  * ---------------------------------------------------------------------
  */
-#define    HPL_dswap           cblas_dswap
 #define    HPL_dcopy           cblas_dcopy
+
+#ifdef SMPI_OPTIMIZATION
+#define    HPL_dswap(...)      {}
+#define    HPL_dgemv(...)      {}
+#define    HPL_daxpy(...)      {}
+#define    HPL_dscal(...)      {}
+#define    HPL_idamax(...)      3 // FIXME: 3 is arbitrary... is the value returned by idamax important?
+#pragma message "[SMPI] Using no-op for the “cheapest” BLAS functions."
+#else
+#define    HPL_dswap           cblas_dswap
+#define    HPL_dgemv           cblas_dgemv
 #define    HPL_daxpy           cblas_daxpy
 #define    HPL_dscal           cblas_dscal
 #define    HPL_idamax          cblas_idamax
-
-// DGEMV
-#ifdef SMPI_OPTIMIZATION
-#define    HPL_dgemv(...)      {}
-#pragma message "[SMPI] Using no-op for HPL_dgemv."
-#else
-#define    HPL_dgemv           cblas_dgemv
-#pragma message "[SMPI] Using cblas_dgemv for HPL_dgemv."
+#pragma message "[SMPI] Using cblas for the “cheapest” BLAS functions."
 #endif
 
 #define    HPL_dtrsv           cblas_dtrsv
