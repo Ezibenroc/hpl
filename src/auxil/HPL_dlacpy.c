@@ -127,6 +127,9 @@ void HPL_dlacpy
 /*
  * .. Local Variables ..
  */
+#ifdef SMPI_OPTIMIZATION
+    return;
+#endif
 #ifdef HPL_LACPY_USE_COPY
    register int               j;
 #else
