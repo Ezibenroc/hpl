@@ -141,6 +141,9 @@ void HPL_dlaswp01T
 /*
  * .. Local Variables ..
  */
+#ifdef SMPI_OPTIMIZATION
+    return;
+#endif
    double                     * a0, * a1;
    const int                  incA = (int)( (unsigned int)(LDA) <<
                                             HPL_LASWP01T_LOG2_DEPTH ),
