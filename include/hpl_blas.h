@@ -167,6 +167,8 @@ STDC_ARGS(
 #define    HPL_daxpy(...)      {}
 #define    HPL_dscal(...)      {}
 #define    HPL_idamax(...)      3 // FIXME: 3 is arbitrary... is the value returned by idamax important?
+#define    HPL_dtrsv(...)      {}
+#define    HPL_dger(...)       {}
 #pragma message "[SMPI] Using no-op for the “cheapest” BLAS functions."
 #else
 #define    HPL_dswap           cblas_dswap
@@ -174,11 +176,11 @@ STDC_ARGS(
 #define    HPL_daxpy           cblas_daxpy
 #define    HPL_dscal           cblas_dscal
 #define    HPL_idamax          cblas_idamax
+#define    HPL_dtrsv           cblas_dtrsv
+#define    HPL_dger            cblas_dger
 #pragma message "[SMPI] Using cblas for the “cheapest” BLAS functions."
 #endif
 
-#define    HPL_dtrsv           cblas_dtrsv
-#define    HPL_dger            cblas_dger
 
 #ifdef SMPI_MEASURE
 #pragma message "[SMPI] Tracing the calls to BLAS functions."
