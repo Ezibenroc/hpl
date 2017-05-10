@@ -203,11 +203,11 @@ STDC_ARGS(
 
 // DGEMM
 #ifdef SMPI_OPTIMIZATION
-#pragma message "[SMPI] Using smpi_usleep for HPL_dgemm."
+#pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    double expected_time = (1.064e-09)*(double)M*(double)N*(double)K;\
+    double expected_time = (1.658198e-10)*(double)M*(double)N*(double)K;\
     if(expected_time > 0)\
-        smpi_usleep((useconds_t)(expected_time*1e6));\
+        smpi_execute(expected_time);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dgemm for HPL_dgemm."
@@ -221,11 +221,11 @@ STDC_ARGS(
 
 // DTRSM
 #ifdef SMPI_OPTIMIZATION
-#pragma message "[SMPI] Using smpi_usleep for HPL_dtrsm."
+#pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    double expected_time = (9.246e-08)*(double)M*(double)N - 1.024e-05;\
+    double expected_time = (8.624970e-11)*(double)M*(double)N*(double)N;\
     if(expected_time > 0)\
-        smpi_usleep((useconds_t)(expected_time*1e6));\
+        smpi_execute(expected_time);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dtrsm for HPL_dtrsm."
