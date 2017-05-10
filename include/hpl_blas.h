@@ -181,6 +181,11 @@ STDC_ARGS(
 #pragma message "[SMPI] Using cblas for the “cheapest” BLAS functions."
 #endif
 
+// From http://stackoverflow.com/a/10227059/4110059
+#define VALUE_TO_STRING(x) #x
+#define VALUE(x) VALUE_TO_STRING(x)
+#define VAR_NAME_VALUE(var) #var "="  VALUE(var)
+
 
 #ifdef SMPI_MEASURE
 #pragma message "[SMPI] Tracing the calls to BLAS functions."
@@ -203,9 +208,13 @@ STDC_ARGS(
 
 // DGEMM
 #ifdef SMPI_OPTIMIZATION
+#ifndef SMPI_DGEMM_COEFFICIENT
+#error "SMPI_DGEMM_COEFFICIENT not defined."
+#endif
 #pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
+#pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    double expected_time = (1.658198e-10)*(double)M*(double)N*(double)K;\
+    double expected_time = SMPI_DGEMM_COEFFICIENT*(double)M*(double)N*(double)K;\
     if(expected_time > 0)\
         smpi_execute(expected_time);\
 })
@@ -221,9 +230,13 @@ STDC_ARGS(
 
 // DTRSM
 #ifdef SMPI_OPTIMIZATION
+#ifndef SMPI_DTRSM_COEFFICIENT
+#error "SMPI_DTRSM_COEFFICIENT not defined."
+#endif
 #pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
+#pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    double expected_time = (8.624970e-11)*(double)M*(double)N*(double)N;\
+    double expected_time = SMPI_DTRSM_COEFFICIENT*(double)M*(double)N*(double)N;\
     if(expected_time > 0)\
         smpi_execute(expected_time);\
 })
