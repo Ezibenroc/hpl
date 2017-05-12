@@ -192,19 +192,22 @@ STDC_ARGS(
 #define START_MEASURE(before) ({\
     gettimeofday(&before, NULL);\
 })
-#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc)  ({\
+#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc, expected_time)  ({\
     struct timeval after = {};\
     gettimeofday(&after, NULL);\
     double real_time = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
     int my_rank, buff=0;\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%f\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time);\
+    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%g expected_time=%g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time);\
 })
 #else
 #pragma message "[SMPI] Not tracing the calls to BLAS functions."
 #define START_MEASURE(...)   {}
 #define STOP_MEASURE(...)    {}
 #endif
+
+#define STR(x)   #x
+#define SHOW_DEFINE(x) printf("%s=%s\n", #x, STR(x))
 
 // DGEMM
 #ifdef SMPI_OPTIMIZATION
@@ -214,9 +217,15 @@ STDC_ARGS(
 #pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
 #pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    double expected_time = SMPI_DGEMM_COEFFICIENT*(double)M*(double)N*(double)K;\
+    double expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K));\
+    SHOW_DEFINE(SMPI_DGEMM_COEFFICIENT);\
+    printf("dgemm_coefficient = %g\n", SMPI_DGEMM_COEFFICIENT);\
+    printf("dgemm_expected_time = %g\n", expected_time);\
+    struct timeval before = {};\
+    START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute(expected_time);\
+    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, expected_time);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dgemm for HPL_dgemm."
@@ -224,7 +233,7 @@ STDC_ARGS(
     struct timeval before = {};\
     START_MEASURE(before);\
     cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
-    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
+    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, -1);\
 })
 #endif
 
@@ -236,9 +245,15 @@ STDC_ARGS(
 #pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
 #pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    double expected_time = SMPI_DTRSM_COEFFICIENT*(double)M*(double)N*(double)N;\
+    double expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N));\
+    SHOW_DEFINE(SMPI_DTRSM_COEFFICIENT);\
+    printf("dtrsm_coefficient = %g\n", SMPI_DTRSM_COEFFICIENT);\
+    printf("dtrsm_expected_time = %g\n", expected_time);\
+    struct timeval before = {};\
+    START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute(expected_time);\
+    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, expected_time);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dtrsm for HPL_dtrsm."
@@ -246,7 +261,7 @@ STDC_ARGS(
     struct timeval before = {};\
     START_MEASURE(before);\
     cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
-    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
+    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, -1);\
 })
 #endif
 
