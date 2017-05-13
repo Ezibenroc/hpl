@@ -218,13 +218,10 @@ STDC_ARGS(
 #pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     double expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K));\
-    SHOW_DEFINE(SMPI_DGEMM_COEFFICIENT);\
-    printf("dgemm_coefficient = %g\n", SMPI_DGEMM_COEFFICIENT);\
-    printf("dgemm_expected_time = %g\n", expected_time);\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
-        smpi_execute(expected_time);\
+        smpi_execute_public(expected_time);\
     STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, expected_time);\
 })
 #else
@@ -246,13 +243,10 @@ STDC_ARGS(
 #pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
     double expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N));\
-    SHOW_DEFINE(SMPI_DTRSM_COEFFICIENT);\
-    printf("dtrsm_coefficient = %g\n", SMPI_DTRSM_COEFFICIENT);\
-    printf("dtrsm_expected_time = %g\n", expected_time);\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
-        smpi_execute(expected_time);\
+        smpi_execute_public(expected_time);\
     STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, expected_time);\
 })
 #else
