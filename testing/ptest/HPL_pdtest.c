@@ -59,6 +59,10 @@
 #define smpi_free free
 #endif
 
+#ifndef SMPI_OPTIMIZATION
+#define SMPI_DO_INITIALIZATION_VERIFICATION
+#endif
+
 #ifdef STDC_HEADERS
 void HPL_pdtest
 (
@@ -192,7 +196,7 @@ void HPL_pdtest
    mat.A  = (double *)HPL_PTR( vptr,
                                ((size_t)(ALGO->align) * sizeof(double) ) );
    mat.X  = Mptr( mat.A, 0, mat.nq, mat.ld );
-#ifndef SMPI_OPTIMIZATION
+#ifdef SMPI_DO_INITIALIZATION_VERIFICATION
    HPL_pdmatgen( GRID, N, N+1, NB, mat.A, mat.ld, HPL_ISEED );
 #endif
 #ifdef HPL_CALL_VSIPL
@@ -328,7 +332,7 @@ void HPL_pdtest
    }
 #endif
 
-#ifdef SMPI_OPTIMIZATION
+#ifndef SMPI_DO_INITIALIZATION_VERIFICATION
     if(vptr)
         smpi_free(vptr);
     return;
