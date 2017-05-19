@@ -221,7 +221,7 @@ STDC_ARGS(
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
-        smpi_execute_public(expected_time);\
+        smpi_execute_benched(expected_time);\
     STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, expected_time);\
 })
 #else
@@ -246,7 +246,7 @@ STDC_ARGS(
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
-        smpi_execute_public(expected_time);\
+        smpi_execute_benched(expected_time);\
     STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, expected_time);\
 })
 #else
