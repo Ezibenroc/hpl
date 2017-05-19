@@ -67,6 +67,14 @@
 #define HPL_CALL_FBLAS
 #endif
 #endif
+
+#ifdef SMPI_OPTIMIZATION
+#ifdef SMPI_OPTIMIZATION_LEVEL
+#error "Mixing macros SMPI_OPTIMIZATION and SMPI_OPTIMIZATION_LEVEL."
+#endif
+#define SMPI_OPTIMIZATION_LEVEL 1000
+#endif
+
 /*
  * ---------------------------------------------------------------------
  * Include files

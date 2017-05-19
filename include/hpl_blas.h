@@ -161,7 +161,7 @@ STDC_ARGS(
  */
 #define    HPL_dcopy           cblas_dcopy
 
-#ifdef SMPI_OPTIMIZATION
+#if SMPI_OPTIMIZATION_LEVEL >= 3
 #define    HPL_dswap(...)      {}
 #define    HPL_dgemv(...)      {}
 #define    HPL_daxpy(...)      {}
@@ -210,7 +210,7 @@ STDC_ARGS(
 #define SHOW_DEFINE(x) printf("%s=%s\n", #x, STR(x))
 
 // DGEMM
-#ifdef SMPI_OPTIMIZATION
+#if SMPI_OPTIMIZATION_LEVEL >= 1
 #ifndef SMPI_DGEMM_COEFFICIENT
 #error "SMPI_DGEMM_COEFFICIENT not defined."
 #endif
@@ -235,7 +235,7 @@ STDC_ARGS(
 #endif
 
 // DTRSM
-#ifdef SMPI_OPTIMIZATION
+#if SMPI_OPTIMIZATION_LEVEL >= 1
 #ifndef SMPI_DTRSM_COEFFICIENT
 #error "SMPI_DTRSM_COEFFICIENT not defined."
 #endif

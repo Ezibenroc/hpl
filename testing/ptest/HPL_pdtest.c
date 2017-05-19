@@ -49,7 +49,7 @@
  */
 #include "hpl.h"
 
-#ifdef SMPI_OPTIMIZATION
+#if SMPI_OPTIMIZATION_LEVEL >= 2
 #pragma message "[SMPI] Using shared malloc/free."
 #define smpi_malloc SMPI_SHARED_MALLOC
 #define smpi_free SMPI_SHARED_FREE
@@ -59,7 +59,7 @@
 #define smpi_free free
 #endif
 
-#ifndef SMPI_OPTIMIZATION
+#if SMPI_OPTIMIZATION_LEVEL <= 2
 #define SMPI_DO_INITIALIZATION_VERIFICATION
 #endif
 
@@ -428,6 +428,7 @@ void HPL_pdtest
 
    if( ( myrow == 0 ) && ( mycol == 0 ) )
    {
+#if SMPI_OPTIMIZATION_LEVEL == 0 // there is a buffer overflow with level==1, no idea why
       HPL_fprintf( TEST->outfp, "%s%s\n",
                    "----------------------------------------",
                    "----------------------------------------" );
@@ -450,6 +451,7 @@ void HPL_pdtest
          HPL_fprintf( TEST->outfp, "%s%18.6f\n",
          "||b||_oo . . . . . . . . . . . . . . . . . . . = ", BnormI );
       }
+#endif
    }
    if( vptr ) smpi_free( vptr );
 /*
