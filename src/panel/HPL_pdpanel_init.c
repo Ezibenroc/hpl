@@ -62,15 +62,20 @@ static size_t shared_size = 0;
 static size_t shared_start_private=0, shared_stop_private=0;
 static void *shared_ptr = NULL;
 
+void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
+    size_t shared_block_offsets[] = {0, start_private, stop_private, size};
+    void *ptr = SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
+    return ptr;
+}
+
 // Allocate a partially shared block, based on SMPI_SHARED_MALLOC
 // It also reuses the block from one iteration to another, if the new allocation can fit in the old one.
 // There is a memory leak, since the last true allocation to be done is never freed. Not sure if we care.
-void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
+void *allocate_shared_reuse(size_t size, size_t start_private, size_t stop_private) {
     if(shared_size < size || (shared_stop_private - shared_start_private) < (stop_private-start_private)) { // have to reallocate
         if(shared_ptr)
             SMPI_SHARED_FREE(shared_ptr);
-        size_t shared_block_offsets[] = {0, start_private, stop_private, size};
-        void *ptr = SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
+        void *ptr = allocate_shared(size, start_private, stop_private);
         shared_size = size;
         shared_start_private = start_private;
         shared_stop_private = stop_private;
@@ -88,9 +93,12 @@ void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
     }
 }
 
-#if SMPI_OPTIMIZATION_LEVEL >= 3
+#if SMPI_OPTIMIZATION_LEVEL == 3
 #pragma message "[SMPI] Using partial shared malloc/free."
 #define smpi_partial_malloc(size, start_private, stop_private) allocate_shared(size, start_private, stop_private)
+#elif SMPI_OPTIMIZATION_LEVEL >= 4
+#pragma message "[SMPI] Using partial shared malloc/free and reusing panel buffers."
+#define smpi_partial_malloc(size, start_private, stop_private) allocate_shared_reuse(size, start_private, stop_private)
 #else
 #pragma message "[SMPI] Using standard malloc/free."
 #define smpi_partial_malloc(size, start_private, stop_private) malloc(size)
