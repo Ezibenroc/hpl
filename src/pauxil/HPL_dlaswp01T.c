@@ -141,7 +141,7 @@ void HPL_dlaswp01T
 /*
  * .. Local Variables ..
  */
-#if SMPI_OPTIMIZATION_LEVEL >= 3
+#if SMPI_OPTIMIZATION_LEVEL >= 2
     return;
 #endif
    double                     * a0, * a1;

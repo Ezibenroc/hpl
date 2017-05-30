@@ -127,7 +127,7 @@ void HPL_dlatcpy
 /*
  * .. Local Variables ..
  */
-#if SMPI_OPTIMIZATION_LEVEL >= 3
+#if SMPI_OPTIMIZATION_LEVEL >= 2
     return;
 #endif
 #ifdef HPL_LATCPY_USE_COPY

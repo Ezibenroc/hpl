@@ -131,9 +131,6 @@ void HPL_pdmxswp
 /* ..
  * .. Executable Statements ..
  */
-#if SMPI_OPTIMIZATION_LEVEL >= 2
-   WORK[0] = 0.42; // SMPI stuff to avoid a deadlock when using SMPI_SHARED_MALLOC
-#endif
 #ifdef HPL_DETAILED_TIMING
    HPL_ptimer( HPL_TIMING_MXSWP );
 #endif

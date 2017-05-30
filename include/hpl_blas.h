@@ -161,7 +161,7 @@ STDC_ARGS(
  */
 #define    HPL_dcopy           cblas_dcopy
 
-#if SMPI_OPTIMIZATION_LEVEL >= 3
+#if SMPI_OPTIMIZATION_LEVEL >= 2
 #define    HPL_dswap(...)      {}
 #define    HPL_dgemv(...)      {}
 #define    HPL_daxpy(...)      {}

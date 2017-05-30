@@ -88,7 +88,7 @@ void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
     }
 }
 
-#if SMPI_OPTIMIZATION_LEVEL >= 2
+#if SMPI_OPTIMIZATION_LEVEL >= 3
 #pragma message "[SMPI] Using partial shared malloc/free."
 #define smpi_partial_malloc(size, start_private, stop_private) allocate_shared(size, start_private, stop_private)
 #else

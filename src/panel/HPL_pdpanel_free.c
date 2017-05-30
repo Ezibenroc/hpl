@@ -46,7 +46,7 @@
  */ 
 #include "hpl.h"
 
-#if SMPI_OPTIMIZATION_LEVEL >= 2
+#if SMPI_OPTIMIZATION_LEVEL >= 3
 #pragma message "[SMPI] Using shared malloc/free."
 #define smpi_free(...) {}// SMPI_SHARED_FREE
 #else
