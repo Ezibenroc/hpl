@@ -214,10 +214,23 @@ STDC_ARGS(
 #ifndef SMPI_DGEMM_COEFFICIENT
 #error "SMPI_DGEMM_COEFFICIENT not defined."
 #endif
+#ifndef SMPI_DGEMM_PHI_COEFFICIENT
+#warning "SMPI_DGEMM_PHI_COEFFICIENT not defined, will use SMPI_DGEMM_COEFFICIENT."
+#define SMPI_DGEMM_PHI_COEFFICIENT SMPI_DGEMM_COEFFICIENT
+#endif
+#ifndef SMPI_DGEMM_PHI_INTERCEPT
+#warning "SMPI_DGEMM_PHI_INTERCEPT not defined, will use 0."
+#define SMPI_DGEMM_PHI_INTERCEPT 0
+#endif
 #pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
 #pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    double expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K));\
+    double expected_time;\
+    if((M) > 1280 && (N) > 1280 && (K) > 256) {\
+        expected_time = ((double)(SMPI_DGEMM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K)) + (double)(SMPI_DGEMM_PHI_INTERCEPT);\
+    } else {\
+        expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K));\
+    }\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
@@ -239,10 +252,23 @@ STDC_ARGS(
 #ifndef SMPI_DTRSM_COEFFICIENT
 #error "SMPI_DTRSM_COEFFICIENT not defined."
 #endif
+#ifndef SMPI_DTRSM_PHI_COEFFICIENT
+#warning "SMPI_DTRSM_PHI_COEFFICIENT not defined, will use SMPI_DTRSM_COEFFICIENT."
+#define SMPI_DTRSM_PHI_COEFFICIENT SMPI_DTRSM_COEFFICIENT
+#endif
+#ifndef SMPI_DTRSM_PHI_INTERCEPT
+#warning "SMPI_DTRSM_PHI_INTERCEPT not defined, will use 0."
+#define SMPI_DTRSM_PHI_INTERCEPT 0
+#endif
 #pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
 #pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    double expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N));\
+    double expected_time;\
+    if((M) > 512 && (N) > 512) {\
+        expected_time = ((double)(SMPI_DTRSM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N)) + (double)(SMPI_DTRSM_PHI_INTERCEPT);\
+    } else {\
+        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N));\
+    }\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
