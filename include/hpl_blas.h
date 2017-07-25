@@ -214,6 +214,10 @@ STDC_ARGS(
 #ifndef SMPI_DGEMM_COEFFICIENT
 #error "SMPI_DGEMM_COEFFICIENT not defined."
 #endif
+#ifndef SMPI_DGEMM_INTERCEPT
+#warning "SMPI_DGEMM_INTERCEPT not defined, will use 0."
+#define SMPI_DGEMM_INTERCEPT 0
+#endif
 #ifndef SMPI_DGEMM_PHI_COEFFICIENT
 #warning "SMPI_DGEMM_PHI_COEFFICIENT not defined, will use SMPI_DGEMM_COEFFICIENT."
 #define SMPI_DGEMM_PHI_COEFFICIENT SMPI_DGEMM_COEFFICIENT
@@ -229,7 +233,7 @@ STDC_ARGS(
     if((M) > 1280 && (N) > 1280 && (K) > 256) {\
         expected_time = ((double)(SMPI_DGEMM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K)) + (double)(SMPI_DGEMM_PHI_INTERCEPT);\
     } else {\
-        expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K));\
+        expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K)) + (double)(SMPI_DGEMM_INTERCEPT);\
     }\
     struct timeval before = {};\
     START_MEASURE(before);\
@@ -252,6 +256,10 @@ STDC_ARGS(
 #ifndef SMPI_DTRSM_COEFFICIENT
 #error "SMPI_DTRSM_COEFFICIENT not defined."
 #endif
+#ifndef SMPI_DTRSM_INTERCEPT
+#warning "SMPI_DTRSM_INTERCEPT not defined, will use 0."
+#define SMPI_DTRSM_INTERCEPT 0
+#endif
 #ifndef SMPI_DTRSM_PHI_COEFFICIENT
 #warning "SMPI_DTRSM_PHI_COEFFICIENT not defined, will use SMPI_DTRSM_COEFFICIENT."
 #define SMPI_DTRSM_PHI_COEFFICIENT SMPI_DTRSM_COEFFICIENT
@@ -267,7 +275,7 @@ STDC_ARGS(
     if((M) > 512 && (N) > 512) {\
         expected_time = ((double)(SMPI_DTRSM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N)) + (double)(SMPI_DTRSM_PHI_INTERCEPT);\
     } else {\
-        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N));\
+        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N)) + (double)(SMPI_DTRSM_INTERCEPT);\
     }\
     struct timeval before = {};\
     START_MEASURE(before);\
