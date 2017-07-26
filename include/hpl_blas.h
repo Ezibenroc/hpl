@@ -273,9 +273,9 @@ STDC_ARGS(
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
     double expected_time;\
     if((M) > 512 && (N) > 512) {\
-        expected_time = ((double)(SMPI_DTRSM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N)) + (double)(SMPI_DTRSM_PHI_INTERCEPT);\
+        expected_time = ((double)(SMPI_DTRSM_PHI_COEFFICIENT))*((double)(M))*((double)(M))*((double)(N)) + (double)(SMPI_DTRSM_PHI_INTERCEPT);\
     } else {\
-        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(N)) + (double)(SMPI_DTRSM_INTERCEPT);\
+        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(M))*((double)(N)) + (double)(SMPI_DTRSM_INTERCEPT);\
     }\
     struct timeval before = {};\
     START_MEASURE(before);\
