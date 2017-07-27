@@ -230,11 +230,15 @@ STDC_ARGS(
 #pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     double expected_time;\
+    double coefficient, intercept;\
     if((M) > 1280 && (N) > 1280 && (K) > 256) {\
-        expected_time = ((double)(SMPI_DGEMM_PHI_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K)) + (double)(SMPI_DGEMM_PHI_INTERCEPT);\
+        coefficient = (double)SMPI_DGEMM_PHI_COEFFICIENT;\
+        intercept = (double)SMPI_DGEMM_PHI_INTERCEPT;\
     } else {\
-        expected_time = ((double)(SMPI_DGEMM_COEFFICIENT))*((double)(M))*((double)(N))*((double)(K)) + (double)(SMPI_DGEMM_INTERCEPT);\
+        coefficient = (double)SMPI_DGEMM_COEFFICIENT;\
+        intercept = (double)SMPI_DGEMM_INTERCEPT;\
     }\
+    expected_time = coefficient*((double)(M))*((double)(N))*((double)(K)) + intercept;\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
@@ -272,10 +276,18 @@ STDC_ARGS(
 #pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
     double expected_time;\
+    double coefficient, intercept;\
     if((M) > 512 && (N) > 512) {\
-        expected_time = ((double)(SMPI_DTRSM_PHI_COEFFICIENT))*((double)(M))*((double)(M))*((double)(N)) + (double)(SMPI_DTRSM_PHI_INTERCEPT);\
+        coefficient = (double)SMPI_DTRSM_PHI_COEFFICIENT;\
+        intercept = (double)SMPI_DTRSM_PHI_INTERCEPT;\
     } else {\
-        expected_time = ((double)(SMPI_DTRSM_COEFFICIENT))*((double)(M))*((double)(M))*((double)(N)) + (double)(SMPI_DTRSM_INTERCEPT);\
+        coefficient = (double)SMPI_DTRSM_COEFFICIENT;\
+        intercept = (double)SMPI_DTRSM_INTERCEPT;\
+    }\
+    if((Side) == HplLeft) {\
+        expected_time = coefficient*((double)(M))*((double)(M))*((double)(N)) + intercept;\
+    } else {\
+        expected_time = coefficient*((double)(M))*((double)(N))*((double)(N)) + intercept;\
     }\
     struct timeval before = {};\
     START_MEASURE(before);\
