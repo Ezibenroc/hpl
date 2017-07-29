@@ -4,10 +4,12 @@
 
 <config id="General">
  <prop id="smpi/running-power" value="1000"/>
+ <prop id="smpi/bw-factor" value="0:0.795"/>
+ <prop id="smpi/lat-factor" value="0:1.0"/>
 </config>
 
   <AS id="AS0" routing="Full">
-    <cluster id="bob_cluster" prefix="host-" suffix=".stampede.tacc.utexas.edu" radical="0-6399" speed="1000" bw="40Gbps" lat="5.2us"
+    <cluster id="bob_cluster" prefix="host-" suffix=".stampede.tacc.utexas.edu" radical="0-6399" speed="1000" bw="56Gbps" lat="5.2us"
              topology="FAT_TREE" topo_parameters="2;20,320;1,8;1,2"/>
   </AS>
 </platform>
