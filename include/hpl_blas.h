@@ -197,8 +197,9 @@ STDC_ARGS(
     gettimeofday(&after, NULL);\
     double real_time = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
     int my_rank, buff=0;\
+    double timestamp = before.tv_sec + before.tv_usec*1e-6;\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%g expected_time=%g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time);\
+    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%g expected_time=%g timestamp=%g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time, timestamp);\
 })
 #else
 #pragma message "[SMPI] Not tracing the calls to BLAS functions."
