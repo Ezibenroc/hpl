@@ -127,6 +127,9 @@ void HPL_dlaswp03T
 /*
  * .. Local Variables ..
  */
+#if SMPI_OPTIMIZATION_LEVEL >= 2
+    return;
+#endif
    const double               * w = W, * w0; 
    double                     * u0;
    const int                  incU = ( 1 << HPL_LASWP03T_LOG2_DEPTH );

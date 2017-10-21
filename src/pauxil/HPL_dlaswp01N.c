@@ -140,6 +140,9 @@ void HPL_dlaswp01N
 /*
  * .. Local Variables ..
  */
+#if SMPI_OPTIMIZATION_LEVEL >= 2
+    return;
+#endif
    double                     * a0, * a1;
    const int                  incA = (int)( (unsigned int)(LDA) <<
                                             HPL_LASWP01N_LOG2_DEPTH ),

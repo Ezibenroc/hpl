@@ -137,6 +137,9 @@ void HPL_dlaswp02N
 /*
  * .. Local Variables ..
  */
+#if SMPI_OPTIMIZATION_LEVEL >= 2
+    return;
+#endif
    const double               * A0 = A, * a0;
    double                     * w0;
    const int                  incA = (int)( (unsigned int)(LDA) <<
