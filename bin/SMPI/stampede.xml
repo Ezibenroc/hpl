@@ -7,6 +7,7 @@
  <prop id="smpi/bw-factor" value="0:0.795"/>
  <prop id="smpi/lat-factor" value="0:1.0"/>
  <prop id="network/crosstraffic" value="0"/>
+ <prop id="smpi/simulate-computation" value="no"/>
 </config>
 
   <AS id="AS0" routing="Full">
