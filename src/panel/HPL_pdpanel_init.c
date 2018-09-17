@@ -58,39 +58,130 @@
 #include <stdint.h>
 #include "hpl.h"
 
-static size_t shared_size = 0;
-static size_t shared_start_private=0, shared_stop_private=0;
-static void *shared_ptr = NULL;
-
 void *allocate_shared(size_t size, size_t start_private, size_t stop_private) {
     size_t shared_block_offsets[] = {0, start_private, stop_private, size};
     void *ptr = SMPI_PARTIAL_SHARED_MALLOC(size, shared_block_offsets, 2);
     return ptr;
 }
 
-// Allocate a partially shared block, based on SMPI_SHARED_MALLOC
-// It also reuses the block from one iteration to another, if the new allocation can fit in the old one.
-// There is a memory leak, since the last true allocation to be done is never freed. Not sure if we care.
+typedef enum {UNALLOCATED, ALLOCATED, USED} panel_state_t;
+
+typedef struct {
+    size_t size;
+    size_t start_private;
+    size_t stop_private;
+    void *ptr;
+    panel_state_t state;
+} shared_panel_t;
+
+#define PANEL_POOL_SIZE 20
+static shared_panel_t panel_pool[PANEL_POOL_SIZE];
+static int panel_pool_initialized = 0;
+
+void init_panel_pool(void) {
+    assert(!panel_pool_initialized);
+    for(int i = 0; i < PANEL_POOL_SIZE; i++) {
+        panel_pool[i].size = 0;
+        panel_pool[i].start_private = 0;
+        panel_pool[i].stop_private = 0;
+        panel_pool[i].ptr = NULL;
+        panel_pool[i].state = UNALLOCATED;
+    }
+    panel_pool_initialized = 1;
+}
+
+// Look for a panel of given state such that its whole size and its private size are greater than the given ones.
+shared_panel_t *find_panel(panel_state_t state, size_t min_size, size_t min_private_size) {
+    for(int i = 0; i < PANEL_POOL_SIZE; i++) {
+        shared_panel_t *panel = &(panel_pool[i]);
+        if(panel->state == state && panel->size >= min_size &&
+                (panel->stop_private - panel->start_private) >= min_private_size)
+            return panel;
+    }
+    return NULL; // did not find anything
+}
+
+void free_shared_panel(shared_panel_t *panel) {
+    assert(panel->state == ALLOCATED);
+    SMPI_SHARED_FREE(panel->ptr);
+    panel->ptr = 0;
+    panel->size = 0;
+    panel->state = UNALLOCATED;
+}
+
+void allocate_shared_panel(shared_panel_t *panel, size_t size, size_t start_private, size_t stop_private) {
+    assert(panel->state == UNALLOCATED);
+    panel->ptr = allocate_shared(size, start_private, stop_private);
+    panel->size = size;
+    panel->start_private = start_private;
+    panel->stop_private = stop_private;
+    panel->state = ALLOCATED;
+}
+
+// Return the panel that contains the given address.
+shared_panel_t *panel_from_ptr(void *ptr) {
+    uint8_t* block_ptr = (uint8_t*)ptr; // cannot do pointer arithmetic on void*
+    for(int i = 0; i < PANEL_POOL_SIZE; i++) {
+        shared_panel_t *panel = &(panel_pool[i]);
+        uint8_t *panel_ptr = (uint8_t*)panel->ptr; // cannot do pointer arithmetic on void*
+        if(panel->state != UNALLOCATED && panel_ptr <= block_ptr && panel_ptr + panel->size > block_ptr)
+            return panel;
+    }
+    return NULL; // did not find the panel
+}
+
+int get_rank() {
+    int rank = -1;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    return rank;
+}
+
+/*
+    allocate_shared_reuse, these steps are tried in this order:
+      - look for an ALLOCATED panel of suitable size, return it if found
+      - look for an UNALLOCATED panel, allocate it, return it
+      - look for an ALLOCATED panel, free it, reallocate it, return it
+      - if nothing (all are USED), raise an error (TODO better: increase the size of the pool...)
+    deallocate_shared_reuse:
+      - find the panel that contains the address, change the panel state from USED to ALLOCATED
+ */
 void *allocate_shared_reuse(size_t size, size_t start_private, size_t stop_private) {
-    if(shared_size < size || (shared_stop_private - shared_start_private) < (stop_private-start_private)) { // have to reallocate
-        if(shared_ptr)
-            SMPI_SHARED_FREE(shared_ptr);
-        void *ptr = allocate_shared(size, start_private, stop_private);
-        shared_size = size;
-        shared_start_private = start_private;
-        shared_stop_private = stop_private;
-        shared_ptr = ptr;
-        return ptr;
+    if(!panel_pool_initialized)
+        init_panel_pool();
+    shared_panel_t *panel;
+    panel = find_panel(ALLOCATED, size, stop_private-start_private);
+    if(!panel) { // did not find a large enough allocated panel, looking for an unallocated
+        panel = find_panel(UNALLOCATED, 0, 0);
+        if(!panel) { // did not find an unallocated panel, looking for an allocated to free
+            panel = find_panel(ALLOCATED, 0, 0);
+            if(!panel) {
+                fprintf(stderr, "ERROR in %s:%4d\tNo more available panel.\n", __FILE__, __LINE__);
+                exit(1);
+            }
+            free_shared_panel(panel);
+        }
+        allocate_shared_panel(panel, size, start_private, stop_private);
     }
     else {
-        uint8_t *old_ptr = (uint8_t*)shared_ptr; // cannot do pointer arithmetic on void*
-        uint8_t *ptr = (old_ptr + shared_start_private - start_private);
-        assert(ptr >= old_ptr);
-        assert(ptr+size <= shared_ptr+shared_size);
-        assert(ptr+start_private >= old_ptr+shared_start_private);
-        assert(ptr+stop_private <= old_ptr+shared_stop_private);
-        return (void*)ptr;
     }
+    panel->state = USED;
+    uint8_t *base_ptr = (uint8_t*)(panel->ptr); // cannot do pointer arithmetic on void*
+    uint8_t *ptr = base_ptr + panel->start_private - start_private;
+    assert(ptr >= base_ptr);
+    assert(ptr+size <= base_ptr+panel->size);
+    assert(ptr+start_private >= base_ptr+panel->start_private);
+    assert(ptr+stop_private <= base_ptr+panel->stop_private);
+    return (void*)ptr;
+}
+
+void deallocate_shared_reuse(void *ptr) {
+    shared_panel_t *panel = panel_from_ptr(ptr);
+    if(!panel) {
+        fprintf(stderr, "ERROR in %s:%4d\tUnknown address %p.\n", __FILE__, __LINE__, ptr);
+        exit(1);
+    }
+    assert(panel->state == USED);
+    panel->state = ALLOCATED;
 }
 
 #if SMPI_OPTIMIZATION_LEVEL == 3
