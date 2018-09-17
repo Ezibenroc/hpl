@@ -207,39 +207,27 @@ STDC_ARGS(
 #define STOP_MEASURE(...)    {}
 #endif
 
-#define STR(x)   #x
-#define SHOW_DEFINE(x) printf("%s=%s\n", #x, STR(x))
+static double get_param(const char *name) {
+    char *val_str = getenv(name);
+    if(!val_str) {
+        fprintf(stderr, "Environment variable '%s' not defined.\n", name);
+        exit(1);
+    }
+    return atof(val_str);
+}
 
 // DGEMM
 #if SMPI_OPTIMIZATION_LEVEL >= 1
-#ifndef SMPI_DGEMM_COEFFICIENT
-#error "SMPI_DGEMM_COEFFICIENT not defined."
-#endif
-#ifndef SMPI_DGEMM_INTERCEPT
-#warning "SMPI_DGEMM_INTERCEPT not defined, will use 0."
-#define SMPI_DGEMM_INTERCEPT 0
-#endif
-#ifndef SMPI_DGEMM_PHI_COEFFICIENT
-#warning "SMPI_DGEMM_PHI_COEFFICIENT not defined, will use SMPI_DGEMM_COEFFICIENT."
-#define SMPI_DGEMM_PHI_COEFFICIENT SMPI_DGEMM_COEFFICIENT
-#endif
-#ifndef SMPI_DGEMM_PHI_INTERCEPT
-#warning "SMPI_DGEMM_PHI_INTERCEPT not defined, will use 0."
-#define SMPI_DGEMM_PHI_INTERCEPT 0
-#endif
+static double dgemm_coefficient = -1;
+static double dgemm_intercept = -1;
 #pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
-#pragma message(VAR_NAME_VALUE(SMPI_DGEMM_COEFFICIENT))
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    double expected_time;\
-    double coefficient, intercept;\
-    if((M) > 1280 && (N) > 1280 && (K) > 256) {\
-        coefficient = (double)SMPI_DGEMM_PHI_COEFFICIENT;\
-        intercept = (double)SMPI_DGEMM_PHI_INTERCEPT;\
-    } else {\
-        coefficient = (double)SMPI_DGEMM_COEFFICIENT;\
-        intercept = (double)SMPI_DGEMM_INTERCEPT;\
+    if(dgemm_coefficient < 0 || dgemm_intercept < 0) {\
+        dgemm_coefficient = get_param("SMPI_DGEMM_COEFFICIENT");\
+        dgemm_intercept = get_param("SMPI_DGEMM_INTERCEPT");\
     }\
-    expected_time = coefficient*((double)(M))*((double)(N))*((double)(K)) + intercept;\
+    double expected_time;\
+    expected_time = dgemm_coefficient*((double)(M))*((double)(N))*((double)(K)) + dgemm_intercept;\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
@@ -258,37 +246,19 @@ STDC_ARGS(
 
 // DTRSM
 #if SMPI_OPTIMIZATION_LEVEL >= 1
-#ifndef SMPI_DTRSM_COEFFICIENT
-#error "SMPI_DTRSM_COEFFICIENT not defined."
-#endif
-#ifndef SMPI_DTRSM_INTERCEPT
-#warning "SMPI_DTRSM_INTERCEPT not defined, will use 0."
-#define SMPI_DTRSM_INTERCEPT 0
-#endif
-#ifndef SMPI_DTRSM_PHI_COEFFICIENT
-#warning "SMPI_DTRSM_PHI_COEFFICIENT not defined, will use SMPI_DTRSM_COEFFICIENT."
-#define SMPI_DTRSM_PHI_COEFFICIENT SMPI_DTRSM_COEFFICIENT
-#endif
-#ifndef SMPI_DTRSM_PHI_INTERCEPT
-#warning "SMPI_DTRSM_PHI_INTERCEPT not defined, will use 0."
-#define SMPI_DTRSM_PHI_INTERCEPT 0
-#endif
+static double dtrsm_coefficient = -1;
+static double dtrsm_intercept = -1;
 #pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
-#pragma message(VAR_NAME_VALUE(SMPI_DTRSM_COEFFICIENT))
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    double expected_time;\
-    double coefficient, intercept;\
-    if((M) > 512 && (N) > 512) {\
-        coefficient = (double)SMPI_DTRSM_PHI_COEFFICIENT;\
-        intercept = (double)SMPI_DTRSM_PHI_INTERCEPT;\
-    } else {\
-        coefficient = (double)SMPI_DTRSM_COEFFICIENT;\
-        intercept = (double)SMPI_DTRSM_INTERCEPT;\
+    if(dtrsm_coefficient < 0 || dtrsm_intercept < 0) {\
+        dtrsm_coefficient = get_param("SMPI_DTRSM_COEFFICIENT");\
+        dtrsm_intercept = get_param("SMPI_DTRSM_INTERCEPT");\
     }\
+    double expected_time;\
     if((Side) == HplLeft) {\
-        expected_time = coefficient*((double)(M))*((double)(M))*((double)(N)) + intercept;\
+        expected_time = dtrsm_coefficient*((double)(M))*((double)(M))*((double)(N)) + dtrsm_intercept;\
     } else {\
-        expected_time = coefficient*((double)(M))*((double)(N))*((double)(N)) + intercept;\
+        expected_time = dtrsm_coefficient*((double)(M))*((double)(N))*((double)(N)) + dtrsm_intercept;\
     }\
     struct timeval before = {};\
     START_MEASURE(before);\
