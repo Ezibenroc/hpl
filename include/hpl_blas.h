@@ -186,20 +186,24 @@ STDC_ARGS(
 #define VALUE(x) VALUE_TO_STRING(x)
 #define VAR_NAME_VALUE(var) #var "="  VALUE(var)
 
+FILE *get_measure_file();
+double get_timestamp(struct timeval timestamp);
 
 #ifdef SMPI_MEASURE
 #pragma message "[SMPI] Tracing the calls to BLAS functions."
 #define START_MEASURE(before) ({\
     gettimeofday(&before, NULL);\
 })
-#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc, expected_time)  ({\
+#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc)  ({\
     struct timeval after = {};\
     gettimeofday(&after, NULL);\
-    double real_time = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
+    double duration = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
     int my_rank, buff=0;\
-    double timestamp = before.tv_sec + before.tv_usec*1e-6;\
+    double timestamp = get_timestamp(before);\
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    printf("function=%s file=%s line=%d rank=%d m=%d n=%d k=%d lead_A=%d lead_B=%d lead_C=%d real_time=%g expected_time=%g timestamp=%g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, real_time, expected_time, timestamp);\
+    FILE *measure_file = get_measure_file();\
+    if(!measure_file) {fprintf(stderr, "error with measure_file\n"); exit(1);}\
+    fprintf(measure_file, "%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %g, %g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, duration, timestamp);\
 })
 #else
 #pragma message "[SMPI] Not tracing the calls to BLAS functions."
@@ -232,7 +236,7 @@ static double dgemm_intercept = -1;
     START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute_benched(expected_time);\
-    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, expected_time);\
+    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dgemm for HPL_dgemm."
@@ -240,7 +244,7 @@ static double dgemm_intercept = -1;
     struct timeval before = {};\
     START_MEASURE(before);\
     cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
-    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc, -1);\
+    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
 })
 #endif
 
@@ -264,7 +268,7 @@ static double dtrsm_intercept = -1;
     START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute_benched(expected_time);\
-    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, expected_time);\
+    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
 })
 #else
 #pragma message "[SMPI] Using cblas_dtrsm for HPL_dtrsm."
@@ -272,7 +276,7 @@ static double dtrsm_intercept = -1;
     struct timeval before = {};\
     START_MEASURE(before);\
     cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
-    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1, -1);\
+    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
 })
 #endif
 

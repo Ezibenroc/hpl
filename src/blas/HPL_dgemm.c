@@ -47,7 +47,35 @@
 /*
  * Include files
  */
+#include <sys/time.h>
 #include "hpl.h"
+
+FILE *get_measure_file() {
+    static FILE *measure_file=NULL;
+    if(!measure_file) {
+        int my_rank;
+        char filename[50];
+        MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+        sprintf (filename, "blas_%d.trace", my_rank);
+        measure_file=fopen(filename, "w");
+        if(!measure_file) {
+            fprintf(stderr, "Error opening file %s\n", filename);
+            exit(1);
+        }
+        fprintf(measure_file, "function, file, line, rank, m, n, k, lead_A, lead_B, lead_C, duration, timestamp\n");
+    }
+    return measure_file;
+}
+
+double get_timestamp(struct timeval timestamp) {
+    static struct timeval start = {.tv_sec=-1, .tv_usec=-1};
+    if(start.tv_sec < 0) {
+        gettimeofday(&start, NULL);
+    }
+    double t = (timestamp.tv_sec-start.tv_sec) + 1e-6*(timestamp.tv_usec-start.tv_usec);
+    return t;
+}
+
 
 #ifndef HPL_dgemm
 
