@@ -126,11 +126,6 @@ void HPL_pdgesv0
    for( j = 0; j < N; j += nb )
    {
       n = N - j; jb = Mmin( n, nb );
-#ifdef SMPI_SHORT_RUN
-      if(j/nb >= SMPI_SHORT_RUN) {
-	return;
-      }
-#endif
 #ifdef HPL_PROGRESS_REPORT
       /* if this is process 0,0 and not the first panel */
       if ( GRID->myrow == 0 && GRID->mycol == 0 && j > 0 ) 
