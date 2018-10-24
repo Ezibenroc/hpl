@@ -48,6 +48,7 @@
  * Include files
  */
 #include "hpl.h"
+#include <sys/time.h>
 
 #if SMPI_OPTIMIZATION_LEVEL >= 3
 #pragma message "[SMPI] Using shared malloc/free."
@@ -150,6 +151,8 @@ void HPL_pdtest
 /* ..
  * .. Executable Statements ..
  */
+   struct timeval tmp_time = {};
+   get_timestamp(tmp_time); // initialize the timer...
    (void) HPL_grid_info( GRID, &nprow, &npcol, &myrow, &mycol );
 
    mat.n  = N; mat.nb = NB; mat.info = 0;
