@@ -49,10 +49,11 @@
  */
 #include "hpl.h"
 #include <sys/time.h>
+#include <assert.h>
 
 #if SMPI_OPTIMIZATION_LEVEL >= 3
 #pragma message "[SMPI] Using shared malloc/free."
-#define smpi_malloc SMPI_SHARED_MALLOC
+#define smpi_malloc random_shared_malloc
 #define smpi_free SMPI_SHARED_FREE
 #else
 #pragma message "[SMPI] Using standard malloc/free."
@@ -63,6 +64,18 @@
 #if SMPI_OPTIMIZATION_LEVEL <= 1
 #define SMPI_DO_INITIALIZATION_VERIFICATION
 #endif
+
+void *random_shared_malloc(size_t size) {
+    void *ptr = SMPI_SHARED_MALLOC(size);
+    assert(size%sizeof(double) == 0);
+    double *dptr = (double*)ptr;
+    if(size > 1e7) // this is a shared malloc, so we can restrict ourselves to the first part of the buffer
+        size = 1e7;
+    for(int i = 0; i < size/sizeof(double); i++) {
+        dptr[i] = (double)rand()/(double)(RAND_MAX) - 0.5; // random double in [-0.5,0.5]
+    }
+    return ptr;
+}
 
 #ifdef STDC_HEADERS
 void HPL_pdtest
