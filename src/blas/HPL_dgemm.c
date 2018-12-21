@@ -76,20 +76,6 @@ double get_timestamp(struct timeval timestamp) {
     return t;
 }
 
-double get_random_factor() {
-    double min_f = 0.95;
-    double max_f = 1.05;
-    static double factor = -1;
-    if(factor < 0) {
-        int my_rank;
-        MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-        srand(my_rank + 12);  // we cannot do srand(my_rank) as srand(0) and srand(1) are equivalent
-        double x = (double)rand()/(double)(RAND_MAX);  // x is in [0, 1]
-        factor = min_f + x*(max_f-min_f);
-    }
-    return factor;
-}
-
 
 #ifndef HPL_dgemm
 

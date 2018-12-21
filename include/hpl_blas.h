@@ -188,7 +188,6 @@ STDC_ARGS(
 
 FILE *get_measure_file();
 double get_timestamp(struct timeval timestamp);
-double get_random_factor();
 
 #ifdef SMPI_MEASURE
 #pragma message "[SMPI] Tracing the calls to BLAS functions."
@@ -233,7 +232,6 @@ static double dgemm_intercept = -1;
     }\
     double expected_time;\
     expected_time = dgemm_coefficient*((double)(M))*((double)(N))*((double)(K)) + dgemm_intercept;\
-    expected_time *= get_random_factor();\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
@@ -266,7 +264,6 @@ static double dtrsm_intercept = -1;
     } else {\
         expected_time = dtrsm_coefficient*((double)(M))*((double)(N))*((double)(N)) + dtrsm_intercept;\
     }\
-    expected_time *= get_random_factor();\
     struct timeval before = {};\
     START_MEASURE(before);\
     if(expected_time > 0)\
