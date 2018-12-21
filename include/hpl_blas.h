@@ -166,7 +166,7 @@ STDC_ARGS(
 #define    HPL_dgemv(...)      {}
 #define    HPL_daxpy(...)      {}
 #define    HPL_dscal(...)      {}
-#define    HPL_idamax(...)      3 // FIXME: 3 is arbitrary... is the value returned by idamax important?
+#define    HPL_idamax(N, X, incX) (rand()%N)
 #define    HPL_dtrsv(...)      {}
 #define    HPL_dger(...)       {}
 #pragma message "[SMPI] Using no-op for the “cheapest” BLAS functions."
