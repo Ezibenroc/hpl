@@ -169,7 +169,7 @@ STDC_ARGS(
 #define    HPL_idamax(N, X, incX) (rand()%N)
 #define    HPL_dtrsv(...)      {}
 #define    HPL_dger(...)       {}
-#pragma message "[SMPI] Using no-op for the “cheapest” BLAS functions."
+#pragma message "[SMPI] Using no-op for the cheapest BLAS functions."
 #else
 #define    HPL_dswap           cblas_dswap
 #define    HPL_dgemv           cblas_dgemv
@@ -178,7 +178,7 @@ STDC_ARGS(
 #define    HPL_idamax          cblas_idamax
 #define    HPL_dtrsv           cblas_dtrsv
 #define    HPL_dger            cblas_dger
-#pragma message "[SMPI] Using cblas for the “cheapest” BLAS functions."
+#pragma message "[SMPI] Using cblas for the cheapest BLAS functions."
 #endif
 
 // From http://stackoverflow.com/a/10227059/4110059
