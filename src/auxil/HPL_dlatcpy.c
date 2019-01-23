@@ -127,9 +127,8 @@ void HPL_dlatcpy
 /*
  * .. Local Variables ..
  */
-#if SMPI_OPTIMIZATION_LEVEL >= 2
-    return;
-#endif
+    timestamp_t start = get_timestamp();
+#if SMPI_OPTIMIZATION_LEVEL < 2
 #ifdef HPL_LATCPY_USE_COPY
    register int               j;
 #else
@@ -398,4 +397,7 @@ void HPL_dlatcpy
 /*
  * End of HPL_dlatcpy
  */
+#endif // SMPI_OPTIMIZATION_LEVEL
+    timestamp_t duration = get_timestamp() - start;
+    record_measure("", 0, __func__, start, duration, 2, (int []){M, N});
 } 

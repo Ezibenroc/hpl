@@ -127,9 +127,8 @@ void HPL_dlaswp03T
 /*
  * .. Local Variables ..
  */
-#if SMPI_OPTIMIZATION_LEVEL >= 2
-    return;
-#endif
+    timestamp_t start = get_timestamp();
+#if SMPI_OPTIMIZATION_LEVEL < 2
    const double               * w = W, * w0; 
    double                     * u0;
    const int                  incU = ( 1 << HPL_LASWP03T_LOG2_DEPTH );
@@ -186,4 +185,7 @@ void HPL_dlaswp03T
 /*
  * End of HPL_dlaswp03T
  */
+#endif // SMPI_OPTIMIZATION_LEVEL
+    timestamp_t duration = get_timestamp() - start;
+    record_measure("", 0, __func__, start, duration, 2, (int []){M, N});
 } 
