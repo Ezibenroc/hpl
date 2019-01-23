@@ -120,6 +120,24 @@ void record_measure(const char *file, int line, const char *function, timestamp_
 #endif
 }
 
+double random_normal(double mu, double sigma) {
+    // From https://rosettacode.org/wiki/Statistics/Normal_distribution#C
+    double x, y, rsq, f;
+    do {
+        x = 2.0 * rand() / (double)RAND_MAX - 1.0;
+        y = 2.0 * rand() / (double)RAND_MAX - 1.0;
+        rsq = x * x + y * y;
+    }while( rsq >= 1. || rsq == 0. );
+    f = sqrt( -2.0 * log(rsq) / rsq );
+    return (x * f)*sigma + mu; // y*f would also be good
+}
+
+void smpi_execute_normal(double mu, double sigma, double size) {
+    double coefficient = random_normal(mu, sigma);
+    if(coefficient > 0) {
+        smpi_execute_benched(size / coefficient);
+    }
+}
 
 #ifndef HPL_dgemm
 

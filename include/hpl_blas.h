@@ -265,28 +265,33 @@ static double dtrsm_intercept = -1;
 })
 #define HPL_daxpy(N, alpha, X, incX, Y, incY) ({\
     timestamp_t start = get_timestamp();\
+    smpi_execute_normal(6.907377e+08, 2.553646e+08, 4.920070e+02);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "daxpy", start, duration, 1, (int []){N});\
 })
 #define HPL_dscal(N, alpha, X, incX) ({\
     timestamp_t start = get_timestamp();\
+    smpi_execute_normal(2.779018e+09, 4.668436e+08, 2.311699e+04);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dscal", start, duration, 1, (int []){N});\
 })
 #define HPL_idamax(N, X, incX) ({\
     timestamp_t start = get_timestamp();\
     int result = rand()%N;\
+    smpi_execute_normal(1.796604e+09, 5.786329e+08, 2.311625e+04);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "idamax", start, duration, 1, (int []){N});\
     result;\
 })
 #define HPL_dgemv(layout, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY) ({\
     timestamp_t start = get_timestamp();\
+    smpi_execute_normal(1.389908e+09, 6.011379e+07, ((double)M)*N);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemv", start, duration, 2, (int []){M, N});\
 })
 #define HPL_dtrsv(layout, Uplo, TransA, Diag, N, A, lda, X, incX) ({\
     timestamp_t start = get_timestamp();\
+    smpi_execute_normal(6.561277e+08, 7.395658e+07, 1.637382e+04);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dtrsv", start, duration, 1, (int []){N});\
 })

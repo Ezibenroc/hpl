@@ -251,6 +251,8 @@ void HPL_dlaswp01T
 /*
  * End of HPL_dlaswp01T
  */
+#else
+    smpi_execute_normal(1.326539e+08, 2.558332e+07, 7.942974e+05);
 #endif // SMPI_OPTIMIZATION_LEVEL
     timestamp_t duration = get_timestamp() - start;
     record_measure("", 0, __func__, start, duration, 2, (int []){M, N});
