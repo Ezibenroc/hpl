@@ -47,10 +47,18 @@
 /*
  * Include files
  */
-#include <sys/time.h>
 #include "hpl.h"
+#include "unistd.h"
+#if _POSIX_TIMERS
+#include <time.h>
+#define HAVE_CLOCKGETTIME 1
+#else
+#include <sys/time.h>
+#define HAVE_GETTIMEOFDAY 1
+#endif
 
 FILE *get_measure_file() {
+#ifdef SMPI_MEASURE
     static FILE *measure_file=NULL;
     if(!measure_file) {
         int my_rank;
@@ -62,18 +70,54 @@ FILE *get_measure_file() {
             fprintf(stderr, "Error opening file %s\n", filename);
             exit(1);
         }
-        fprintf(measure_file, "function, file, line, rank, m, n, k, lead_A, lead_B, lead_C, duration, timestamp\n");
     }
     return measure_file;
+#endif
 }
 
-double get_timestamp(struct timeval timestamp) {
-    static struct timeval start = {.tv_sec=-1, .tv_usec=-1};
-    if(start.tv_sec < 0) {
-        gettimeofday(&start, NULL);
+#ifdef HAVE_CLOCKGETTIME
+#define PRECISION 1000000000.0
+#elif HAVE_GETTIMEOFDAY
+#define PRECISION 1000000.0
+#else
+#define PRECISION 1
+#endif
+
+timestamp_t get_time(){
+#ifdef HAVE_CLOCKGETTIME
+    struct timespec tp;
+    clock_gettime (CLOCK_REALTIME, &tp);
+    return (tp.tv_sec * 1000000000 + tp.tv_nsec);
+#elif HAVE_GETTIMEOFDAY
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    return (tv.tv_sec * 1000000 + tv.tv_usec)*1000;
+#endif
+}
+
+timestamp_t get_timestamp(void) {
+    static timestamp_t start = 0;
+    if(start == 0) {
+        start = get_time();
+        return 0;
     }
-    double t = (timestamp.tv_sec-start.tv_sec) + 1e-6*(timestamp.tv_usec-start.tv_usec);
-    return t;
+    return get_time() - start;
+}
+
+void record_measure(const char *file, int line, const char *function, timestamp_t start, timestamp_t duration, int n_args, int *args) {
+#ifdef SMPI_MEASURE
+    static int my_rank = -1;
+    if(my_rank < 0) {
+        MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    }
+    FILE *measure_file = get_measure_file();
+    if(!measure_file) {fprintf(stderr, "error with measure_file\n"); exit(1);}
+    fprintf(measure_file, "%s, %d, %s, %d, %e, %e", file, line, function, my_rank, start/PRECISION, duration/PRECISION);
+    for(int i = 0; i < n_args; i++) {
+        fprintf(measure_file, ", %d", args[i]);
+    }
+    fprintf(measure_file, "\n");
+#endif
 }
 
 

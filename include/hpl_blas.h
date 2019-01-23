@@ -187,29 +187,9 @@ STDC_ARGS(
 #define VAR_NAME_VALUE(var) #var "="  VALUE(var)
 
 FILE *get_measure_file();
-double get_timestamp(struct timeval timestamp);
-
-#ifdef SMPI_MEASURE
-#pragma message "[SMPI] Tracing the calls to BLAS functions."
-#define START_MEASURE(before) ({\
-    gettimeofday(&before, NULL);\
-})
-#define STOP_MEASURE(before, function, M, N, K, lda, ldb, ldc)  ({\
-    struct timeval after = {};\
-    gettimeofday(&after, NULL);\
-    double duration = (after.tv_sec-before.tv_sec) + 1e-6*(after.tv_usec-before.tv_usec);\
-    int my_rank, buff=0;\
-    double timestamp = get_timestamp(before);\
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);\
-    FILE *measure_file = get_measure_file();\
-    if(!measure_file) {fprintf(stderr, "error with measure_file\n"); exit(1);}\
-    fprintf(measure_file, "%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %g, %g\n", function, __FILE__, __LINE__, my_rank, M, N, K, lda, ldb, ldc, duration, timestamp);\
-})
-#else
-#pragma message "[SMPI] Not tracing the calls to BLAS functions."
-#define START_MEASURE(...)   {}
-#define STOP_MEASURE(...)    {}
-#endif
+typedef unsigned long long timestamp_t;
+timestamp_t get_timestamp(void);
+void record_measure(const char *file, int line, const char *function, timestamp_t start, timestamp_t duration, int n_args, int *args);
 
 static double get_param(const char *name) {
     char *val_str = getenv(name);
@@ -220,40 +200,26 @@ static double get_param(const char *name) {
     return atof(val_str);
 }
 
-// DGEMM
-#if SMPI_OPTIMIZATION_LEVEL >= 1
 static double dgemm_coefficient = -1;
 static double dgemm_intercept = -1;
-#pragma message "[SMPI] Using smpi_execute for HPL_dgemm."
+static double dtrsm_coefficient = -1;
+static double dtrsm_intercept = -1;
+#if SMPI_OPTIMIZATION_LEVEL >= 1
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
+    timestamp_t start = get_timestamp();\
     if(dgemm_coefficient < 0 || dgemm_intercept < 0) {\
         dgemm_coefficient = get_param("SMPI_DGEMM_COEFFICIENT");\
         dgemm_intercept = get_param("SMPI_DGEMM_INTERCEPT");\
     }\
     double expected_time;\
     expected_time = dgemm_coefficient*((double)(M))*((double)(N))*((double)(K)) + dgemm_intercept;\
-    struct timeval before = {};\
-    START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute_benched(expected_time);\
-    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
 })
-#else
-#pragma message "[SMPI] Using cblas_dgemm for HPL_dgemm."
-#define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
-    struct timeval before = {};\
-    START_MEASURE(before);\
-    cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
-    STOP_MEASURE(before, "dgemm", M, N, K, lda, ldb, ldc);\
-})
-#endif
-
-// DTRSM
-#if SMPI_OPTIMIZATION_LEVEL >= 1
-static double dtrsm_coefficient = -1;
-static double dtrsm_intercept = -1;
-#pragma message "[SMPI] Using smpi_execute for HPL_dtrsm."
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
+    timestamp_t start = get_timestamp();\
     if(dtrsm_coefficient < 0 || dtrsm_intercept < 0) {\
         dtrsm_coefficient = get_param("SMPI_DTRSM_COEFFICIENT");\
         dtrsm_intercept = get_param("SMPI_DTRSM_INTERCEPT");\
@@ -264,21 +230,122 @@ static double dtrsm_intercept = -1;
     } else {\
         expected_time = dtrsm_coefficient*((double)(M))*((double)(N))*((double)(N)) + dtrsm_intercept;\
     }\
-    struct timeval before = {};\
-    START_MEASURE(before);\
     if(expected_time > 0)\
         smpi_execute_benched(expected_time);\
-    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dtrsm", start, duration, 2, (int []){M, N});\
 })
-#else
-#pragma message "[SMPI] Using cblas_dtrsm for HPL_dtrsm."
+#else // SMPI_OPTIMIZATION_LEVEL
+#define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
+})
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
-    struct timeval before = {};\
-    START_MEASURE(before);\
+    timestamp_t start = get_timestamp();\
     cblas_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb);\
-    STOP_MEASURE(before, "dtrsm", M, N, -1, lda, ldb, -1);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dtrsm", start, duration, 2, (int []){M, N});\
 })
-#endif
+#endif // SMPI_OPTIMIZATION_LEVEL
+
+#if SMPI_OPTIMIZATION_LEVEL >= 2
+#define HPL_dswap(N, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dswap", start, duration, 1, (int []){N});\
+})
+// do not remove HPL_dcopy, otherwise you get a deadlock
+#define HPL_dcopy(N, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dcopy(N, X, incX, Y, incY);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dcopy", start, duration, 1, (int []){N});\
+})
+#define HPL_daxpy(N, alpha, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "daxpy", start, duration, 1, (int []){N});\
+})
+#define HPL_dscal(N, alpha, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dscal", start, duration, 1, (int []){N});\
+})
+#define HPL_idamax(N, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    int result = rand()%N;\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "idamax", start, duration, 1, (int []){N});\
+    result;\
+})
+#define HPL_dgemv(layout, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dgemv", start, duration, 2, (int []){M, N});\
+})
+#define HPL_dtrsv(layout, Uplo, TransA, Diag, N, A, lda, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dtrsv", start, duration, 1, (int []){N});\
+})
+#define HPL_dger(layout, M, N, alpha, X, incX, Y, incY, A, ldA) ({\
+    timestamp_t start = get_timestamp();\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dger", start, duration, 2, (int []){M, N});\
+})
+#else // SMPI_OPTIMIZATION_LEVEL
+#define HPL_dswap(N, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dswap(N, X, incX, Y, incY);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dswap", start, duration, 1, (int []){N});\
+})
+#define HPL_dcopy(N, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dcopy(N, X, incX, Y, incY);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dcopy", start, duration, 1, (int []){N});\
+})
+#define HPL_daxpy(N, alpha, X, incX, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_daxpy(N, alpha, X, incX, Y, incY);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "daxpy", start, duration, 1, (int []){N});\
+})
+#define HPL_dscal(N, alpha, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dscal(N, alpha, X, incX);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dscal", start, duration, 1, (int []){N});\
+})
+#define HPL_idamax(N, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    int result = cblas_idamax(N, X, incX);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "idamax", start, duration, 1, (int []){N});\
+    result;\
+})
+#define HPL_dgemv(layout, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dgemv(layout, TransA, M, N, alpha, A, lda, X, incX, beta, Y, incY);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dgemv", start, duration, 2, (int []){M, N});\
+})
+#define HPL_dtrsv(layout, Uplo, TransA, Diag, N, A, lda, X, incX) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dtrsv(layout, Uplo, TransA, Diag, N, A, lda, X, incX);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dtrsv", start, duration, 1, (int []){N});\
+})
+#define HPL_dger(layout, M, N, alpha, X, incX, Y, incY, A, ldA) ({\
+    timestamp_t start = get_timestamp();\
+    cblas_dger(layout, M, N, alpha, X, incX, Y, incY, A, ldA);\
+    timestamp_t duration = get_timestamp() - start;\
+    record_measure(__FILE__, __LINE__, "dger", start, duration, 2, (int []){M, N});\
+})
+#endif // SMPI_OPTIMIZATION_LEVEL
 
 #endif
 

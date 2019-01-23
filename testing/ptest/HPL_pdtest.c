@@ -165,7 +165,7 @@ void HPL_pdtest
  * .. Executable Statements ..
  */
    struct timeval tmp_time = {};
-   get_timestamp(tmp_time); // initialize the timer...
+   get_timestamp(); // initialize the timer...
    (void) HPL_grid_info( GRID, &nprow, &npcol, &myrow, &mycol );
 
    mat.n  = N; mat.nb = NB; mat.info = 0;
