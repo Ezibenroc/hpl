@@ -207,14 +207,7 @@ static double dtrsm_intercept = -1;
 #if SMPI_OPTIMIZATION_LEVEL >= 1
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     timestamp_t start = get_timestamp();\
-    if(dgemm_coefficient < 0 || dgemm_intercept < 0) {\
-        dgemm_coefficient = get_param("SMPI_DGEMM_COEFFICIENT");\
-        dgemm_intercept = get_param("SMPI_DGEMM_INTERCEPT");\
-    }\
-    double expected_time;\
-    expected_time = dgemm_coefficient*((double)(M))*((double)(N))*((double)(K)) + dgemm_intercept;\
-    if(expected_time > 0)\
-        smpi_execute_benched(expected_time);\
+    smpi_execute_normal(1.500643e+10, 6.046520e+08, ((double)M)*((double)N)*K);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
 })
@@ -225,13 +218,13 @@ static double dtrsm_intercept = -1;
         dtrsm_intercept = get_param("SMPI_DTRSM_INTERCEPT");\
     }\
     double expected_time;\
+    double size=-1;\
     if((Side) == HplLeft) {\
-        expected_time = dtrsm_coefficient*((double)(M))*((double)(M))*((double)(N)) + dtrsm_intercept;\
+        size = ((double)(M))*((double)(M))*((double)(N));\
     } else {\
-        expected_time = dtrsm_coefficient*((double)(M))*((double)(N))*((double)(N)) + dtrsm_intercept;\
+        size = ((double)(M))*((double)(N))*((double)(N));\
     }\
-    if(expected_time > 0)\
-        smpi_execute_benched(expected_time);\
+    smpi_execute_normal(1.831074e+10, 8.947492e+08, size);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dtrsm", start, duration, 2, (int []){M, N});\
 })
