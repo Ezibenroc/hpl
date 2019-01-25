@@ -132,10 +132,17 @@ double random_normal(double mu, double sigma) {
     return (x * f)*sigma + mu; // y*f would also be good
 }
 
-void smpi_execute_normal(double mu, double sigma, double size) {
+void smpi_execute_normal(double mu, double sigma) {
     double coefficient = random_normal(mu, sigma);
     if(coefficient > 0) {
-        smpi_execute_benched(size / coefficient);
+        smpi_execute_benched(coefficient);
+    }
+}
+
+void smpi_execute_normal_size(double mu, double sigma, double size) {
+    double coefficient = random_normal(mu, sigma);
+    if(coefficient > 0 && size > 0) {
+        smpi_execute_benched(size * coefficient);
     }
 }
 
