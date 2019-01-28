@@ -343,7 +343,7 @@ void HPL_dlacpy
  * End of HPL_dlacpy
  */
 #else
-   smpi_execute_normal(1.096125e-02, 6.930336e-03);
+   smpi_execute_normal_size(3.871806e-09, 1.328595e-09, ((double)M)*((double)N));
 #endif // SMPI_OPTIMIZATION_LEVEL
     timestamp_t duration = get_timestamp() - start;
     record_measure("", 0, __func__, start, duration, 2, (int []){M, N});

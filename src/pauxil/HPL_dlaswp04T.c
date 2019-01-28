@@ -270,7 +270,7 @@ void HPL_dlaswp04T
  * End of HPL_dlaswp04T
  */
 #else
-   smpi_execute_normal(4.771486e-03, 1.690573e-03);
+   smpi_execute_normal_size(8.498957e-09, 2.218070e-09, ((double)M1)*((double)N));
 #endif // SMPI_OPTIMIZATION_LEVEL
     timestamp_t duration = get_timestamp() - start;
     record_measure("", 0, __func__, start, duration, 3, (int []){M0, M1, N});

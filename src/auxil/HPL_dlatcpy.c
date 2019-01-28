@@ -398,7 +398,7 @@ void HPL_dlatcpy
  * End of HPL_dlatcpy
  */
 #else
-    smpi_execute_normal_size(4.993149e-09, 5.575860e-10, ((double)M)*N);
+    smpi_execute_normal_size(4.893900e-09, 4.691039e-10, ((double)M)*N);
 #endif // SMPI_OPTIMIZATION_LEVEL
     timestamp_t duration = get_timestamp() - start;
     record_measure("", 0, __func__, start, duration, 2, (int []){M, N});
