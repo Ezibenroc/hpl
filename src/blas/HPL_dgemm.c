@@ -120,7 +120,7 @@ void record_measure(const char *file, int line, const char *function, timestamp_
 #endif
 }
 
-double random_normal(double mu, double sigma) {
+double random_normal(void) {
     // From https://rosettacode.org/wiki/Statistics/Normal_distribution#C
     double x, y, rsq, f;
     do {
@@ -129,18 +129,31 @@ double random_normal(double mu, double sigma) {
         rsq = x * x + y * y;
     }while( rsq >= 1. || rsq == 0. );
     f = sqrt( -2.0 * log(rsq) / rsq );
-    return (x * f)*sigma + mu; // y*f would also be good
+    return (x * f); // y*f would also be good
+}
+
+double random_halfnormal(void) {
+    double x = random_normal();
+    if(x < 0) {
+        x = -x;
+    }
+    return x;
+}
+
+double random_noise(double mu, double sigma) {
+    double x = random_halfnormal();
+    return x*sigma + mu;
 }
 
 void smpi_execute_normal(double mu, double sigma) {
-    double coefficient = random_normal(mu, sigma);
+    double coefficient = random_noise(mu, sigma);
     if(coefficient > 0) {
         smpi_execute_benched(coefficient);
     }
 }
 
 void smpi_execute_normal_size(double mu, double sigma, double size) {
-    double coefficient = random_normal(mu, sigma);
+    double coefficient = random_noise(mu, sigma);
     if(coefficient > 0 && size > 0) {
         smpi_execute_benched(size * coefficient);
     }
