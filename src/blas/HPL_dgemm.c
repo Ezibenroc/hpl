@@ -49,6 +49,7 @@
  */
 #include "hpl.h"
 #include "unistd.h"
+#include <math.h>
 #if _POSIX_TIMERS
 #include <time.h>
 #define HAVE_CLOCKGETTIME 1
@@ -140,20 +141,25 @@ double random_halfnormal(void) {
     return x;
 }
 
-double random_noise(double mu, double sigma) {
+double random_halfnormal_shifted(double exp, double std) {
+    // Here, exp and std are the desired expectation and standard deviation.
+    // We compute the corresponding mu and sigma parameters for the normal distribution.
+    double mu, sigma;
+    sigma = std/sqrt(1-2/M_PI);
+    mu = exp - sigma*sqrt(2/M_PI);
     double x = random_halfnormal();
     return x*sigma + mu;
 }
 
 void smpi_execute_normal(double mu, double sigma) {
-    double coefficient = random_noise(mu, sigma);
+    double coefficient = random_halfnormal_shifted(mu, sigma);
     if(coefficient > 0) {
         smpi_execute_benched(coefficient);
     }
 }
 
 void smpi_execute_normal_size(double mu, double sigma, double size) {
-    double coefficient = random_noise(mu, sigma);
+    double coefficient = random_halfnormal_shifted(mu, sigma);
     if(coefficient > 0 && size > 0) {
         smpi_execute_benched(size * coefficient);
     }

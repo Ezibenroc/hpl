@@ -190,7 +190,7 @@ FILE *get_measure_file();
 typedef unsigned long long timestamp_t;
 timestamp_t get_timestamp(void);
 void record_measure(const char *file, int line, const char *function, timestamp_t start, timestamp_t duration, int n_args, int *args);
-double random_noise(double mu, double sigma);
+double random_halfnormal_shifted(double exp, double std);
 void smpi_execute_normal(double mu, double sigma);
 void smpi_execute_normal_size(double mu, double sigma, double size);
 
@@ -217,7 +217,7 @@ static double dtrsm_intercept = -1;
     double raw_duration = 2.844700e-07 + 6.317136e-11*mnk + 1.489053e-10*mn + 2.107985e-09*mk + 3.332944e-09*nk;\
     double _S = 1.087202e-07 + 2.976703e-12*mnk + 8.365868e-12*mn + 1.528598e-10*mk + 9.931248e-11*nk;\
     double sigma = 1.658897 * _S;\
-    double noise = random_noise(0, sigma);\
+    double noise = random_halfnormal_shifted(0, sigma);\
     smpi_execute_benched(raw_duration + noise);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
