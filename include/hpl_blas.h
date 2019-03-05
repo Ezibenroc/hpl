@@ -218,7 +218,8 @@ static double dtrsm_intercept = -1;
     double _S = 1.087202e-07 + 2.976703e-12*mnk + 8.365868e-12*mn + 1.528598e-10*mk + 9.931248e-11*nk;\
     double sigma = 1.658897 * _S;\
     double noise = random_halfnormal_shifted(0, sigma);\
-    smpi_execute_benched(raw_duration + noise);\
+    double injected_duration = raw_duration + noise;\
+    if(injected_duration > 0) smpi_execute_benched(injected_duration);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
 })
