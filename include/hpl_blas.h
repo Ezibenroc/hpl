@@ -193,6 +193,7 @@ void record_measure(const char *file, int line, const char *function, timestamp_
 double random_halfnormal_shifted(double exp, double std);
 void smpi_execute_normal(double mu, double sigma);
 void smpi_execute_normal_size(double mu, double sigma, double size);
+void smpi_execute_dgemm(int M, int N, int K);
 
 static double get_param(const char *name) {
     char *val_str = getenv(name);
@@ -218,7 +219,7 @@ static double dtrsm_intercept = -1;
     double sigma = 1.087202e-07 + 2.976703e-12*mnk + 8.365868e-12*mn + 1.528598e-10*mk + 9.931248e-11*nk;\
     double noise = random_halfnormal_shifted(0, sigma);\
     double injected_duration = raw_duration + noise;\
-    if(injected_duration > 0) smpi_execute_benched(injected_duration);\
+    smpi_execute_dgemm(M, N, K);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
 })
