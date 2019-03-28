@@ -50,6 +50,7 @@
 #include "hpl.h"
 #include "unistd.h"
 #include <math.h>
+#include <assert.h>
 #if _POSIX_TIMERS
 #include <time.h>
 #define HAVE_CLOCKGETTIME 1
@@ -119,6 +120,57 @@ void record_measure(const char *file, int line, const char *function, timestamp_
     }
     fprintf(measure_file, "\n");
 #endif
+}
+
+/*
+ * This function supposes that the hosts are named with the convention:
+ *      <prefix><radical><suffix>
+ * For instance, dahu-8.grid5000.fr
+ * It returns the value of the radical (8 in this example).
+ */
+int get_nodeid(void) {
+    static int my_rank = -1;
+    static int my_node = -1;
+    if(my_rank < 0) {
+        MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+        char hostname[100];
+        int max_size;
+        MPI_Get_processor_name(hostname, &max_size);
+        int i=0;
+        while((hostname[i] < '0' || hostname[i] > '9') && i < max_size) {
+            i++;
+        }
+        int j=i;
+        while(hostname[j] >= '0' && hostname[j] <= '9' && j < max_size) {
+            j++;
+        }
+        assert(j < max_size);
+        hostname[j] = '\0';
+        my_node = atoi(&hostname[i]);
+    }
+    return my_node;
+}
+
+/*
+ * In Dahu@G5K, there are two CPUs per node.
+ * This function computes the ID of the CPU, supposing that the ranks are split in even/odd.
+ * See the output of lstopo to verify this hypothesis.
+ * Note: this function does *not* suppose that all the nodes of Dahu are used or that the mapping
+ * is done in order. It uses the hostname to get the right ID. If we made these assumptions,
+ * returning 2*(rank/32) + rank%2 would be equivalent.
+ */
+int get_cpuid(void) {
+    static int my_rank = -1;
+    static int my_cpu = -1;
+    static int my_node = -1;
+    if(my_rank < 0) {
+        MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+        my_node = get_nodeid();
+        // 2 CPUs per node, the ranks are split in even/odd, see the output of lstopo
+        my_cpu = my_node*2 + my_rank%2;
+//      printf("rank %d, node=%d, cpu=%d\n", my_rank, my_node, my_cpu);
+    }
+    return my_cpu;
 }
 
 double random_normal(void) {
