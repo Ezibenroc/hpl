@@ -263,6 +263,8 @@ double dgemm_time(double size) {
             return 3.318695e-07 + 6.639150e-11*size;
         case 25: // node 12
             return 3.413890e-07 + 6.618983e-11*size;
+// Removing the "slow" nodes, their performance was significantly higher in October.
+/*
         case 26: // node 13
             return 3.906366e-07 + 7.442632e-11*size;
         case 27: // node 13
@@ -279,6 +281,7 @@ double dgemm_time(double size) {
             return 3.850256e-07 + 7.559685e-11*size;
         case 33: // node 16
             return 3.763220e-07 + 7.416173e-11*size;
+*/
         case 34: // node 17
             return 3.529659e-07 + 6.878189e-11*size;
         case 35: // node 17
