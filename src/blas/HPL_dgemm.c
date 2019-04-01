@@ -217,139 +217,19 @@ void smpi_execute_normal_size(double mu, double sigma, double size) {
     }
 }
 
-double dgemm_time(double size) {
-    switch(get_cpuid()) {
-        case 2: // node 1
-            return 3.546561e-07 + 6.807397e-11*size;
-        case 3: // node 1
-            return 3.398073e-07 + 6.641797e-11*size;
-        case 4: // node 2
-            return 3.596622e-07 + 6.698293e-11*size;
-        case 5: // node 2
-            return 3.547378e-07 + 6.667782e-11*size;
-        case 6: // node 3
-            return 3.493171e-07 + 6.697454e-11*size;
-        case 7: // node 3
-            return 3.379890e-07 + 6.641616e-11*size;
-        case 8: // node 4
-            return 3.451404e-07 + 6.638124e-11*size;
-        case 9: // node 4
-            return 3.372329e-07 + 6.661587e-11*size;
-        case 12: // node 6
-            return 3.468098e-07 + 6.861961e-11*size;
-        case 13: // node 6
-            return 3.436463e-07 + 6.610015e-11*size;
-        case 14: // node 7
-            return 3.590073e-07 + 6.657339e-11*size;
-        case 15: // node 7
-            return 3.347073e-07 + 6.585625e-11*size;
-        case 16: // node 8
-            return 3.492415e-07 + 6.766002e-11*size;
-        case 17: // node 8
-            return 3.457256e-07 + 6.638352e-11*size;
-        case 18: // node 9
-            return 3.410878e-07 + 6.632671e-11*size;
-        case 19: // node 9
-            return 3.365561e-07 + 6.632760e-11*size;
-        case 20: // node 10
-            return 3.487378e-07 + 6.638031e-11*size;
-        case 21: // node 10
-            return 3.600744e-07 + 6.658047e-11*size;
-        case 22: // node 11
-            return 3.468634e-07 + 6.616427e-11*size;
-        case 23: // node 11
-            return 3.393402e-07 + 6.719891e-11*size;
-        case 24: // node 12
-            return 3.318695e-07 + 6.639150e-11*size;
-        case 25: // node 12
-            return 3.413890e-07 + 6.618983e-11*size;
-// Removing the "slow" nodes, their performance was significantly higher in October.
-/*
-        case 26: // node 13
-            return 3.906366e-07 + 7.442632e-11*size;
-        case 27: // node 13
-            return 3.645280e-07 + 7.203503e-11*size;
-        case 28: // node 14
-            return 3.826305e-07 + 7.423081e-11*size;
-        case 29: // node 14
-            return 3.760951e-07 + 7.374749e-11*size;
-        case 30: // node 15
-            return 3.864439e-07 + 7.917192e-11*size;
-        case 31: // node 15
-            return 3.790341e-07 + 7.618639e-11*size;
-        case 32: // node 16
-            return 3.850256e-07 + 7.559685e-11*size;
-        case 33: // node 16
-            return 3.763220e-07 + 7.416173e-11*size;
-*/
-        case 34: // node 17
-            return 3.529659e-07 + 6.878189e-11*size;
-        case 35: // node 17
-            return 3.415317e-07 + 6.660920e-11*size;
-        case 36: // node 18
-            return 3.562049e-07 + 6.845888e-11*size;
-        case 37: // node 18
-            return 3.289268e-07 + 6.609228e-11*size;
-        case 38: // node 19
-            return 3.459317e-07 + 6.661061e-11*size;
-        case 39: // node 19
-            return 3.418549e-07 + 6.642127e-11*size;
-        case 40: // node 20
-            return 3.437598e-07 + 6.667771e-11*size;
-        case 41: // node 20
-            return 3.399098e-07 + 6.637335e-11*size;
-        case 42: // node 21
-            return 3.420780e-07 + 6.667580e-11*size;
-        case 43: // node 21
-            return 3.365366e-07 + 6.653883e-11*size;
-        case 44: // node 22
-            return 3.423939e-07 + 6.628641e-11*size;
-        case 45: // node 22
-            return 3.499963e-07 + 6.647966e-11*size;
-        case 46: // node 23
-            return 3.354049e-07 + 6.663301e-11*size;
-        case 47: // node 23
-            return 3.411463e-07 + 6.611017e-11*size;
-        case 48: // node 24
-            return 3.323646e-07 + 6.644631e-11*size;
-        case 49: // node 24
-            return 3.346537e-07 + 6.631977e-11*size;
-        case 50: // node 25
-            return 3.679915e-07 + 7.152834e-11*size;
-        case 51: // node 25
-            return 3.283049e-07 + 6.597959e-11*size;
-        case 52: // node 26
-            return 3.605927e-07 + 6.667990e-11*size;
-        case 53: // node 26
-            return 3.494646e-07 + 6.696905e-11*size;
-        case 54: // node 27
-            return 3.609488e-07 + 6.690477e-11*size;
-        case 55: // node 27
-            return 3.422329e-07 + 6.709007e-11*size;
-        case 58: // node 29
-            return 3.362146e-07 + 6.655729e-11*size;
-        case 59: // node 29
-            return 3.507622e-07 + 6.667698e-11*size;
-        case 60: // node 30
-            return 3.443854e-07 + 6.644349e-11*size;
-        case 61: // node 30
-            return 3.370256e-07 + 6.636598e-11*size;
-        case 62: // node 31
-            return 3.354207e-07 + 6.618184e-11*size;
-        case 63: // node 31
-            return 3.398659e-07 + 6.637357e-11*size;
-        case 64: // node 32
-            return 3.470720e-07 + 6.608009e-11*size;
-        case 65: // node 32
-            return 3.401402e-07 + 6.616325e-11*size;
-        default:
-            return 4.231250e-07 + 6.830374e-11*size;
-    }
+double dgemm_time(double M, double N, double K) {
+    double mnk = M*N*K;
+    double mn = M*N;
+    double mk = M*K;
+    double nk = N*K;
+    return 0;
 }
 
 void smpi_execute_dgemm(int M, int N, int K) {
-    double size = (double)(M) * (double)(N) * (double)(K);
-    smpi_execute_benched(dgemm_time(size));
+    double time = dgemm_time(M, N, K);
+    if(time > 0) {
+        smpi_execute_benched(time);
+    }
 }
 
 #ifndef HPL_dgemm
