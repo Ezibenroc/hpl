@@ -225,264 +225,264 @@ double dgemm_time(double M, double N, double K) {
     double mu, sigma;
     switch(get_cpuid()) {
         case 2: // node 1
-            mu    = 5.403580e-07 + 6.977255e-11*mnk;
-            sigma = 6.666780e-07 + 1.230458e-12*mnk;
+            mu    = 2.031875e-06 + 7.089503e-11*mnk;
+            sigma = 3.568280e-07 + 2.146765e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 3: // node 1
-            mu    = 5.220591e-07 + 6.659212e-11*mnk;
-            sigma = 6.982747e-07 + 4.178078e-13*mnk;
+            mu    = 1.823625e-06 + 6.665738e-11*mnk;
+            sigma = 2.867134e-07 + 2.109864e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 4: // node 2
-            mu    = 5.276913e-07 + 6.846163e-11*mnk;
-            sigma = 6.044271e-07 + 1.192095e-12*mnk;
+            mu    = 1.793563e-06 + 6.943151e-11*mnk;
+            sigma = 2.294533e-07 + 2.192932e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 5: // node 2
-            mu    = 5.192003e-07 + 6.698403e-11*mnk;
-            sigma = 5.981250e-07 + 6.207988e-13*mnk;
+            mu    = 2.039063e-06 + 6.656724e-11*mnk;
+            sigma = 4.459159e-07 + 2.114460e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 6: // node 3
-            mu    = 5.228191e-07 + 6.819123e-11*mnk;
-            sigma = 5.833644e-07 + 1.109231e-12*mnk;
+            mu    = 1.959375e-06 + 6.840299e-11*mnk;
+            sigma = 2.402006e-07 + 2.192171e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 7: // node 3
-            mu    = 5.071483e-07 + 6.640306e-11*mnk;
-            sigma = 5.754146e-07 + 3.291517e-13*mnk;
+            mu    = 1.847375e-06 + 6.642321e-11*mnk;
+            sigma = 3.594620e-07 + 2.059016e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 8: // node 4
-            mu    = 5.182449e-07 + 6.653141e-11*mnk;
-            sigma = 5.959539e-07 + 4.337544e-13*mnk;
+            mu    = 1.998187e-06 + 6.655238e-11*mnk;
+            sigma = 3.049520e-07 + 2.071881e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 9: // node 4
-            mu    = 5.176756e-07 + 6.650606e-11*mnk;
-            sigma = 6.224987e-07 + 3.560624e-13*mnk;
+            mu    = 1.817000e-06 + 6.660695e-11*mnk;
+            sigma = 3.134492e-07 + 2.065467e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 10: // node 5
-            mu    = 5.127542e-07 + 6.812662e-11*mnk;
-            sigma = 5.664282e-07 + 1.143984e-12*mnk;
+            mu    = 1.820687e-06 + 6.884917e-11*mnk;
+            sigma = 2.678372e-07 + 2.163212e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 11: // node 5
-            mu    = 5.362046e-07 + 6.619122e-11*mnk;
-            sigma = 6.972006e-07 + 3.476378e-13*mnk;
+            mu    = 1.947375e-06 + 6.618913e-11*mnk;
+            sigma = 3.068313e-07 + 2.005688e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 12: // node 6
-            mu    = 5.409690e-07 + 6.987692e-11*mnk;
-            sigma = 6.312426e-07 + 1.136751e-12*mnk;
+            mu    = 1.713125e-06 + 6.882313e-11*mnk;
+            sigma = 3.035692e-07 + 2.159327e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 13: // node 6
-            mu    = 5.032638e-07 + 6.609574e-11*mnk;
-            sigma = 5.519080e-07 + 3.132958e-13*mnk;
+            mu    = 1.699313e-06 + 6.595870e-11*mnk;
+            sigma = 3.698865e-07 + 2.014535e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 14: // node 7
-            mu    = 5.298281e-07 + 6.695839e-11*mnk;
-            sigma = 6.521218e-07 + 5.393026e-13*mnk;
+            mu    = 1.886312e-06 + 6.654638e-11*mnk;
+            sigma = 2.518608e-07 + 2.090538e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 15: // node 7
-            mu    = 4.937630e-07 + 6.585236e-11*mnk;
-            sigma = 5.272074e-07 + 2.409341e-13*mnk;
+            mu    = 1.796812e-06 + 6.604634e-11*mnk;
+            sigma = 3.626939e-07 + 1.993063e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 16: // node 8
-            mu    = 5.441216e-07 + 6.862712e-11*mnk;
-            sigma = 6.673456e-07 + 1.363293e-12*mnk;
+            mu    = 1.804438e-06 + 6.750281e-11*mnk;
+            sigma = 2.663016e-07 + 2.111583e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 17: // node 8
-            mu    = 5.000922e-07 + 6.659126e-11*mnk;
-            sigma = 5.642580e-07 + 3.499616e-13*mnk;
+            mu    = 1.838500e-06 + 6.629657e-11*mnk;
+            sigma = 2.998226e-07 + 2.046241e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 18: // node 9
-            mu    = 5.145131e-07 + 6.640818e-11*mnk;
-            sigma = 5.899199e-07 + 3.755341e-13*mnk;
+            mu    = 1.917312e-06 + 6.645334e-11*mnk;
+            sigma = 3.490054e-07 + 2.026941e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 19: // node 9
-            mu    = 5.049606e-07 + 6.651080e-11*mnk;
-            sigma = 6.100888e-07 + 3.696837e-13*mnk;
+            mu    = 1.847000e-06 + 6.630077e-11*mnk;
+            sigma = 3.180082e-07 + 2.022967e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 20: // node 10
-            mu    = 5.222622e-07 + 6.646985e-11*mnk;
-            sigma = 6.697024e-07 + 3.154188e-13*mnk;
+            mu    = 1.761937e-06 + 6.662196e-11*mnk;
+            sigma = 2.238800e-07 + 2.087194e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 21: // node 10
-            mu    = 5.240088e-07 + 6.652910e-11*mnk;
-            sigma = 6.504793e-07 + 4.844305e-13*mnk;
+            mu    = 1.922875e-06 + 6.661536e-11*mnk;
+            sigma = 3.366890e-07 + 2.079113e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 22: // node 11
-            mu    = 5.027986e-07 + 6.629976e-11*mnk;
-            sigma = 5.948043e-07 + 2.949056e-13*mnk;
+            mu    = 1.861937e-06 + 6.622357e-11*mnk;
+            sigma = 4.185254e-07 + 2.031334e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 23: // node 11
-            mu    = 5.418981e-07 + 6.843232e-11*mnk;
-            sigma = 6.994459e-07 + 9.715857e-13*mnk;
+            mu    = 2.156563e-06 + 6.751946e-11*mnk;
+            sigma = 4.030012e-07 + 2.158426e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 24: // node 12
-            mu    = 5.221636e-07 + 6.650839e-11*mnk;
-            sigma = 6.667711e-07 + 3.785191e-13*mnk;
+            mu    = 2.022250e-06 + 6.649450e-11*mnk;
+            sigma = 2.922302e-07 + 2.064654e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 25: // node 12
-            mu    = 5.256128e-07 + 6.618461e-11*mnk;
-            sigma = 6.816091e-07 + 3.698915e-13*mnk;
+            mu    = 1.895062e-06 + 6.622475e-11*mnk;
+            sigma = 3.338113e-07 + 2.043099e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 26: // node 13
-            mu    = 5.855078e-07 + 7.722455e-11*mnk;
-            sigma = 7.573558e-07 + 5.779954e-12*mnk;
+            mu    = 1.946938e-06 + 6.712666e-11*mnk;
+            sigma = 2.636078e-07 + 2.126319e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 27: // node 13
-            mu    = 5.376643e-07 + 7.443085e-11*mnk;
-            sigma = 6.325493e-07 + 1.071472e-12*mnk;
+            mu    = 1.915750e-06 + 6.640446e-11*mnk;
+            sigma = 4.160324e-07 + 2.035143e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 28: // node 14
-            mu    = 5.881238e-07 + 7.635106e-11*mnk;
-            sigma = 7.646994e-07 + 1.784817e-12*mnk;
+            mu    = 1.888000e-06 + 6.721964e-11*mnk;
+            sigma = 3.060832e-07 + 2.146180e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 29: // node 14
-            mu    = 5.904366e-07 + 7.673308e-11*mnk;
-            sigma = 8.123613e-07 + 1.330621e-12*mnk;
+            mu    = 1.876250e-06 + 6.640571e-11*mnk;
+            sigma = 4.447404e-07 + 2.061288e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 30: // node 15
-            mu    = 5.996511e-07 + 8.247308e-11*mnk;
-            sigma = 7.189743e-07 + 2.723306e-12*mnk;
+            mu    = 2.027313e-06 + 7.105527e-11*mnk;
+            sigma = 3.439558e-07 + 2.162025e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 31: // node 15
-            mu    = 6.057865e-07 + 8.178337e-11*mnk;
-            sigma = 7.993320e-07 + 6.514866e-12*mnk;
+            mu    = 1.897313e-06 + 6.629775e-11*mnk;
+            sigma = 3.715223e-07 + 2.034065e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 32: // node 16
-            mu    = 5.791504e-07 + 7.785403e-11*mnk;
-            sigma = 7.046805e-07 + 1.569181e-12*mnk;
+            mu    = 1.805000e-06 + 6.843961e-11*mnk;
+            sigma = 1.983260e-07 + 2.140443e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 33: // node 16
-            mu    = 5.730520e-07 + 7.532983e-11*mnk;
-            sigma = 8.056982e-07 + 3.098430e-12*mnk;
+            mu    = 2.061687e-06 + 6.650259e-11*mnk;
+            sigma = 3.943524e-07 + 2.053045e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 34: // node 17
-            mu    = 5.290902e-07 + 6.935939e-11*mnk;
-            sigma = 6.040287e-07 + 1.113003e-12*mnk;
+            mu    = 1.927125e-06 + 7.088907e-11*mnk;
+            sigma = 2.357691e-07 + 2.149820e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 35: // node 17
-            mu    = 5.222500e-07 + 6.651865e-11*mnk;
-            sigma = 6.385465e-07 + 3.051929e-13*mnk;
+            mu    = 1.840500e-06 + 6.662498e-11*mnk;
+            sigma = 2.561754e-07 + 2.104414e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 36: // node 18
-            mu    = 5.446243e-07 + 6.904369e-11*mnk;
-            sigma = 7.242937e-07 + 9.096512e-13*mnk;
+            mu    = 2.027813e-06 + 7.018252e-11*mnk;
+            sigma = 3.002064e-07 + 2.134772e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 37: // node 18
-            mu    = 4.973578e-07 + 6.639897e-11*mnk;
-            sigma = 5.467784e-07 + 4.304195e-13*mnk;
+            mu    = 1.824375e-06 + 6.630521e-11*mnk;
+            sigma = 3.967755e-07 + 2.012848e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 38: // node 19
-            mu    = 5.089191e-07 + 6.665264e-11*mnk;
-            sigma = 5.694593e-07 + 4.120047e-13*mnk;
+            mu    = 1.970375e-06 + 6.682882e-11*mnk;
+            sigma = 2.644972e-07 + 2.120927e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 39: // node 19
-            mu    = 5.322644e-07 + 6.671212e-11*mnk;
-            sigma = 6.375594e-07 + 4.037225e-13*mnk;
+            mu    = 2.141750e-06 + 6.639155e-11*mnk;
+            sigma = 5.203626e-07 + 2.052522e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 40: // node 20
-            mu    = 5.020687e-07 + 6.669615e-11*mnk;
-            sigma = 5.396520e-07 + 3.786277e-13*mnk;
+            mu    = 1.865688e-06 + 6.725642e-11*mnk;
+            sigma = 2.772743e-07 + 2.117133e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 41: // node 20
-            mu    = 5.361672e-07 + 6.669128e-11*mnk;
-            sigma = 6.692976e-07 + 4.534718e-13*mnk;
+            mu    = 1.844062e-06 + 6.635935e-11*mnk;
+            sigma = 3.830493e-07 + 2.053453e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 42: // node 21
-            mu    = 5.300218e-07 + 6.666058e-11*mnk;
-            sigma = 6.927166e-07 + 5.976817e-13*mnk;
+            mu    = 1.899687e-06 + 6.811646e-11*mnk;
+            sigma = 2.948335e-07 + 2.168911e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 43: // node 21
-            mu    = 5.249067e-07 + 6.649016e-11*mnk;
-            sigma = 6.676958e-07 + 4.122023e-13*mnk;
+            mu    = 1.940625e-06 + 6.656142e-11*mnk;
+            sigma = 1.735386e-07 + 2.077141e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 44: // node 22
-            mu    = 5.165410e-07 + 6.655833e-11*mnk;
-            sigma = 5.997449e-07 + 4.313472e-13*mnk;
+            mu    = 1.919000e-06 + 6.667892e-11*mnk;
+            sigma = 2.798954e-07 + 2.096335e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 45: // node 22
-            mu    = 5.150627e-07 + 6.707265e-11*mnk;
-            sigma = 5.943844e-07 + 4.158497e-13*mnk;
+            mu    = 1.875250e-06 + 6.687615e-11*mnk;
+            sigma = 2.939988e-07 + 2.073643e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 46: // node 23
-            mu    = 5.039400e-07 + 6.663073e-11*mnk;
-            sigma = 5.998227e-07 + 2.945152e-13*mnk;
+            mu    = 1.888875e-06 + 6.666754e-11*mnk;
+            sigma = 3.385195e-07 + 2.090285e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 47: // node 23
-            mu    = 5.168232e-07 + 6.628401e-11*mnk;
-            sigma = 6.163759e-07 + 3.767985e-13*mnk;
+            mu    = 1.901437e-06 + 6.605016e-11*mnk;
+            sigma = 3.148678e-07 + 2.004616e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 48: // node 24
-            mu    = 5.151544e-07 + 6.677963e-11*mnk;
-            sigma = 5.993471e-07 + 3.876634e-13*mnk;
+            mu    = 1.881375e-06 + 6.668186e-11*mnk;
+            sigma = 2.714981e-07 + 2.086284e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 49: // node 24
-            mu    = 5.078540e-07 + 6.626634e-11*mnk;
-            sigma = 5.766558e-07 + 3.456476e-13*mnk;
+            mu    = 2.094625e-06 + 6.627112e-11*mnk;
+            sigma = 6.198059e-07 + 2.027162e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 50: // node 25
-            mu    = 5.451601e-07 + 7.176179e-11*mnk;
-            sigma = 6.490962e-07 + 9.213432e-13*mnk;
+            mu    = 2.032188e-06 + 7.135967e-11*mnk;
+            sigma = 3.254480e-07 + 2.154060e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 51: // node 25
-            mu    = 4.997062e-07 + 6.613779e-11*mnk;
-            sigma = 5.554807e-07 + 3.191015e-13*mnk;
+            mu    = 1.833188e-06 + 6.599957e-11*mnk;
+            sigma = 3.375893e-07 + 2.021207e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 52: // node 26
-            mu    = 5.143945e-07 + 6.676052e-11*mnk;
-            sigma = 5.757350e-07 + 3.737394e-13*mnk;
+            mu    = 1.880250e-06 + 6.647706e-11*mnk;
+            sigma = 2.736377e-07 + 2.051089e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 53: // node 26
-            mu    = 5.274588e-07 + 6.765515e-11*mnk;
-            sigma = 6.413720e-07 + 9.666468e-13*mnk;
+            mu    = 1.970313e-06 + 6.691876e-11*mnk;
+            sigma = 4.829437e-07 + 2.113398e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 54: // node 27
-            mu    = 5.258334e-07 + 6.739887e-11*mnk;
-            sigma = 6.297259e-07 + 5.794684e-13*mnk;
+            mu    = 1.980687e-06 + 6.674318e-11*mnk;
+            sigma = 2.983720e-07 + 2.099196e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 55: // node 27
-            mu    = 5.332343e-07 + 6.789129e-11*mnk;
-            sigma = 6.911383e-07 + 9.887092e-13*mnk;
+            mu    = 1.974188e-06 + 6.686199e-11*mnk;
+            sigma = 2.836010e-07 + 2.106967e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 56: // node 28
-            mu    = 5.429231e-07 + 6.940035e-11*mnk;
-            sigma = 6.893141e-07 + 1.059565e-12*mnk;
+            mu    = 1.977875e-06 + 6.869802e-11*mnk;
+            sigma = 2.558424e-07 + 2.147067e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 57: // node 28
-            mu    = 5.134762e-07 + 6.633054e-11*mnk;
-            sigma = 6.211102e-07 + 3.486190e-13*mnk;
+            mu    = 1.857938e-06 + 6.630950e-11*mnk;
+            sigma = 3.404247e-07 + 2.033643e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 58: // node 29
-            mu    = 5.167773e-07 + 6.636452e-11*mnk;
-            sigma = 6.069087e-07 + 3.766431e-13*mnk;
+            mu    = 1.896375e-06 + 6.652144e-11*mnk;
+            sigma = 2.431139e-07 + 2.075896e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 59: // node 29
-            mu    = 5.163550e-07 + 6.644597e-11*mnk;
-            sigma = 6.359725e-07 + 4.009133e-13*mnk;
+            mu    = 1.762000e-06 + 6.649413e-11*mnk;
+            sigma = 2.861419e-07 + 2.044431e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 60: // node 30
-            mu    = 5.174845e-07 + 6.641888e-11*mnk;
-            sigma = 6.391262e-07 + 5.524286e-13*mnk;
+            mu    = 1.794250e-06 + 6.628271e-11*mnk;
+            sigma = 3.752261e-07 + 2.032734e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 61: // node 30
-            mu    = 5.115994e-07 + 6.632651e-11*mnk;
-            sigma = 6.088435e-07 + 3.305459e-13*mnk;
+            mu    = 1.848187e-06 + 6.613762e-11*mnk;
+            sigma = 4.537737e-07 + 2.029401e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 62: // node 31
-            mu    = 5.186783e-07 + 6.638550e-11*mnk;
-            sigma = 5.830566e-07 + 4.824844e-13*mnk;
+            mu    = 1.764000e-06 + 6.657323e-11*mnk;
+            sigma = 2.465163e-07 + 2.050375e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 63: // node 31
-            mu    = 5.122672e-07 + 6.649479e-11*mnk;
-            sigma = 5.925127e-07 + 4.038332e-13*mnk;
+            mu    = 1.943188e-06 + 6.653508e-11*mnk;
+            sigma = 3.981035e-07 + 2.078539e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 64: // node 32
-            mu    = 5.136935e-07 + 6.611778e-11*mnk;
-            sigma = 5.761126e-07 + 4.115257e-13*mnk;
+            mu    = 1.809313e-06 + 6.626337e-11*mnk;
+            sigma = 3.340864e-07 + 2.032057e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 65: // node 32
-            mu    = 5.062397e-07 + 6.628275e-11*mnk;
-            sigma = 5.601277e-07 + 3.177925e-13*mnk;
+            mu    = 1.880875e-06 + 6.621148e-11*mnk;
+            sigma = 3.672168e-07 + 2.008040e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
         default:
-            mu    = 5.198703e-07 + 6.707309e-11*mnk;
-            sigma = 6.195940e-07 + 5.568865e-13*mnk;
+            mu    = 1.901050e-06 + 6.710598e-11*mnk;
+            sigma = 3.266040e-07 + 2.082146e-12*mnk;
             return mu + random_halfnormal_shifted(0, sigma);
     }
     return 0;
