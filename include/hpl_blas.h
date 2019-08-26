@@ -225,10 +225,6 @@ static double dtrsm_intercept = -1;
 })
 #define HPL_dtrsm(layout, Side, Uplo, TransA, Diag, M, N, alpha, A, lda, B, ldb) ({\
     timestamp_t start = get_timestamp();\
-    if(dtrsm_coefficient < 0 || dtrsm_intercept < 0) {\
-        dtrsm_coefficient = get_param("SMPI_DTRSM_COEFFICIENT");\
-        dtrsm_intercept = get_param("SMPI_DTRSM_INTERCEPT");\
-    }\
     double expected_time;\
     double size=-1;\
     if((Side) == HplLeft) {\
