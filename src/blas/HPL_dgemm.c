@@ -225,264 +225,584 @@ double dgemm_time(double M, double N, double K) {
     double mu, sigma;
     switch(get_cpuid()) {
         case 2: // node 1
-            mu    = 2.031875e-06 + 6.919787e-11*mnk + 1.894452e-10*mn + 1.957824e-09*mk + 3.059798e-09*nk;
-            sigma = 3.568280e-07 + 6.546626e-13*mnk + 3.490725e-12*mn + 1.151553e-11*mk + 5.660122e-11*nk;
+            mu    = 1.920706e-06 + 2.725859e-09*mk + 6.135157e-10*mn + 5.670235e-11*mnk + 4.420071e-09*nk;
+            sigma = 2.307468e-07 + 3.819801e-11*mk + 1.952596e-11*mn + 2.932509e-14*mnk + 3.407333e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 3: // node 1
-            mu    = 1.823625e-06 + 6.479946e-11*mnk + 1.793597e-10*mn + 1.830960e-09*mk + 3.183051e-09*nk;
-            sigma = 2.867134e-07 + 2.095819e-13*mnk + 5.485074e-12*mn + 3.488718e-11*mk + 3.129052e-11*nk;
+            mu    = 1.887630e-06 + 2.705612e-09*mk + 6.058066e-10*mn + 5.670967e-11*mnk + 4.394546e-09*nk;
+            sigma = 2.279908e-07 + 6.287517e-11*mk + 2.758403e-11*mn + 3.292636e-14*mnk + 7.955969e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 4: // node 2
-            mu    = 1.793563e-06 + 6.774704e-11*mnk + 1.774582e-10*mn + 1.938141e-09*mk + 3.001103e-09*nk;
-            sigma = 2.294533e-07 + 9.302963e-13*mnk + -1.058776e-12*mn + 1.914962e-11*mk + 4.256655e-11*nk;
+            mu    = 1.950269e-06 + 2.706446e-09*mk + 6.070946e-10*mn + 5.669854e-11*mnk + 4.392050e-09*nk;
+            sigma = 2.414690e-07 + 6.984441e-11*mk + 2.846902e-11*mn + 3.357951e-14*mnk + 8.578821e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 5: // node 2
-            mu    = 2.039063e-06 + 6.470399e-11*mnk + 1.835837e-10*mn + 1.821377e-09*mk + 3.190992e-09*nk;
-            sigma = 4.459159e-07 + 1.710315e-13*mnk + 1.579534e-11*mn + 2.760985e-11*mk + 3.029784e-11*nk;
+            mu    = 1.869491e-06 + 2.698235e-09*mk + 6.052865e-10*mn + 5.668332e-11*mnk + 4.378333e-09*nk;
+            sigma = 2.222736e-07 + 9.254787e-11*mk + 4.264450e-11*mn + 4.267720e-14*mnk + 1.321826e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 6: // node 3
-            mu    = 1.959375e-06 + 6.661109e-11*mnk + 1.764182e-10*mn + 1.916735e-09*mk + 3.100890e-09*nk;
-            sigma = 2.402006e-07 + 7.941621e-13*mnk + 1.217797e-12*mn + 1.612409e-11*mk + 1.541685e-11*nk;
+            mu    = 1.948711e-06 + 2.727051e-09*mk + 6.153261e-10*mn + 5.669153e-11*mnk + 4.421226e-09*nk;
+            sigma = 2.317713e-07 + 2.753851e-11*mk + 1.619755e-11*mn + 2.065736e-14*mnk + 1.965521e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 7: // node 3
-            mu    = 1.847375e-06 + 6.463682e-11*mnk + 1.764626e-10*mn + 1.797731e-09*mk + 3.131726e-09*nk;
-            sigma = 3.594620e-07 + 1.994159e-13*mnk + 1.555055e-12*mn + 2.090426e-11*mk + 2.464432e-11*nk;
+            mu    = 1.855512e-06 + 2.712284e-09*mk + 6.089147e-10*mn + 5.670728e-11*mnk + 4.403437e-09*nk;
+            sigma = 2.012789e-07 + 4.844793e-11*mk + 2.468433e-11*mn + 2.801854e-14*mnk + 5.364372e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 8: // node 4
-            mu    = 1.998187e-06 + 6.474189e-11*mnk + 1.824372e-10*mn + 1.811525e-09*mk + 3.143610e-09*nk;
-            sigma = 3.049520e-07 + 2.106099e-13*mnk + 8.917642e-12*mn + 2.398301e-11*mk + 2.528166e-11*nk;
+            mu    = 1.934426e-06 + 2.715745e-09*mk + 6.128094e-10*mn + 5.670998e-11*mnk + 4.407961e-09*nk;
+            sigma = 2.242818e-07 + 5.427509e-11*mk + 2.431847e-11*mn + 2.865003e-14*mnk + 5.928664e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 9: // node 4
-            mu    = 1.817000e-06 + 6.481249e-11*mnk + 1.785609e-10*mn + 1.806540e-09*mk + 3.135141e-09*nk;
-            sigma = 3.134492e-07 + 2.072184e-13*mnk + 8.829644e-13*mn + 2.808735e-11*mk + 2.638956e-11*nk;
+            mu    = 1.885227e-06 + 2.714240e-09*mk + 6.114392e-10*mn + 5.669571e-11*mnk + 4.408306e-09*nk;
+            sigma = 2.324742e-07 + 4.777760e-11*mk + 2.651458e-11*mn + 2.750099e-14*mnk + 5.256685e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 10: // node 5
-            mu    = 1.820687e-06 + 6.705632e-11*mnk + 1.894869e-10*mn + 1.946019e-09*mk + 3.075501e-09*nk;
-            sigma = 2.678372e-07 + 7.033274e-13*mnk + 4.570862e-12*mn + 3.233506e-11*mk + 3.230984e-11*nk;
+            mu    = 1.932120e-06 + 2.718976e-09*mk + 6.164016e-10*mn + 5.670671e-11*mnk + 4.412873e-09*nk;
+            sigma = 2.374500e-07 + 4.638788e-11*mk + 2.138970e-11*mn + 3.261918e-14*mnk + 5.023944e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 11: // node 5
-            mu    = 1.947375e-06 + 6.448573e-11*mnk + 1.862013e-10*mn + 1.756690e-09*mk + 3.062519e-09*nk;
-            sigma = 3.068313e-07 + 2.164357e-13*mnk + 4.195734e-12*mn + 2.529380e-11*mk + 2.894407e-11*nk;
+            mu    = 1.895676e-06 + 2.715419e-09*mk + 6.081014e-10*mn + 5.671280e-11*mnk + 4.406977e-09*nk;
+            sigma = 2.442500e-07 + 4.706232e-11*mk + 2.197807e-11*mn + 2.952676e-14*mnk + 5.205191e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 12: // node 6
-            mu    = 1.713125e-06 + 6.708489e-11*mnk + 1.828127e-10*mn + 1.940450e-09*mk + 3.026592e-09*nk;
-            sigma = 3.035692e-07 + 7.542549e-13*mnk + 3.441705e-12*mn + 1.852717e-11*mk + 3.062344e-11*nk;
+            mu    = 1.862565e-06 + 2.715319e-09*mk + 6.075288e-10*mn + 5.669460e-11*mnk + 4.408910e-09*nk;
+            sigma = 2.291848e-07 + 4.717645e-11*mk + 1.857311e-11*mn + 3.289645e-14*mnk + 5.638879e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 13: // node 6
-            mu    = 1.699313e-06 + 6.420634e-11*mnk + 1.880559e-10*mn + 1.742905e-09*mk + 3.115455e-09*nk;
-            sigma = 3.698865e-07 + 1.329991e-13*mnk + 1.889689e-12*mn + 2.289241e-11*mk + 2.447070e-11*nk;
+            mu    = 1.913481e-06 + 2.705180e-09*mk + 6.030422e-10*mn + 5.670778e-11*mnk + 4.398764e-09*nk;
+            sigma = 2.278779e-07 + 5.759927e-11*mk + 2.457283e-11*mn + 3.954850e-14*mnk + 7.239593e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 14: // node 7
-            mu    = 1.886312e-06 + 6.468654e-11*mnk + 1.800674e-10*mn + 1.832612e-09*mk + 3.179120e-09*nk;
-            sigma = 2.518608e-07 + 1.699576e-13*mnk + 3.179885e-12*mn + 2.565463e-11*mk + 3.214284e-11*nk;
+            mu    = 1.902472e-06 + 2.706026e-09*mk + 6.097172e-10*mn + 5.668807e-11*mnk + 4.390366e-09*nk;
+            sigma = 2.403094e-07 + 8.000297e-11*mk + 3.628487e-11*mn + 3.985617e-14*mnk + 1.059955e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 15: // node 7
-            mu    = 1.796812e-06 + 6.435848e-11*mnk + 1.856477e-10*mn + 1.720842e-09*mk + 3.073904e-09*nk;
-            sigma = 3.626939e-07 + 1.829955e-13*mnk + 2.203707e-12*mn + 1.879176e-11*mk + 2.035166e-11*nk;
+            mu    = 1.885164e-06 + 2.701479e-09*mk + 6.036106e-10*mn + 5.670548e-11*mnk + 4.385622e-09*nk;
+            sigma = 2.243023e-07 + 7.991319e-11*mk + 3.541987e-11*mn + 4.459534e-14*mnk + 1.062360e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 16: // node 8
-            mu    = 1.804438e-06 + 6.569211e-11*mnk + 2.018187e-10*mn + 1.868968e-09*mk + 3.090713e-09*nk;
-            sigma = 2.663016e-07 + 6.413282e-13*mnk + 6.523818e-12*mn + 2.301578e-11*mk + 3.021082e-12*nk;
+            mu    = 1.871708e-06 + 2.707646e-09*mk + 6.068004e-10*mn + 5.672451e-11*mnk + 4.392900e-09*nk;
+            sigma = 2.329226e-07 + 6.614114e-11*mk + 2.321142e-11*mn + 3.382509e-14*mnk + 8.643419e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 17: // node 8
-            mu    = 1.838500e-06 + 6.451100e-11*mnk + 1.848484e-10*mn + 1.782762e-09*mk + 3.130368e-09*nk;
-            sigma = 2.998226e-07 + 1.838364e-13*mnk + 4.468914e-12*mn + 2.228399e-11*mk + 2.692329e-11*nk;
+            mu    = 1.927280e-06 + 2.720178e-09*mk + 6.119683e-10*mn + 5.671810e-11*mnk + 4.416377e-09*nk;
+            sigma = 2.394787e-07 + 3.800090e-11*mk + 1.989680e-11*mn + 2.294893e-14*mnk + 3.688772e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 18: // node 9
-            mu    = 1.917312e-06 + 6.470338e-11*mnk + 1.846905e-10*mn + 1.788500e-09*mk + 3.091349e-09*nk;
-            sigma = 3.490054e-07 + 1.821914e-13*mnk + 2.405213e-12*mn + 2.555409e-11*mk + 3.335459e-11*nk;
+            mu    = 1.876484e-06 + 2.714920e-09*mk + 6.113282e-10*mn + 5.670705e-11*mnk + 4.403605e-09*nk;
+            sigma = 2.297661e-07 + 6.167638e-11*mk + 2.583711e-11*mn + 2.470829e-14*mnk + 7.749450e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 19: // node 9
-            mu    = 1.847000e-06 + 6.456668e-11*mnk + 1.829354e-10*mn + 1.775471e-09*mk + 3.084816e-09*nk;
-            sigma = 3.180082e-07 + 1.891671e-13*mnk + 2.728627e-12*mn + 1.914810e-11*mk + 2.859961e-11*nk;
+            mu    = 1.886650e-06 + 2.712276e-09*mk + 6.143693e-10*mn + 5.669198e-11*mnk + 4.402077e-09*nk;
+            sigma = 2.250603e-07 + 6.082408e-11*mk + 2.930420e-11*mn + 2.322688e-14*mnk + 7.598976e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 20: // node 10
-            mu    = 1.761937e-06 + 6.477195e-11*mnk + 1.855436e-10*mn + 1.821154e-09*mk + 3.179540e-09*nk;
-            sigma = 2.238800e-07 + 1.737691e-13*mnk + 8.993402e-12*mn + 2.347787e-11*mk + 2.859278e-11*nk;
+            mu    = 1.924947e-06 + 2.723635e-09*mk + 6.176081e-10*mn + 5.670487e-11*mnk + 4.421637e-09*nk;
+            sigma = 2.328078e-07 + 3.505035e-11*mk + 1.875443e-11*mn + 2.968472e-14*mnk + 3.396515e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 21: // node 10
-            mu    = 1.922875e-06 + 6.479865e-11*mnk + 1.770054e-10*mn + 1.813126e-09*mk + 3.159407e-09*nk;
-            sigma = 3.366890e-07 + 1.816816e-13*mnk + 4.338806e-12*mn + 2.668150e-11*mk + 3.678854e-11*nk;
+            mu    = 1.897461e-06 + 2.704222e-09*mk + 6.053472e-10*mn + 5.671046e-11*mnk + 4.396249e-09*nk;
+            sigma = 2.392551e-07 + 7.104717e-11*mk + 3.024342e-11*mn + 3.562971e-14*mnk + 9.009846e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 22: // node 11
-            mu    = 1.861937e-06 + 6.447836e-11*mnk + 1.815856e-10*mn + 1.771325e-09*mk + 3.098444e-09*nk;
-            sigma = 4.185254e-07 + 1.938070e-13*mnk + 1.537229e-12*mn + 2.329886e-11*mk + 2.229895e-11*nk;
+            mu    = 1.895319e-06 + 2.719426e-09*mk + 6.152623e-10*mn + 5.669265e-11*mnk + 4.415522e-09*nk;
+            sigma = 2.260287e-07 + 4.493692e-11*mk + 2.330992e-11*mn + 3.378032e-14*mnk + 5.020119e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 23: // node 11
-            mu    = 2.156563e-06 + 6.570887e-11*mnk + 1.694949e-10*mn + 1.898300e-09*mk + 3.101271e-09*nk;
-            sigma = 4.030012e-07 + 6.282040e-13*mnk + 5.396304e-13*mn + 3.475840e-11*mk + 8.167141e-12*nk;
+            mu    = 1.865354e-06 + 2.697095e-09*mk + 6.041174e-10*mn + 5.669703e-11*mnk + 4.382192e-09*nk;
+            sigma = 2.215312e-07 + 9.170886e-11*mk + 3.729793e-11*mn + 3.851437e-14*mnk + 1.292127e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 24: // node 12
-            mu    = 2.022250e-06 + 6.469280e-11*mnk + 1.857814e-10*mn + 1.800993e-09*mk + 3.138911e-09*nk;
-            sigma = 2.922302e-07 + 1.848088e-13*mnk + 8.117540e-12*mn + 2.387615e-11*mk + 2.887370e-11*nk;
+            mu    = 1.907576e-06 + 2.719012e-09*mk + 6.120470e-10*mn + 5.669864e-11*mnk + 4.412049e-09*nk;
+            sigma = 2.445912e-07 + 4.735191e-11*mk + 2.306978e-11*mn + 2.685373e-14*mnk + 5.366969e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 25: // node 12
-            mu    = 1.895062e-06 + 6.447220e-11*mnk + 1.785727e-10*mn + 1.761633e-09*mk + 3.116495e-09*nk;
-            sigma = 3.338113e-07 + 2.172739e-13*mnk + 4.419396e-12*mn + 2.463158e-11*mk + 2.695258e-11*nk;
+            mu    = 1.883954e-06 + 2.706609e-09*mk + 6.078908e-10*mn + 5.669386e-11*mnk + 4.393487e-09*nk;
+            sigma = 2.464341e-07 + 7.212046e-11*mk + 3.217446e-11*mn + 2.640438e-14*mnk + 9.497405e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 26: // node 13
-            mu    = 1.946938e-06 + 6.525883e-11*mnk + 1.877887e-10*mn + 1.868990e-09*mk + 3.163174e-09*nk;
-            sigma = 2.636078e-07 + 4.638386e-13*mnk + 6.017135e-12*mn + 3.442548e-11*mk + 6.810535e-12*nk;
+            mu    = 1.898725e-06 + 2.724537e-09*mk + 6.149651e-10*mn + 5.669619e-11*mnk + 4.417265e-09*nk;
+            sigma = 2.525347e-07 + 3.893779e-11*mk + 2.036006e-11*mn + 2.183424e-14*mnk + 3.593404e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 27: // node 13
-            mu    = 1.915750e-06 + 6.461585e-11*mnk + 1.910115e-10*mn + 1.802216e-09*mk + 3.116125e-09*nk;
-            sigma = 4.160324e-07 + 1.383615e-13*mnk + 6.492119e-12*mn + 2.946518e-11*mk + 3.494893e-11*nk;
+            mu    = 1.927664e-06 + 2.719273e-09*mk + 6.119252e-10*mn + 5.671673e-11*mnk + 4.412973e-09*nk;
+            sigma = 2.336985e-07 + 4.005228e-11*mk + 2.173311e-11*mn + 1.644343e-14*mnk + 4.142709e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 28: // node 14
-            mu    = 1.888000e-06 + 6.537768e-11*mnk + 1.864690e-10*mn + 1.875896e-09*mk + 3.131536e-09*nk;
-            sigma = 3.060832e-07 + 5.750957e-13*mnk + 3.680653e-12*mn + 2.101870e-11*mk + -1.092789e-12*nk;
+            mu    = 1.939646e-06 + 2.720850e-09*mk + 6.130993e-10*mn + 5.669571e-11*mnk + 4.416221e-09*nk;
+            sigma = 2.416626e-07 + 4.540853e-11*mk + 2.247863e-11*mn + 3.424767e-14*mnk + 4.989955e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 29: // node 14
-            mu    = 1.876250e-06 + 6.461061e-11*mnk + 1.820832e-10*mn + 1.808254e-09*mk + 3.121687e-09*nk;
-            sigma = 4.447404e-07 + 1.892946e-13*mnk + 3.545912e-12*mn + 3.104860e-11*mk + 2.832664e-11*nk;
+            mu    = 1.893868e-06 + 2.723296e-09*mk + 6.151683e-10*mn + 5.669865e-11*mnk + 4.415781e-09*nk;
+            sigma = 2.352773e-07 + 3.788123e-11*mk + 1.951612e-11*mn + 2.341041e-14*mnk + 3.630120e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 30: // node 15
-            mu    = 2.027313e-06 + 6.929758e-11*mnk + 1.922304e-10*mn + 1.948290e-09*mk + 3.141456e-09*nk;
-            sigma = 3.439558e-07 + 5.432291e-13*mnk + -5.454007e-13*mn + 2.034084e-11*mk + 5.456848e-11*nk;
+            mu    = 1.878576e-06 + 2.722005e-09*mk + 6.138975e-10*mn + 5.669555e-11*mnk + 4.414045e-09*nk;
+            sigma = 2.392584e-07 + 4.477390e-11*mk + 2.485462e-11*mn + 3.378944e-14*mnk + 4.946738e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 31: // node 15
-            mu    = 1.897313e-06 + 6.453426e-11*mnk + 1.843830e-10*mn + 1.780865e-09*mk + 3.107970e-09*nk;
-            sigma = 3.715223e-07 + 1.996895e-13*mnk + 2.746758e-12*mn + 3.419336e-11*mk + 2.789535e-11*nk;
+            mu    = 1.918641e-06 + 2.707463e-09*mk + 6.063423e-10*mn + 5.672054e-11*mnk + 4.399950e-09*nk;
+            sigma = 2.413315e-07 + 5.620384e-11*mk + 2.735850e-11*mn + 1.628087e-14*mnk + 6.805498e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 32: // node 16
-            mu    = 1.805000e-06 + 6.668373e-11*mnk + 1.963515e-10*mn + 1.902175e-09*mk + 3.055625e-09*nk;
-            sigma = 1.983260e-07 + 7.795085e-13*mnk + -1.877178e-13*mn + 1.898083e-11*mk + 2.763580e-11*nk;
+            mu    = 1.881806e-06 + 2.723875e-09*mk + 6.178082e-10*mn + 5.671116e-11*mnk + 4.420583e-09*nk;
+            sigma = 2.374260e-07 + 3.643894e-11*mk + 1.935298e-11*mn + 2.864269e-14*mnk + 3.552435e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 33: // node 16
-            mu    = 2.061687e-06 + 6.471312e-11*mnk + 1.845531e-10*mn + 1.828339e-09*mk + 3.097299e-09*nk;
-            sigma = 3.943524e-07 + 2.342175e-13*mnk + 1.423471e-12*mn + 3.001454e-11*mk + 2.359264e-11*nk;
+            mu    = 1.894875e-06 + 2.708836e-09*mk + 6.087423e-10*mn + 5.669359e-11*mnk + 4.396711e-09*nk;
+            sigma = 2.328593e-07 + 6.921612e-11*mk + 3.191381e-11*mn + 4.105096e-14*mnk + 8.652871e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 34: // node 17
-            mu    = 1.927125e-06 + 6.918716e-11*mnk + 1.856543e-10*mn + 1.951536e-09*mk + 3.074791e-09*nk;
-            sigma = 2.357691e-07 + 6.183317e-13*mnk + -1.695110e-12*mn + 9.921222e-12*mk + 5.907562e-11*nk;
+            mu    = 1.897231e-06 + 2.731949e-09*mk + 6.182256e-10*mn + 5.669974e-11*mnk + 4.424907e-09*nk;
+            sigma = 2.151565e-07 + 2.690814e-11*mk + 1.639295e-11*mn + 2.136001e-14*mnk + 1.703962e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 35: // node 17
-            mu    = 1.840500e-06 + 6.475463e-11*mnk + 1.927742e-10*mn + 1.831524e-09*mk + 3.180327e-09*nk;
-            sigma = 2.561754e-07 + 2.190658e-13*mnk + 2.123358e-11*mn + 3.975663e-11*mk + 3.633289e-11*nk;
+            mu    = 1.882014e-06 + 2.705613e-09*mk + 6.044872e-10*mn + 5.670653e-11*mnk + 4.392877e-09*nk;
+            sigma = 2.196792e-07 + 7.438905e-11*mk + 3.062409e-11*mn + 2.476248e-14*mnk + 9.703095e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 36: // node 18
-            mu    = 2.027813e-06 + 6.846164e-11*mnk + 1.897923e-10*mn + 1.946888e-09*mk + 3.061945e-09*nk;
-            sigma = 3.002064e-07 + 6.535486e-13*mnk + 1.534159e-12*mn + 2.021704e-11*mk + 4.761329e-11*nk;
+            mu    = 1.870854e-06 + 2.727205e-09*mk + 6.163998e-10*mn + 5.669247e-11*mnk + 4.422025e-09*nk;
+            sigma = 2.288106e-07 + 3.709047e-11*mk + 1.844526e-11*mn + 2.493683e-14*mnk + 3.694847e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 37: // node 18
-            mu    = 1.824375e-06 + 6.456765e-11*mnk + 1.900092e-10*mn + 1.774452e-09*mk + 3.080977e-09*nk;
-            sigma = 3.967755e-07 + 1.613003e-13*mnk + 7.973807e-12*mn + 3.017221e-11*mk + 3.535747e-11*nk;
+            mu    = 1.937782e-06 + 2.716580e-09*mk + 6.124036e-10*mn + 5.670583e-11*mnk + 4.408750e-09*nk;
+            sigma = 2.435029e-07 + 5.075269e-11*mk + 2.219622e-11*mn + 2.246202e-14*mnk + 5.689918e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 38: // node 19
-            mu    = 1.970375e-06 + 6.494850e-11*mnk + 1.920121e-10*mn + 1.865684e-09*mk + 3.167318e-09*nk;
-            sigma = 2.644972e-07 + 3.289898e-13*mnk + 3.262568e-12*mn + 3.674321e-11*mk + 2.242468e-11*nk;
+            mu    = 1.958897e-06 + 2.718765e-09*mk + 6.095301e-10*mn + 5.682796e-11*mnk + 4.396082e-09*nk;
+            sigma = 2.338462e-07 + 3.781502e-11*mk + 2.056522e-11*mn + 3.698859e-14*mnk + 3.646371e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 39: // node 19
-            mu    = 2.141750e-06 + 6.461223e-11*mnk + 1.806515e-10*mn + 1.815777e-09*mk + 3.100431e-09*nk;
-            sigma = 5.203626e-07 + 1.694313e-13*mnk + 5.948582e-12*mn + 2.917513e-11*mk + 3.102934e-11*nk;
+            mu    = 1.903088e-06 + 2.707518e-09*mk + 5.999742e-10*mn + 5.676448e-11*mnk + 4.385741e-09*nk;
+            sigma = 2.197380e-07 + 6.020179e-11*mk + 2.853776e-11*mn + 3.383798e-14*mnk + 7.632710e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 40: // node 20
-            mu    = 1.865688e-06 + 6.545990e-11*mnk + 1.775456e-10*mn + 1.873070e-09*mk + 3.093043e-09*nk;
-            sigma = 2.772743e-07 + 5.494137e-13*mnk + 3.727996e-12*mn + 2.842684e-11*mk + 3.715435e-12*nk;
+            mu    = 1.905081e-06 + 2.703730e-09*mk + 6.049936e-10*mn + 5.669376e-11*mnk + 4.385142e-09*nk;
+            sigma = 2.405159e-07 + 8.945173e-11*mk + 3.903439e-11*mn + 4.518541e-14*mnk + 1.241346e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 41: // node 20
-            mu    = 1.844062e-06 + 6.457189e-11*mnk + 1.765124e-10*mn + 1.793335e-09*mk + 3.132016e-09*nk;
-            sigma = 3.830493e-07 + 2.143595e-13*mnk + -5.900886e-13*mn + 2.196805e-11*mk + 2.230576e-11*nk;
+            mu    = 1.900877e-06 + 2.721216e-09*mk + 6.150117e-10*mn + 5.670207e-11*mnk + 4.414276e-09*nk;
+            sigma = 2.362510e-07 + 3.927819e-11*mk + 2.246089e-11*mn + 2.068631e-14*mnk + 3.695693e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 42: // node 21
-            mu    = 1.899687e-06 + 6.633246e-11*mnk + 1.823384e-10*mn + 1.934606e-09*mk + 3.045230e-09*nk;
-            sigma = 2.948335e-07 + 7.421231e-13*mnk + 3.267378e-12*mn + 1.649370e-11*mk + 3.111276e-12*nk;
+            mu    = 2.036896e-06 + 2.708216e-09*mk + 6.126964e-10*mn + 5.709169e-11*mnk + 4.386165e-09*nk;
+            sigma = 2.382824e-07 + 6.550238e-11*mk + 2.862876e-11*mn + 7.278683e-14*mnk + 8.310319e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 43: // node 21
-            mu    = 1.940625e-06 + 6.475003e-11*mnk + 1.823388e-10*mn + 1.810218e-09*mk + 3.145768e-09*nk;
-            sigma = 1.735386e-07 + 1.882534e-13*mnk + 6.707123e-12*mn + 2.474575e-11*mk + 3.197115e-11*nk;
+            mu    = 1.874995e-06 + 2.697369e-09*mk + 6.006641e-10*mn + 5.676125e-11*mnk + 4.383113e-09*nk;
+            sigma = 2.481845e-07 + 8.891891e-11*mk + 3.640857e-11*mn + 3.731432e-14*mnk + 1.227079e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 44: // node 22
-            mu    = 1.919000e-06 + 6.483385e-11*mnk + 1.807678e-10*mn + 1.830860e-09*mk + 3.168339e-09*nk;
-            sigma = 2.798954e-07 + 2.693333e-13*mnk + 5.173278e-12*mn + 3.026642e-11*mk + 2.443786e-11*nk;
+            mu    = 1.924771e-06 + 2.731042e-09*mk + 6.178840e-10*mn + 5.670739e-11*mnk + 4.425973e-09*nk;
+            sigma = 2.443419e-07 + 2.730660e-11*mk + 1.446454e-11*mn + 2.178005e-14*mnk + 1.810482e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 45: // node 22
-            mu    = 1.875250e-06 + 6.506807e-11*mnk + 1.851101e-10*mn + 1.817828e-09*mk + 3.148130e-09*nk;
-            sigma = 2.939988e-07 + 2.578584e-13*mnk + 1.082036e-11*mn + 2.882633e-11*mk + 2.512614e-11*nk;
+            mu    = 1.919322e-06 + 2.722726e-09*mk + 6.144909e-10*mn + 5.670418e-11*mnk + 4.416999e-09*nk;
+            sigma = 2.322999e-07 + 2.732499e-11*mk + 1.670010e-11*mn + 1.969793e-14*mnk + 1.794393e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 46: // node 23
-            mu    = 1.888875e-06 + 6.480356e-11*mnk + 1.900429e-10*mn + 1.840601e-09*mk + 3.170487e-09*nk;
-            sigma = 3.385195e-07 + 2.459952e-13*mnk + 3.035029e-12*mn + 2.264050e-11*mk + 2.355389e-11*nk;
+            mu    = 1.911187e-06 + 2.711560e-09*mk + 6.131393e-10*mn + 5.668691e-11*mnk + 4.401086e-09*nk;
+            sigma = 2.360715e-07 + 5.937826e-11*mk + 2.689745e-11*mn + 2.893081e-14*mnk + 7.327680e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 47: // node 23
-            mu    = 1.901437e-06 + 6.434747e-11*mnk + 1.830547e-10*mn + 1.746030e-09*mk + 3.068161e-09*nk;
-            sigma = 3.148678e-07 + 1.557446e-13*mnk + 6.254224e-12*mn + 2.339877e-11*mk + 3.333573e-11*nk;
+            mu    = 1.865384e-06 + 2.724238e-09*mk + 6.152294e-10*mn + 5.671321e-11*mnk + 4.424378e-09*nk;
+            sigma = 2.220855e-07 + 2.754952e-11*mk + 1.706113e-11*mn + 2.022079e-14*mnk + 1.876936e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 48: // node 24
-            mu    = 1.881375e-06 + 6.485936e-11*mnk + 1.847761e-10*mn + 1.815567e-09*mk + 3.157869e-09*nk;
-            sigma = 2.714981e-07 + 2.016489e-13*mnk + 1.018895e-11*mn + 3.048033e-11*mk + 2.878991e-11*nk;
+            mu    = 1.904234e-06 + 2.711768e-09*mk + 6.101231e-10*mn + 5.669669e-11*mnk + 4.398196e-09*nk;
+            sigma = 2.510465e-07 + 6.574323e-11*mk + 3.314970e-11*mn + 5.088368e-14*mnk + 8.987711e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 49: // node 24
-            mu    = 2.094625e-06 + 6.454334e-11*mnk + 1.819293e-10*mn + 1.771843e-09*mk + 3.082092e-09*nk;
-            sigma = 6.198059e-07 + 1.362692e-13*mnk + 7.659468e-12*mn + 2.986360e-11*mk + 3.252807e-11*nk;
+            mu    = 1.885525e-06 + 2.714160e-09*mk + 6.092265e-10*mn + 5.670450e-11*mnk + 4.411087e-09*nk;
+            sigma = 2.285639e-07 + 5.318812e-11*mk + 2.482290e-11*mn + 2.896387e-14*mnk + 5.869807e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 50: // node 25
-            mu    = 2.032188e-06 + 6.961552e-11*mnk + 2.129481e-10*mn + 1.960147e-09*mk + 3.104120e-09*nk;
-            sigma = 3.254480e-07 + 6.309041e-13*mnk + 2.279188e-12*mn + 1.972113e-11*mk + 5.946323e-11*nk;
+            mu    = 1.909718e-06 + 2.716573e-09*mk + 6.072186e-10*mn + 5.670564e-11*mnk + 4.392506e-09*nk;
+            sigma = 2.466478e-07 + 5.811632e-11*mk + 2.911246e-11*mn + 4.447138e-14*mnk + 7.472041e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 51: // node 25
-            mu    = 1.833188e-06 + 6.424904e-11*mnk + 1.879407e-10*mn + 1.734425e-09*mk + 3.124894e-09*nk;
-            sigma = 3.375893e-07 + 1.355014e-13*mnk + 5.629758e-12*mn + 2.100043e-11*mk + 2.561372e-11*nk;
+            mu    = 1.892946e-06 + 2.698435e-09*mk + 5.973497e-10*mn + 5.673092e-11*mnk + 4.368839e-09*nk;
+            sigma = 2.371654e-07 + 8.157661e-11*mk + 3.225617e-11*mn + 3.015695e-14*mnk + 1.115735e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 52: // node 26
-            mu    = 1.880250e-06 + 6.467900e-11*mnk + 1.861967e-10*mn + 1.818913e-09*mk + 3.112147e-09*nk;
-            sigma = 2.736377e-07 + 2.074884e-13*mnk + 6.304114e-12*mn + 2.695679e-11*mk + 2.317838e-11*nk;
+            mu    = 1.850664e-06 + 2.724825e-09*mk + 6.143635e-10*mn + 5.668903e-11*mnk + 4.418161e-09*nk;
+            sigma = 2.267901e-07 + 3.527565e-11*mk + 2.014481e-11*mn + 2.844389e-14*mnk + 3.321849e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 53: // node 26
-            mu    = 1.970313e-06 + 6.504954e-11*mnk + 1.947658e-10*mn + 1.858818e-09*mk + 3.161671e-09*nk;
-            sigma = 4.829437e-07 + 4.090640e-13*mnk + 6.153819e-12*mn + 3.070785e-11*mk + 4.566329e-12*nk;
+            mu    = 1.945968e-06 + 2.718538e-09*mk + 6.118655e-10*mn + 5.672092e-11*mnk + 4.408394e-09*nk;
+            sigma = 2.415751e-07 + 4.998107e-11*mk + 2.460588e-11*mn + 2.371669e-14*mnk + 5.526109e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 54: // node 27
-            mu    = 1.980687e-06 + 6.489013e-11*mnk + 1.833492e-10*mn + 1.859267e-09*mk + 3.144332e-09*nk;
-            sigma = 2.983720e-07 + 3.012809e-13*mnk + 9.325486e-12*mn + 3.245553e-11*mk + 1.813336e-11*nk;
+            mu    = 1.939458e-06 + 2.716514e-09*mk + 6.133014e-10*mn + 5.670191e-11*mnk + 4.406144e-09*nk;
+            sigma = 2.246002e-07 + 5.825189e-11*mk + 3.014528e-11*mn + 3.255645e-14*mnk + 7.194435e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 55: // node 27
-            mu    = 1.974188e-06 + 6.503106e-11*mnk + 1.845489e-10*mn + 1.865478e-09*mk + 3.117690e-09*nk;
-            sigma = 2.836010e-07 + 4.342045e-13*mnk + 9.958234e-12*mn + 3.340051e-11*mk + 1.455744e-11*nk;
+            mu    = 1.861833e-06 + 2.709786e-09*mk + 6.077501e-10*mn + 5.667645e-11*mnk + 4.399580e-09*nk;
+            sigma = 2.429368e-07 + 5.782015e-11*mk + 2.717669e-11*mn + 4.176077e-14*mnk + 6.959823e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 56: // node 28
-            mu    = 1.977875e-06 + 6.695951e-11*mnk + 1.957752e-10*mn + 1.899119e-09*mk + 3.049061e-09*nk;
-            sigma = 2.558424e-07 + 7.509952e-13*mnk + -3.574783e-12*mn + 1.404136e-11*mk + 1.629091e-11*nk;
+            mu    = 1.939167e-06 + 2.729897e-09*mk + 6.178734e-10*mn + 5.671991e-11*mnk + 4.424076e-09*nk;
+            sigma = 2.540062e-07 + 2.668533e-11*mk + 1.528206e-11*mn + 2.456749e-14*mnk + 1.720506e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 57: // node 28
-            mu    = 1.857938e-06 + 6.454369e-11*mnk + 1.840635e-10*mn + 1.772487e-09*mk + 3.118998e-09*nk;
-            sigma = 3.404247e-07 + 1.500717e-13*mnk + 5.969057e-12*mn + 2.903712e-11*mk + 3.406740e-11*nk;
+            mu    = 1.897465e-06 + 2.721007e-09*mk + 6.148260e-10*mn + 5.670854e-11*mnk + 4.414193e-09*nk;
+            sigma = 2.299895e-07 + 3.865860e-11*mk + 2.162831e-11*mn + 2.259478e-14*mnk + 3.690942e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 58: // node 29
-            mu    = 1.896375e-06 + 6.469370e-11*mnk + 1.817856e-10*mn + 1.812727e-09*mk + 3.160018e-09*nk;
-            sigma = 2.431139e-07 + 1.937044e-13*mnk + 4.741775e-12*mn + 2.678295e-11*mk + 2.371321e-11*nk;
+            mu    = 1.946632e-06 + 2.704774e-09*mk + 6.094217e-10*mn + 5.670019e-11*mnk + 4.393668e-09*nk;
+            sigma = 2.469101e-07 + 7.331337e-11*mk + 3.293681e-11*mn + 3.580201e-14*mnk + 9.824060e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 59: // node 29
-            mu    = 1.762000e-06 + 6.473257e-11*mnk + 1.839720e-10*mn + 1.780512e-09*mk + 3.115920e-09*nk;
-            sigma = 2.861419e-07 + 1.747565e-13*mnk + 7.637732e-12*mn + 2.585554e-11*mk + 2.696759e-11*nk;
+            mu    = 1.897905e-06 + 2.711404e-09*mk + 6.098139e-10*mn + 5.670481e-11*mnk + 4.403201e-09*nk;
+            sigma = 2.372141e-07 + 5.759077e-11*mk + 2.883223e-11*mn + 3.506004e-14*mnk + 7.017518e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 60: // node 30
-            mu    = 1.794250e-06 + 6.454037e-11*mnk + 1.836723e-10*mn + 1.785702e-09*mk + 3.081991e-09*nk;
-            sigma = 3.752261e-07 + 2.282857e-13*mnk + 7.378904e-12*mn + 3.325473e-11*mk + 2.647763e-11*nk;
+            mu    = 1.858229e-06 + 2.700690e-09*mk + 6.076182e-10*mn + 5.668788e-11*mnk + 4.388052e-09*nk;
+            sigma = 2.202803e-07 + 8.098992e-11*mk + 3.332682e-11*mn + 5.005898e-14*mnk + 1.087010e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 61: // node 30
-            mu    = 1.848187e-06 + 6.441980e-11*mnk + 1.813596e-10*mn + 1.757265e-09*mk + 3.074501e-09*nk;
-            sigma = 4.537737e-07 + 2.015059e-13*mnk + 2.786832e-14*mn + 2.290080e-11*mk + 2.853973e-11*nk;
+            mu    = 1.920544e-06 + 2.691553e-09*mk + 6.023993e-10*mn + 5.670158e-11*mnk + 4.371786e-09*nk;
+            sigma = 2.243067e-07 + 9.440233e-11*mk + 3.982972e-11*mn + 5.610920e-14*mnk + 1.301376e-10*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 62: // node 31
-            mu    = 1.764000e-06 + 6.480890e-11*mnk + 1.824950e-10*mn + 1.770882e-09*mk + 3.135694e-09*nk;
-            sigma = 2.465163e-07 + 2.162590e-13*mnk + 7.407017e-12*mn + 2.312908e-11*mk + 3.363025e-11*nk;
+            mu    = 1.938060e-06 + 2.717827e-09*mk + 6.118964e-10*mn + 5.669892e-11*mnk + 4.405276e-09*nk;
+            sigma = 2.526594e-07 + 6.072126e-11*mk + 2.914607e-11*mn + 2.995915e-14*mnk + 7.374222e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 63: // node 31
-            mu    = 1.943188e-06 + 6.471888e-11*mnk + 1.846575e-10*mn + 1.794906e-09*mk + 3.165110e-09*nk;
-            sigma = 3.981035e-07 + 2.650383e-13*mnk + 8.325095e-12*mn + 2.837281e-11*mk + 2.706379e-11*nk;
+            mu    = 1.906109e-06 + 2.720967e-09*mk + 6.119801e-10*mn + 5.670432e-11*mnk + 4.420093e-09*nk;
+            sigma = 2.393165e-07 + 3.268973e-11*mk + 1.653357e-11*mn + 2.599903e-14*mnk + 2.204525e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 64: // node 32
-            mu    = 1.809313e-06 + 6.456844e-11*mnk + 1.788395e-10*mn + 1.740258e-09*mk + 3.081749e-09*nk;
-            sigma = 3.340864e-07 + 1.869923e-13*mnk + 5.135284e-12*mn + 2.212050e-11*mk + 2.931581e-11*nk;
+            mu    = 2.010109e-06 + 2.717128e-09*mk + 6.178669e-10*mn + 5.694224e-11*mnk + 4.399556e-09*nk;
+            sigma = 2.634176e-07 + 3.692376e-11*mk + 2.144768e-11*mn + 4.355908e-14*mnk + 3.723030e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         case 65: // node 32
-            mu    = 1.880875e-06 + 6.450284e-11*mnk + 1.834250e-10*mn + 1.777955e-09*mk + 3.049778e-09*nk;
-            sigma = 3.672168e-07 + 1.827344e-13*mnk + 7.442627e-12*mn + 2.936419e-11*mk + 2.450741e-11*nk;
+            mu    = 1.916970e-06 + 2.717555e-09*mk + 6.108009e-10*mn + 5.676000e-11*mnk + 4.413285e-09*nk;
+            sigma = 2.275490e-07 + 4.610031e-11*mk + 2.452559e-11*mn + 3.449074e-14*mnk + 5.078184e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 66: // node 33
+            mu    = 1.909947e-06 + 2.720488e-09*mk + 6.153097e-10*mn + 5.670123e-11*mnk + 4.411440e-09*nk;
+            sigma = 2.327736e-07 + 4.198604e-11*mk + 1.913370e-11*mn + 2.729109e-14*mnk + 4.279724e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 67: // node 33
+            mu    = 1.914009e-06 + 2.711521e-09*mk + 6.113062e-10*mn + 5.669747e-11*mnk + 4.403921e-09*nk;
+            sigma = 2.577761e-07 + 5.901531e-11*mk + 2.614888e-11*mn + 2.808144e-14*mnk + 7.154107e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 68: // node 34
+            mu    = 1.958162e-06 + 2.703713e-09*mk + 6.090492e-10*mn + 5.670194e-11*mnk + 4.387397e-09*nk;
+            sigma = 2.544535e-07 + 9.052012e-11*mk + 4.146121e-11*mn + 4.102742e-14*mnk + 1.268659e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 69: // node 34
+            mu    = 1.886104e-06 + 2.713880e-09*mk + 6.134058e-10*mn + 5.669885e-11*mnk + 4.402579e-09*nk;
+            sigma = 2.325427e-07 + 6.150689e-11*mk + 2.812709e-11*mn + 3.428103e-14*mnk + 7.802808e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 70: // node 35
+            mu    = 1.916610e-06 + 2.688959e-09*mk + 6.074085e-10*mn + 5.670561e-11*mnk + 4.367637e-09*nk;
+            sigma = 2.244576e-07 + 9.374051e-11*mk + 4.093957e-11*mn + 4.411181e-14*mnk + 1.329797e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 71: // node 35
+            mu    = 1.899417e-06 + 2.703349e-09*mk + 6.128400e-10*mn + 5.669694e-11*mnk + 4.393911e-09*nk;
+            sigma = 2.281443e-07 + 7.274220e-11*mk + 3.015513e-11*mn + 3.314320e-14*mnk + 9.433706e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 72: // node 36
+            mu    = 1.935539e-06 + 2.723390e-09*mk + 6.122637e-10*mn + 5.669844e-11*mnk + 4.416154e-09*nk;
+            sigma = 2.651846e-07 + 4.092522e-11*mk + 1.939605e-11*mn + 1.840959e-14*mnk + 4.071634e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 73: // node 36
+            mu    = 1.838729e-06 + 2.713514e-09*mk + 6.090739e-10*mn + 5.670258e-11*mnk + 4.405291e-09*nk;
+            sigma = 2.080884e-07 + 4.269608e-11*mk + 1.980651e-11*mn + 2.497354e-14*mnk + 4.485522e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 74: // node 37
+            mu    = 1.878898e-06 + 2.725232e-09*mk + 6.170351e-10*mn + 5.668991e-11*mnk + 4.418323e-09*nk;
+            sigma = 2.347488e-07 + 3.740339e-11*mk + 1.843363e-11*mn + 2.219675e-14*mnk + 3.841937e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 75: // node 37
+            mu    = 1.941660e-06 + 2.710036e-09*mk + 6.112637e-10*mn + 5.668935e-11*mnk + 4.396529e-09*nk;
+            sigma = 2.451271e-07 + 7.105412e-11*mk + 3.266245e-11*mn + 3.534216e-14*mnk + 8.946008e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 76: // node 38
+            mu    = 1.909206e-06 + 2.701758e-09*mk + 6.084279e-10*mn + 5.668934e-11*mnk + 4.383983e-09*nk;
+            sigma = 2.222435e-07 + 8.371111e-11*mk + 3.755269e-11*mn + 3.955329e-14*mnk + 1.134456e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 77: // node 38
+            mu    = 1.932873e-06 + 2.712864e-09*mk + 6.100259e-10*mn + 5.670251e-11*mnk + 4.401993e-09*nk;
+            sigma = 2.472921e-07 + 5.895454e-11*mk + 2.416910e-11*mn + 3.198506e-14*mnk + 7.245126e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 78: // node 39
+            mu    = 1.881190e-06 + 2.726202e-09*mk + 6.166486e-10*mn + 5.669073e-11*mnk + 4.420027e-09*nk;
+            sigma = 2.280898e-07 + 3.756449e-11*mk + 1.992922e-11*mn + 2.978040e-14*mnk + 3.538007e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 79: // node 39
+            mu    = 1.929032e-06 + 2.705691e-09*mk + 6.080815e-10*mn + 5.672167e-11*mnk + 4.390337e-09*nk;
+            sigma = 2.316736e-07 + 7.064503e-11*mk + 2.966645e-11*mn + 3.874913e-14*mnk + 9.151989e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 80: // node 40
+            mu    = 1.957352e-06 + 2.720212e-09*mk + 6.124939e-10*mn + 5.670488e-11*mnk + 4.412234e-09*nk;
+            sigma = 2.471365e-07 + 3.931848e-11*mk + 2.095184e-11*mn + 3.006186e-14*mnk + 4.201551e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 81: // node 40
+            mu    = 1.850058e-06 + 2.716517e-09*mk + 6.100103e-10*mn + 5.669520e-11*mnk + 4.409207e-09*nk;
+            sigma = 2.176599e-07 + 4.808481e-11*mk + 2.436412e-11*mn + 2.950799e-14*mnk + 5.180545e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 82: // node 41
+            mu    = 1.940076e-06 + 2.734403e-09*mk + 6.149549e-10*mn + 5.669110e-11*mnk + 4.408932e-09*nk;
+            sigma = 2.546291e-07 + 3.733910e-11*mk + 2.045416e-11*mn + 2.912733e-14*mnk + 3.547441e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 83: // node 41
+            mu    = 1.910089e-06 + 2.719440e-09*mk + 6.079553e-10*mn + 5.670900e-11*mnk + 4.396100e-09*nk;
+            sigma = 2.289839e-07 + 6.141056e-11*mk + 2.867150e-11*mn + 3.655837e-14*mnk + 7.798562e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 84: // node 42
+            mu    = 1.930757e-06 + 2.728899e-09*mk + 6.179919e-10*mn + 5.667520e-11*mnk + 4.414111e-09*nk;
+            sigma = 2.491303e-07 + 5.247392e-11*mk + 2.397246e-11*mn + 2.040085e-14*mnk + 6.305615e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 85: // node 42
+            mu    = 1.961012e-06 + 2.721076e-09*mk + 6.169960e-10*mn + 5.667348e-11*mnk + 4.407490e-09*nk;
+            sigma = 2.431261e-07 + 5.208138e-11*mk + 2.659938e-11*mn + 1.998535e-14*mnk + 6.061687e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 86: // node 43
+            mu    = 1.884819e-06 + 2.727720e-09*mk + 6.198700e-10*mn + 5.669140e-11*mnk + 4.427013e-09*nk;
+            sigma = 2.277172e-07 + 2.883373e-11*mk + 1.711964e-11*mn + 2.512395e-14*mnk + 2.017483e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 87: // node 43
+            mu    = 1.936588e-06 + 2.701675e-09*mk + 6.070144e-10*mn + 5.671760e-11*mnk + 4.381342e-09*nk;
+            sigma = 2.483451e-07 + 8.783852e-11*mk + 3.627385e-11*mn + 3.633400e-14*mnk + 1.159768e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 88: // node 44
+            mu    = 1.944813e-06 + 2.720489e-09*mk + 6.157698e-10*mn + 5.669742e-11*mnk + 4.412804e-09*nk;
+            sigma = 2.487983e-07 + 4.849856e-11*mk + 2.412076e-11*mn + 3.141909e-14*mnk + 5.207961e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 89: // node 44
+            mu    = 1.835093e-06 + 2.711027e-09*mk + 6.084052e-10*mn + 5.670828e-11*mnk + 4.398082e-09*nk;
+            sigma = 2.182157e-07 + 5.977851e-11*mk + 2.769890e-11*mn + 2.895959e-14*mnk + 7.464531e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 90: // node 45
+            mu    = 1.872194e-06 + 2.724320e-09*mk + 6.140230e-10*mn + 5.669662e-11*mnk + 4.420542e-09*nk;
+            sigma = 2.186232e-07 + 3.619977e-11*mk + 1.922438e-11*mn + 2.911143e-14*mnk + 3.536974e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 91: // node 45
+            mu    = 1.928484e-06 + 2.702886e-09*mk + 6.032524e-10*mn + 5.670813e-11*mnk + 4.389887e-09*nk;
+            sigma = 2.429586e-07 + 8.238648e-11*mk + 3.536980e-11*mn + 3.657427e-14*mnk + 1.107123e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 92: // node 46
+            mu    = 1.877032e-06 + 2.721893e-09*mk + 6.131291e-10*mn + 5.670149e-11*mnk + 4.413182e-09*nk;
+            sigma = 2.558242e-07 + 3.784282e-11*mk + 1.762168e-11*mn + 2.650360e-14*mnk + 3.641821e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 93: // node 46
+            mu    = 1.913736e-06 + 2.691475e-09*mk + 6.002893e-10*mn + 5.670450e-11*mnk + 4.367146e-09*nk;
+            sigma = 2.434046e-07 + 1.050942e-10*mk + 4.560105e-11*mn + 4.388403e-14*mnk + 1.532165e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 94: // node 47
+            mu    = 1.941785e-06 + 2.722041e-09*mk + 6.153748e-10*mn + 5.670602e-11*mnk + 4.412736e-09*nk;
+            sigma = 2.426432e-07 + 4.624921e-11*mk + 2.445853e-11*mn + 3.446390e-14*mnk + 4.865539e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 95: // node 47
+            mu    = 1.879947e-06 + 2.700997e-09*mk + 6.052866e-10*mn + 5.670455e-11*mnk + 4.385106e-09*nk;
+            sigma = 2.282054e-07 + 8.318427e-11*mk + 3.669758e-11*mn + 3.505591e-14*mnk + 1.097604e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 96: // node 48
+            mu    = 1.897067e-06 + 2.725046e-09*mk + 6.192626e-10*mn + 5.669587e-11*mnk + 4.416329e-09*nk;
+            sigma = 2.405780e-07 + 3.603298e-11*mk + 1.881126e-11*mn + 3.161687e-14*mnk + 3.101562e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 97: // node 48
+            mu    = 1.943583e-06 + 2.717373e-09*mk + 6.099342e-10*mn + 5.670931e-11*mnk + 4.408828e-09*nk;
+            sigma = 2.532946e-07 + 4.661381e-11*mk + 2.376601e-11*mn + 3.123715e-14*mnk + 5.243805e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 98: // node 49
+            mu    = 1.926565e-06 + 2.726646e-09*mk + 6.155567e-10*mn + 5.669550e-11*mnk + 4.420002e-09*nk;
+            sigma = 2.399266e-07 + 3.525871e-11*mk + 1.886121e-11*mn + 3.056969e-14*mnk + 3.455762e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 99: // node 49
+            mu    = 1.904456e-06 + 2.712009e-09*mk + 6.094891e-10*mn + 5.670357e-11*mnk + 4.401626e-09*nk;
+            sigma = 2.341259e-07 + 4.851798e-11*mk + 2.287357e-11*mn + 2.683522e-14*mnk + 5.478514e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 100: // node 50
+            mu    = 2.041608e-06 + 2.714230e-09*mk + 6.266637e-10*mn + 5.687153e-11*mnk + 4.399335e-09*nk;
+            sigma = 2.628429e-07 + 3.818141e-11*mk + 2.288787e-11*mn + 4.258976e-14*mnk + 3.726142e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 101: // node 50
+            mu    = 1.832684e-06 + 2.696517e-09*mk + 6.102356e-10*mn + 5.673744e-11*mnk + 4.385759e-09*nk;
+            sigma = 2.193310e-07 + 6.841029e-11*mk + 3.354199e-11*mn + 5.383326e-14*mnk + 8.827420e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 102: // node 51
+            mu    = 1.888792e-06 + 2.717827e-09*mk + 6.111255e-10*mn + 5.669108e-11*mnk + 4.410529e-09*nk;
+            sigma = 2.451056e-07 + 4.709239e-11*mk + 2.091167e-11*mn + 3.358293e-14*mnk + 5.226122e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 103: // node 51
+            mu    = 1.931521e-06 + 2.699625e-09*mk + 6.048411e-10*mn + 5.669054e-11*mnk + 4.377660e-09*nk;
+            sigma = 2.241790e-07 + 9.934759e-11*mk + 4.376964e-11*mn + 4.817029e-14*mnk + 1.433068e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 104: // node 52
+            mu    = 1.870278e-06 + 2.719347e-09*mk + 6.120703e-10*mn + 5.670289e-11*mnk + 4.412310e-09*nk;
+            sigma = 2.308383e-07 + 4.917291e-11*mk + 2.227219e-11*mn + 2.977320e-14*mnk + 5.546712e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 105: // node 52
+            mu    = 1.941183e-06 + 2.703038e-09*mk + 6.038220e-10*mn + 5.671226e-11*mnk + 4.394646e-09*nk;
+            sigma = 2.392716e-07 + 7.168909e-11*mk + 2.702850e-11*mn + 3.431878e-14*mnk + 9.501115e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 106: // node 53
+            mu    = 1.946965e-06 + 2.706049e-09*mk + 6.067010e-10*mn + 5.670011e-11*mnk + 4.387330e-09*nk;
+            sigma = 2.596267e-07 + 8.895484e-11*mk + 3.533295e-11*mn + 4.036235e-14*mnk + 1.292962e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 107: // node 53
+            mu    = 1.893400e-06 + 2.702388e-09*mk + 6.037705e-10*mn + 5.669872e-11*mnk + 4.391780e-09*nk;
+            sigma = 2.449333e-07 + 7.800110e-11*mk + 3.572260e-11*mn + 4.828034e-14*mnk + 1.035908e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 108: // node 54
+            mu    = 1.994507e-06 + 2.724781e-09*mk + 6.261027e-10*mn + 5.690597e-11*mnk + 4.406548e-09*nk;
+            sigma = 2.513929e-07 + 2.632399e-11*mk + 1.559929e-11*mn + 4.266861e-14*mnk + 1.619744e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 109: // node 54
+            mu    = 1.931488e-06 + 2.713668e-09*mk + 6.112101e-10*mn + 5.676226e-11*mnk + 4.402745e-09*nk;
+            sigma = 2.313605e-07 + 5.896344e-11*mk + 2.816476e-11*mn + 3.341294e-14*mnk + 7.165340e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 110: // node 55
+            mu    = 1.919757e-06 + 2.726633e-09*mk + 6.173929e-10*mn + 5.670347e-11*mnk + 4.419192e-09*nk;
+            sigma = 2.384193e-07 + 3.944974e-11*mk + 2.048901e-11*mn + 2.088533e-14*mnk + 3.902069e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 111: // node 55
+            mu    = 1.894125e-06 + 2.702719e-09*mk + 6.044747e-10*mn + 5.670861e-11*mnk + 4.387428e-09*nk;
+            sigma = 2.217238e-07 + 7.476768e-11*mk + 3.331092e-11*mn + 3.737109e-14*mnk + 1.005317e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 112: // node 56
+            mu    = 1.912484e-06 + 2.710427e-09*mk + 6.111896e-10*mn + 5.670005e-11*mnk + 4.393307e-09*nk;
+            sigma = 2.273095e-07 + 8.203514e-11*mk + 3.239435e-11*mn + 4.003547e-14*mnk + 1.064243e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 113: // node 56
+            mu    = 1.923456e-06 + 2.692534e-09*mk + 6.028907e-10*mn + 5.670703e-11*mnk + 4.377302e-09*nk;
+            sigma = 2.391456e-07 + 9.431419e-11*mk + 3.708635e-11*mn + 4.412309e-14*mnk + 1.332023e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 114: // node 57
+            mu    = 1.905933e-06 + 2.722709e-09*mk + 6.151534e-10*mn + 5.670239e-11*mnk + 4.413910e-09*nk;
+            sigma = 2.564043e-07 + 4.722577e-11*mk + 2.147937e-11*mn + 3.249631e-14*mnk + 5.267661e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 115: // node 57
+            mu    = 1.877292e-06 + 2.706037e-09*mk + 6.051430e-10*mn + 5.668867e-11*mnk + 4.389724e-09*nk;
+            sigma = 2.204650e-07 + 7.869631e-11*mk + 3.799421e-11*mn + 3.922813e-14*mnk + 1.086141e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 116: // node 58
+            mu    = 1.913646e-06 + 2.736646e-09*mk + 6.174583e-10*mn + 5.667555e-11*mnk + 4.415259e-09*nk;
+            sigma = 2.363474e-07 + 5.668449e-11*mk + 2.462538e-11*mn + 2.183978e-14*mnk + 6.424781e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 117: // node 58
+            mu    = 1.947440e-06 + 2.738775e-09*mk + 6.183055e-10*mn + 5.666891e-11*mnk + 4.418465e-09*nk;
+            sigma = 2.317654e-07 + 4.478798e-11*mk + 2.433869e-11*mn + 2.416902e-14*mnk + 4.367734e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 118: // node 59
+            mu    = 1.886975e-06 + 2.727283e-09*mk + 6.149294e-10*mn + 5.670267e-11*mnk + 4.420544e-09*nk;
+            sigma = 2.142487e-07 + 3.746945e-11*mk + 1.937631e-11*mn + 2.821163e-14*mnk + 3.372333e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 119: // node 59
+            mu    = 1.919757e-06 + 2.716352e-09*mk + 6.119505e-10*mn + 5.670693e-11*mnk + 4.409044e-09*nk;
+            sigma = 2.383390e-07 + 4.918510e-11*mk + 2.552691e-11*mn + 2.420923e-14*mnk + 5.594589e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 120: // node 60
+            mu    = 1.934613e-06 + 2.697053e-09*mk + 6.066026e-10*mn + 5.673217e-11*mnk + 4.399064e-09*nk;
+            sigma = 2.583064e-07 + 5.128431e-11*mk + 2.407079e-11*mn + 2.551764e-14*mnk + 5.691146e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 121: // node 60
+            mu    = 1.844809e-06 + 2.671066e-09*mk + 5.935149e-10*mn + 5.673428e-11*mnk + 4.366688e-09*nk;
+            sigma = 2.191625e-07 + 7.951782e-11*mk + 3.269684e-11*mn + 3.924966e-14*mnk + 1.091659e-10*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 122: // node 61
+            mu    = 1.913109e-06 + 2.717291e-09*mk + 6.132714e-10*mn + 5.669266e-11*mnk + 4.404847e-09*nk;
+            sigma = 2.633726e-07 + 5.926221e-11*mk + 2.895731e-11*mn + 3.147868e-14*mnk + 7.140834e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 123: // node 61
+            mu    = 1.926231e-06 + 2.706669e-09*mk + 6.045874e-10*mn + 5.671430e-11*mnk + 4.394204e-09*nk;
+            sigma = 2.431750e-07 + 7.127436e-11*mk + 3.284493e-11*mn + 4.183023e-14*mnk + 9.249361e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 124: // node 62
+            mu    = 1.939755e-06 + 2.706025e-09*mk + 6.136227e-10*mn + 5.668926e-11*mnk + 4.390118e-09*nk;
+            sigma = 2.418386e-07 + 7.245486e-11*mk + 3.471327e-11*mn + 3.833742e-14*mnk + 9.812457e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 125: // node 62
+            mu    = 1.870873e-06 + 2.705453e-09*mk + 6.082530e-10*mn + 5.670042e-11*mnk + 4.388179e-09*nk;
+            sigma = 2.213333e-07 + 6.764084e-11*mk + 2.891295e-11*mn + 2.967090e-14*mnk + 8.224516e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 126: // node 63
+            mu    = 1.963514e-06 + 2.727578e-09*mk + 6.171396e-10*mn + 5.671507e-11*mnk + 4.425163e-09*nk;
+            sigma = 2.296497e-07 + 2.763853e-11*mk + 1.710843e-11*mn + 1.910027e-14*mnk + 2.026500e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 127: // node 63
+            mu    = 1.839815e-06 + 2.706244e-09*mk + 6.084514e-10*mn + 5.669871e-11*mnk + 4.392244e-09*nk;
+            sigma = 2.091283e-07 + 7.105481e-11*mk + 3.144709e-11*mn + 3.017026e-14*mnk + 9.313877e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 128: // node 64
+            mu    = 1.933208e-06 + 2.735679e-09*mk + 6.253504e-10*mn + 5.667169e-11*mnk + 4.423579e-09*nk;
+            sigma = 2.429682e-07 + 3.819928e-11*mk + 2.134754e-11*mn + 2.555529e-14*mnk + 3.752306e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 129: // node 64
+            mu    = 1.920051e-06 + 2.724117e-09*mk + 6.167576e-10*mn + 5.667263e-11*mnk + 4.406170e-09*nk;
+            sigma = 2.223868e-07 + 6.075459e-11*mk + 3.001284e-11*mn + 3.219550e-14*mnk + 7.549895e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 130: // node 65
+            mu    = 2.034924e-06 + 2.715373e-09*mk + 6.224000e-10*mn + 5.698277e-11*mnk + 4.394186e-09*nk;
+            sigma = 2.733254e-07 + 4.056611e-11*mk + 1.861610e-11*mn + 4.912166e-14*mnk + 4.163102e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 131: // node 65
+            mu    = 1.918567e-06 + 2.710319e-09*mk + 6.086194e-10*mn + 5.676183e-11*mnk + 4.401457e-09*nk;
+            sigma = 2.348022e-07 + 6.986353e-11*mk + 3.273843e-11*mn + 3.566796e-14*mnk + 9.090988e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 132: // node 66
+            mu    = 2.035338e-06 + 2.716366e-09*mk + 6.172112e-10*mn + 5.709857e-11*mnk + 4.397954e-09*nk;
+            sigma = 2.721835e-07 + 4.607797e-11*mk + 2.207722e-11*mn + 6.444564e-14*mnk + 5.088881e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 133: // node 66
+            mu    = 1.876792e-06 + 2.721728e-09*mk + 6.160836e-10*mn + 5.675530e-11*mnk + 4.416476e-09*nk;
+            sigma = 2.333508e-07 + 6.068540e-11*mk + 3.061081e-11*mn + 2.691855e-14*mnk + 7.827369e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 134: // node 67
+            mu    = 1.885021e-06 + 2.719016e-09*mk + 6.113547e-10*mn + 5.670866e-11*mnk + 4.408223e-09*nk;
+            sigma = 2.501635e-07 + 5.712499e-11*mk + 2.713992e-11*mn + 3.919184e-14*mnk + 6.905416e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 135: // node 67
+            mu    = 1.917058e-06 + 2.711553e-09*mk + 6.072857e-10*mn + 5.671110e-11*mnk + 4.403217e-09*nk;
+            sigma = 2.286335e-07 + 5.362419e-11*mk + 2.709774e-11*mn + 4.253450e-14*mnk + 6.065990e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 136: // node 68
+            mu    = 1.872664e-06 + 2.720288e-09*mk + 6.152273e-10*mn + 5.668499e-11*mnk + 4.412718e-09*nk;
+            sigma = 2.287999e-07 + 4.681244e-11*mk + 2.524295e-11*mn + 3.454303e-14*mnk + 4.909286e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 137: // node 68
+            mu    = 1.969208e-06 + 2.722755e-09*mk + 6.143413e-10*mn + 5.670636e-11*mnk + 4.415397e-09*nk;
+            sigma = 2.341090e-07 + 3.928092e-11*mk + 1.981116e-11*mn + 2.139433e-14*mnk + 3.730112e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 138: // node 69
+            mu    = 1.920850e-06 + 2.725967e-09*mk + 6.192393e-10*mn + 5.669505e-11*mnk + 4.421386e-09*nk;
+            sigma = 2.337872e-07 + 3.567782e-11*mk + 2.105466e-11*mn + 2.968849e-14*mnk + 3.267684e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 139: // node 69
+            mu    = 1.849315e-06 + 2.713805e-09*mk + 6.102476e-10*mn + 5.669712e-11*mnk + 4.404072e-09*nk;
+            sigma = 2.194782e-07 + 4.912665e-11*mk + 2.249971e-11*mn + 2.568063e-14*mnk + 5.684984e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 140: // node 70
+            mu    = 1.903229e-06 + 2.729853e-09*mk + 6.192252e-10*mn + 5.669355e-11*mnk + 4.423721e-09*nk;
+            sigma = 2.414613e-07 + 2.754123e-11*mk + 1.577198e-11*mn + 2.391188e-14*mnk + 1.733762e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 141: // node 70
+            mu    = 1.943685e-06 + 2.719815e-09*mk + 6.116576e-10*mn + 5.672119e-11*mnk + 4.415193e-09*nk;
+            sigma = 2.443572e-07 + 3.890410e-11*mk + 2.112270e-11*mn + 2.468903e-14*mnk + 3.747977e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 142: // node 71
+            mu    = 1.890713e-06 + 2.704608e-09*mk + 6.070470e-10*mn + 5.669199e-11*mnk + 4.388175e-09*nk;
+            sigma = 2.419681e-07 + 7.488721e-11*mk + 3.007742e-11*mn + 3.595389e-14*mnk + 9.846805e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 143: // node 71
+            mu    = 1.890391e-06 + 2.714255e-09*mk + 6.074044e-10*mn + 5.670840e-11*mnk + 4.398280e-09*nk;
+            sigma = 2.202015e-07 + 5.989363e-11*mk + 2.940208e-11*mn + 3.972950e-14*mnk + 7.607670e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 144: // node 72
+            mu    = 1.944840e-06 + 2.715352e-09*mk + 6.122965e-10*mn + 5.669293e-11*mnk + 4.404998e-09*nk;
+            sigma = 2.233898e-07 + 6.231457e-11*mk + 2.798290e-11*mn + 2.491685e-14*mnk + 7.698071e-11*nk;
+            return mu + random_halfnormal_shifted(0, sigma);
+        case 145: // node 72
+            mu    = 1.868002e-06 + 2.706061e-09*mk + 6.076617e-10*mn + 5.670136e-11*mnk + 4.391002e-09*nk;
+            sigma = 2.070661e-07 + 7.123741e-11*mk + 3.448813e-11*mn + 4.133863e-14*mnk + 9.312375e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
         default:
-            mu    = 1.901050e-06 + 1.830098e-09*mk + 1.849726e-10*mn + 6.532377e-11*mnk + 3.113753e-09*nk;
-            sigma = 3.266040e-07 + 2.553385e-11*mk + 4.807115e-12*mn + 3.315110e-13*mnk + 2.725599e-11*nk;
+            mu    = 1.910907e-06 + 2.714325e-09*mk + 6.113027e-10*mn + 5.671624e-11*mnk + 4.403225e-09*nk;
+            sigma = 2.360326e-07 + 5.608520e-11*mk + 2.633984e-11*mn + 3.262784e-14*mnk + 6.725982e-11*nk;
             return mu + random_halfnormal_shifted(0, sigma);
     }
     return 0;
