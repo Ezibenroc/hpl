@@ -204,21 +204,9 @@ static double get_param(const char *name) {
     return atof(val_str);
 }
 
-static double dgemm_coefficient = -1;
-static double dgemm_intercept = -1;
-static double dtrsm_coefficient = -1;
-static double dtrsm_intercept = -1;
 #if SMPI_OPTIMIZATION_LEVEL >= 1
 #define  HPL_dgemm(layout, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc)  ({\
     timestamp_t start = get_timestamp();\
-    double mnk = (double)(M) * (double)(N) * (double)(K);\
-    double mn =  (double)(M) * (double)(N);\
-    double mk =  (double)(M) * (double)(K);\
-    double nk =  (double)(N) * (double)(K);\
-    double raw_duration = 2.844700e-07 + 6.317136e-11*mnk + 1.489053e-10*mn + 2.107985e-09*mk + 3.332944e-09*nk;\
-    double sigma = 1.087202e-07 + 2.976703e-12*mnk + 8.365868e-12*mn + 1.528598e-10*mk + 9.931248e-11*nk;\
-    double noise = random_halfnormal_shifted(0, sigma);\
-    double injected_duration = raw_duration + noise;\
     smpi_execute_dgemm(M, N, K);\
     timestamp_t duration = get_timestamp() - start;\
     record_measure(__FILE__, __LINE__, "dgemm", start, duration, 3, (int []){M, N, K});\
