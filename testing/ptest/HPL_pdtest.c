@@ -165,6 +165,14 @@ void HPL_pdtest
  * .. Executable Statements ..
  */
    struct timeval tmp_time = {};
+#ifndef SMPI_SEED
+#define SMPI_SEED 42
+#pragma message "[SMPI] No seed specified, using 42"
+#else
+#pragma message "[SMPI] A seed was given"
+#endif
+   printf("Using SEED=%d\n", SMPI_SEED);
+   srand(SMPI_SEED);
    get_timestamp(); // initialize the timer...
    (void) HPL_grid_info( GRID, &nprow, &npcol, &myrow, &mycol );
 
