@@ -206,14 +206,14 @@ double random_halfnormal_shifted(double exp, double std) {
 void smpi_execute_normal(double mu, double sigma) {
     double coefficient = random_halfnormal_shifted(mu, sigma);
     if(coefficient > 0) {
-        smpi_execute_benched(coefficient);
+        usleep((useconds_t)(coefficient*1e6));
     }
 }
 
 void smpi_execute_normal_size(double mu, double sigma, double size) {
     double coefficient = random_halfnormal_shifted(mu, sigma);
     if(coefficient > 0 && size > 0) {
-        smpi_execute_benched(size * coefficient);
+        usleep((useconds_t)(size*coefficient*1e6));
     }
 }
 
@@ -229,7 +229,7 @@ double dgemm_time(double M, double N, double K) {
 void smpi_execute_dgemm(int M, int N, int K) {
     double time = dgemm_time(M, N, K);
     if(time > 0) {
-        smpi_execute_benched(time);
+        usleep((useconds_t)(time*1e6));
     }
 }
 
