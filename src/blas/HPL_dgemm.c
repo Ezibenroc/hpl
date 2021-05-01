@@ -217,11 +217,11 @@ void smpi_execute_normal_size(double mu, double sigma, double size) {
     }
 }
 
-double dgemm_time(double M, double N, double K) {
-    double mnk = M*N*K;
-    double mn = M*N;
-    double mk = M*K;
-    double nk = N*K;
+double dgemm_time(double m, double n, double k) {
+    double mnk = m*n*k;
+    double mn = m*n;
+    double mk = m*k;
+    double nk = n*k;
 #include "dgemm_model.c"
     return 0;
 }
